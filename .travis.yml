@@ -22,7 +22,7 @@ deploy:
     skip_cleanup: true
     email: info@inveniosoftware.org
     api_key:
-      secure: # FILL ME
+      secure: J8cYBCIaMJ3AF5ivtFsRfyVT4f+uIBciWf4ID+TkEd5tJo3is6eT69xp/IOdosm9RtBJ745vslGXIXXCsiQWXDLUrTi+norTSnn6mz2Y3y+oeQmf2zuIHLrVGijR/8umDYQevhpoGVtS0VeJkN6E9sEfo0Jf05/3EV/WkFLTTqUCZL5cNp/SZl0C0P7SENt/smiVd75lg3l/URQCBSGwIXo47Jn7SrSzBCBdFBFyf7pl0P2wuePVd4AYepfB0tlhGQg4WN8snbKKX1j6wwcfkyDEd+t9NuC0f8Wu84KAKIJALTYucIeDA+guffcvRtz5xlF3u198JXNk6+wAwlUGawerIXTTLJS/EnXNf/g1krTi5Vj8Xv5BOIP90UJelsL04uPawanythtHSaTuOvpLPI4mRZgkIgTIIuFcJX+kmg5r7aeydx2uMciysWqgInvWqmatxoIBa6nhwBJa7bge5N2r9zO3fseiwEE9J8MV47pwVZWlfJs9psvsLUMXWccjlfD8mgbYbW1dVATSraPokHpKVgRgLqMvZkcK2MCXl3IabIMD1yTxNt7C02UIpl52BWtRwTT0S7c1diCNllZgVFZ4Ab/6rtM7mJk4BlUREXuGn2N68vda9IOxbdXlKRlUZtKd/LnUAD9CWFJYOpAF3hmFhzfIIGsXpNgHjqxpPHI=
     on:
       branch: master
       tags: true
