@@ -10,6 +10,8 @@ import PropTypes from "prop-types";
 import { getIn, FieldArray } from "formik";
 import { Form, Button, Icon } from "semantic-ui-react";
 
+import { FieldLabel } from "./FieldLabel";
+
 export class ArrayField extends Component {
   renderFormField = (props) => {
     const {
@@ -22,12 +24,12 @@ export class ArrayField extends Component {
       defaultNewValue,
       fieldPath,
       label,
-      label_icon,
+      labelIcon,
       ...uiProps
     } = this.props;
     return (
       <Form.Field {...uiProps}>
-        <label><Icon name={label_icon} />{label}</label>
+        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         {getIn(values, fieldPath, []).map((value, index, array) => {
           const arrayPath = fieldPath;
           const indexPath = index;
@@ -65,12 +67,13 @@ export class ArrayField extends Component {
 }
 
 ArrayField.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string,
   addButtonLabel: PropTypes.string,
+  children: PropTypes.func.isRequired,
   defaultNewValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
     .isRequired,
-  children: PropTypes.func.isRequired,
+  fieldPath: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  labelIcon: PropTypes.string,
 };
 
 ArrayField.defaultProps = {
