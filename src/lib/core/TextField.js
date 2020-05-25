@@ -5,12 +5,12 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { FastField, Field, getIn } from "formik";
-import { Form } from "semantic-ui-react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { FastField, Field, getIn } from 'formik';
+import { Form } from 'semantic-ui-react';
 
-import { ErrorMessage } from "./ErrorMessage";
+import { ErrorMessage } from './ErrorMessage';
 
 export class TextField extends Component {
   renderFormField = (formikBag) => {
@@ -22,7 +22,7 @@ export class TextField extends Component {
           name={fieldPath}
           onChange={formikBag.form.handleChange}
           onBlur={formikBag.form.handleBlur}
-          value={getIn(formikBag.form.values, fieldPath, "")}
+          value={getIn(formikBag.form.values, fieldPath, '')}
           {...uiProps}
         ></Form.Input>
         <ErrorMessage fieldPath={fieldPath} />

@@ -5,14 +5,14 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { FastField, Field, getIn } from "formik";
-import { Form } from "semantic-ui-react";
-import isEmpty from "lodash/isEmpty";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { FastField, Field, getIn } from 'formik';
+import { Form } from 'semantic-ui-react';
+import isEmpty from 'lodash/isEmpty';
 
 export class SelectField extends Component {
-  renderError = (errors, name, value, direction = "above") => {
+  renderError = (errors, name, value, direction = 'above') => {
     let error = null;
     if (!Array.isArray(value)) {
       const options = this.props.options;
@@ -43,9 +43,9 @@ export class SelectField extends Component {
     if (!this.props.required) {
       options = [
         {
-          key: "",
-          value: "",
-          text: "-",
+          key: '',
+          value: '',
+          text: '-',
         },
         ...options,
       ];
@@ -66,8 +66,8 @@ export class SelectField extends Component {
   };
 
   renderLabel = (item, index, defaultLabelProps) => {
-    if (!this.props.loading && "error" in item) {
-      defaultLabelProps.className = "error";
+    if (!this.props.loading && 'error' in item) {
+      defaultLabelProps.className = 'error';
     }
     return item.text;
   };
@@ -94,7 +94,7 @@ export class SelectField extends Component {
         selection
         error={error || this.renderError(errors, fieldPath, value)}
         id={fieldPath}
-        label={{ children: label, htmlFor: fieldPath}}
+        label={{ children: label, htmlFor: fieldPath }}
         loading={loading}
         multiple={multiple}
         name={fieldPath}
@@ -132,7 +132,7 @@ SelectField.propTypes = {
 };
 
 SelectField.defaultProps = {
-  defaultValue: "",
+  defaultValue: '',
   multiple: false,
   optimized: false,
 };

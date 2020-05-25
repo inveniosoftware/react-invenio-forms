@@ -5,12 +5,12 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { getIn, FieldArray } from "formik";
-import { Form, Button, Icon } from "semantic-ui-react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { getIn, FieldArray } from 'formik';
+import { Form, Button, Icon } from 'semantic-ui-react';
 
-import { FieldLabel } from "./FieldLabel";
+import { FieldLabel } from './FieldLabel';
 
 export class ArrayField extends Component {
   renderFormField = (props) => {
@@ -39,7 +39,14 @@ export class ArrayField extends Component {
           //          seems enough.
           return (
             <div key={key}>
-              {children({ array, arrayHelpers, arrayPath, indexPath, key, ...props })}
+              {children({
+                array,
+                arrayHelpers,
+                arrayPath,
+                indexPath,
+                key,
+                ...props,
+              })}
             </div>
           );
         })}
@@ -77,7 +84,7 @@ ArrayField.propTypes = {
 };
 
 ArrayField.defaultProps = {
-  label: "",
-  addButtonLabel: "Add new row",
-  placeholder: "",
+  label: '',
+  addButtonLabel: 'Add new row',
+  placeholder: '',
 };

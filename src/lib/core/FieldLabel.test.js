@@ -10,18 +10,18 @@ import ReactDOM from 'react-dom';
 import { FieldLabel } from './FieldLabel';
 
 it('renders without crashing with no props', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<FieldLabel />, div);
+  const div = document.createElement('div');
+  ReactDOM.render(<FieldLabel />, div);
 });
 
 it('renders without crashing with all props', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(
-      <FieldLabel
-        htmlFor="foo"
-        icon="american sign language interpreting"
-        label="Foo"
-      />,
-      div
-    );
+  const div = document.createElement('div');
+  ReactDOM.render(
+    <FieldLabel
+      htmlFor="foo"
+      icon="american sign language interpreting"
+      label="Foo"
+    />,
+    div
+  );
 });

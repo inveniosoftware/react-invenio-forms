@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import * as Yup from "yup";
-import { Header, Message, Container } from "semantic-ui-react";
+import * as Yup from 'yup';
+import { Header, Message, Container } from 'semantic-ui-react';
 
-import { TextField, BaseForm } from "../lib/core";
+import { TextField, BaseForm } from '../lib/core';
 
 const CurrentRecord = (props) => (
   <Message>
@@ -27,8 +27,8 @@ class App extends Component {
   }
 
   initialValues = {
-    title: "",
-    year: "",
+    title: '',
+    year: '',
   };
 
   MyFormSchema = Yup.object().shape({
@@ -39,7 +39,7 @@ class App extends Component {
     const errors = {};
 
     if (!values.title) {
-      errors.title = "Required";
+      errors.title = 'Required';
     }
     return errors;
   };
@@ -49,7 +49,7 @@ class App extends Component {
   };
 
   onError = (error) => {
-    console.log("Server Error", error);
+    console.log('Server Error', error);
   };
 
   render() {

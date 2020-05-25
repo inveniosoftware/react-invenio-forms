@@ -5,16 +5,19 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Icon } from "semantic-ui-react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Icon } from 'semantic-ui-react';
 
 export class FieldLabel extends Component {
   render() {
-    const {htmlFor, icon, label} = this.props;
+    const { htmlFor, icon, label } = this.props;
     return (
-      <label htmlFor={htmlFor}>{icon ? <Icon name={icon} /> : null}{label}</label>
-    )
+      <label htmlFor={htmlFor}>
+        {icon ? <Icon name={icon} /> : null}
+        {label}
+      </label>
+    );
   }
 }
 
