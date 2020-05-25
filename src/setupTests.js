@@ -1,4 +1,8 @@
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+// This file is part of React-Invenio-Forms
+// Copyright (C) 2020 CERN.
+// Copyright (C) 2020 Northwestern University.
+//
+// React-Invenio-Forms is free software; you can redistribute it and/or modify it
+// under the terms of the MIT License; see LICENSE file for more details.
 
-configure({ adapter: new Adapter() });
+import '@testing-library/jest-dom/extend-expect';
