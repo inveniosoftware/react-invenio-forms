@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.3.0 (released 2020-05-25)
+
+* Adds prettier config
+* Moves docs and website folder under common docs folder
+* Adds `RadioField` component
+
 Version 0.2.1 (released 2020-05-20)
 
 * Changes travis npm api key
