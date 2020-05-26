@@ -9,6 +9,7 @@ export { AccordionField } from './AccordionField';
 export { ArrayField } from './ArrayField';
 export { BaseForm } from './BaseForm';
 export { BooleanField } from './BooleanField';
+export { ErrorLabel } from './ErrorLabel';
 export { ErrorMessage } from './ErrorMessage';
 export { FieldLabel } from './FieldLabel';
 export { GroupField } from './GroupField';

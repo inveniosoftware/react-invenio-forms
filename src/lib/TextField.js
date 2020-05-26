@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { FastField, Field, getIn } from 'formik';
 import { Form } from 'semantic-ui-react';
 
-import { ErrorMessage } from './ErrorMessage';
+import { ErrorLabel } from './ErrorLabel';
 
 export class TextField extends Component {
   renderFormField = (formikBag) => {
@@ -25,7 +25,7 @@ export class TextField extends Component {
           value={getIn(formikBag.form.values, fieldPath, '')}
           {...uiProps}
         ></Form.Input>
-        <ErrorMessage fieldPath={fieldPath} />
+        <ErrorLabel fieldPath={fieldPath} />
       </Form.Field>
     );
   };
