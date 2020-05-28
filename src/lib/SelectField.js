@@ -36,42 +36,6 @@ export class SelectField extends Component {
       : null;
   };
 
-  getAllOptions = (options, values) => {
-    if (!Array.isArray(values)) {
-      values = [values];
-    }
-    if (!this.props.required) {
-      options = [
-        {
-          key: '',
-          value: '',
-          text: '-',
-        },
-        ...options,
-      ];
-    }
-    if (!this.props.loading) {
-      for (const value of values) {
-        if (!isEmpty(value) && !options.find((o) => o.value === value)) {
-          options.push({
-            key: value,
-            value: value,
-            text: `Missing value: ${value}`,
-            error: undefined, // set the key so we can check it in renderLabel
-          });
-        }
-      }
-    }
-    return options;
-  };
-
-  renderLabel = (item, index, defaultLabelProps) => {
-    if (!this.props.loading && 'error' in item) {
-      defaultLabelProps.className = 'error';
-    }
-    return item.text;
-  };
-
   renderFormField = (props) => {
     const {
       form: { values, setFieldValue, handleBlur, errors },
@@ -81,30 +45,24 @@ export class SelectField extends Component {
       error,
       fieldPath,
       label,
-      loading,
-      multiple,
       optimized,
       options,
       ...uiProps
     } = this.props;
-    const value = getIn(values, fieldPath, multiple ? [] : defaultValue);
+    const value = getIn(values, fieldPath, defaultValue);
     return (
       <Form.Dropdown
         fluid
         selection
-        error={error || this.renderError(errors, fieldPath, value)}
+        error={error || getIn(errors, fieldPath, null)}
         id={fieldPath}
         label={{ children: label, htmlFor: fieldPath }}
-        loading={loading}
-        multiple={multiple}
         name={fieldPath}
         onBlur={handleBlur}
         onChange={(event, data) => {
           setFieldValue(fieldPath, data.value);
         }}
-        options={this.getAllOptions(options, value)}
-        renderLabel={this.renderLabel}
-        searchInput={{ id: fieldPath }}
+        options={options}
         value={value}
         {...uiProps}
       />
@@ -126,13 +84,10 @@ SelectField.propTypes = {
   defaultValue: PropTypes.string,
   error: PropTypes.object,
   fieldPath: PropTypes.string.isRequired,
-  loading: PropTypes.bool,
-  multiple: PropTypes.bool,
   optimized: PropTypes.bool,
 };
 
 SelectField.defaultProps = {
   defaultValue: '',
-  multiple: false,
   optimized: false,
 };

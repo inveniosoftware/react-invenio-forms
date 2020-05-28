@@ -13,11 +13,7 @@ import { Field } from 'formik';
 export class ErrorLabel extends Component {
   renderFormField = ({ form: { errors } }) => {
     return errors[this.props.fieldPath] ? (
-      <Label
-        pointing="above"
-        prompt
-        content={errors[this.props.fieldPath]}
-      ></Label>
+      <Label pointing prompt content={errors[this.props.fieldPath]}></Label>
     ) : null;
   };
 

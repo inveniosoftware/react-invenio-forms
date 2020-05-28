@@ -29,7 +29,11 @@ export class ArrayField extends Component {
     } = this.props;
     return (
       <Form.Field {...uiProps}>
-        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+        <FieldLabel
+          htmlFor={fieldPath}
+          icon={labelIcon}
+          label={label}
+        ></FieldLabel>
         {getIn(values, fieldPath, []).map((value, index, array) => {
           const arrayPath = fieldPath;
           const indexPath = index;
