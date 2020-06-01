@@ -43,18 +43,16 @@ export class RadioField extends Component {
     };
 
     return (
-      <Form.Group inline>
-        <Form.Radio
-          name={fieldPath}
-          label={
-            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-          }
-          value={value}
-          checked={checked}
-          onChange={handleChange}
-          {...uiProps}
-        />
-      </Form.Group>
+      <Form.Radio
+        name={fieldPath}
+        label={
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+        }
+        value={value}
+        checked={checked}
+        onChange={handleChange}
+        {...uiProps}
+      />
     );
   };
 

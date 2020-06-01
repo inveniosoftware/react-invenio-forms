@@ -13,9 +13,18 @@ import { Form, Button, Icon } from 'semantic-ui-react';
 import { FieldLabel } from './FieldLabel';
 
 export class ArrayField extends Component {
+  hasGroupErrors = (errors) => {
+    for (const field in errors) {
+      if (field.startsWith(this.props.fieldPath)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   renderFormField = (props) => {
     const {
-      form: { values },
+      form: { values, errors },
       ...arrayHelpers
     } = props;
     const {
@@ -27,8 +36,10 @@ export class ArrayField extends Component {
       labelIcon,
       ...uiProps
     } = this.props;
+
+    const hasError = this.hasGroupErrors(errors) ? { error: {} } : {};
     return (
-      <Form.Field {...uiProps}>
+      <Form.Field {...uiProps} {...hasError}>
         <FieldLabel
           htmlFor={fieldPath}
           icon={labelIcon}
