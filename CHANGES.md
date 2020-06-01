@@ -1,5 +1,7 @@
 # Changes
 
+Version 0.3.2 (released 2020-06-01)
+
 Version 0.3.1 (released 2020-05-29)
 
 * Refactors `SelectField`
