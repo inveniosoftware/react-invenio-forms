@@ -17,3 +17,4 @@ export { SelectField } from './SelectField';
 export { TextField } from './TextField';
 export { ActionButton } from './ActionButton';
 export { RadioField } from './RadioField';
+export { RichInputField } from './RichInputField';
