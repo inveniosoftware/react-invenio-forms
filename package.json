@@ -30,7 +30,9 @@
     "lodash": "^4.17.15",
     "semantic-ui-react": "^0.88.0",
     "semantic-ui-css": "^2.4.1",
-    "@babel/runtime": "^7.9.0"
+    "@babel/runtime": "^7.9.0",
+    "@ckeditor/ckeditor5-build-classic": "^16.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

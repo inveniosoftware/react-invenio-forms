@@ -23,6 +23,6 @@ export class FieldLabel extends Component {
 
 FieldLabel.propTypes = {
   htmlFor: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   labelIcon: PropTypes.string,
 };
