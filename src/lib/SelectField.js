@@ -86,9 +86,8 @@ export class SelectField extends Component {
 }
 
 SelectField.propTypes = {
-  defaultValue: PropTypes.string,
-  error: PropTypes.object,
   fieldPath: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
   optimized: PropTypes.bool,
 };
 

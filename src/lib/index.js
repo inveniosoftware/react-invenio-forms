@@ -14,6 +14,7 @@ export { ErrorMessage } from './ErrorMessage';
 export { FieldLabel } from './FieldLabel';
 export { GroupField } from './GroupField';
 export { SelectField } from './SelectField';
+export { RemoteSelectField } from './RemoteSelectField';
 export { TextField } from './TextField';
 export { ActionButton } from './ActionButton';
 export { RadioField } from './RadioField';
