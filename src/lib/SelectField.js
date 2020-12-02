@@ -36,10 +36,10 @@ export class SelectField extends Component {
       : null;
   };
 
-  renderFormField = (props) => {
+  renderFormField = (formikProps) => {
     const {
       form: { values, setFieldValue, handleBlur, errors },
-    } = props;
+    } = formikProps;
     const {
       defaultValue,
       error,
@@ -47,6 +47,7 @@ export class SelectField extends Component {
       label,
       optimized,
       options,
+      onChange,
       ...uiProps
     } = this.props;
     const value = getIn(values, fieldPath, defaultValue);
@@ -60,7 +61,11 @@ export class SelectField extends Component {
         name={fieldPath}
         onBlur={handleBlur}
         onChange={(event, data) => {
-          setFieldValue(fieldPath, data.value);
+          if (onChange) {
+            onChange({ event, data, formikProps });
+          } else {
+            setFieldValue(fieldPath, data.value);
+          }
         }}
         options={options}
         value={value}
