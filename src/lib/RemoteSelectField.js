@@ -14,16 +14,6 @@ import axios from 'axios';
 import { Message } from 'semantic-ui-react';
 import { SelectField } from './SelectField';
 
-const fetchOptions = () => [
-  { title: 'Danish', id: 'dan' },
-  { title: 'English', id: 'eng' },
-  { title: 'French', id: 'fra' },
-  { title: 'German', id: 'deu' },
-  { title: 'Greek', id: 'ell' },
-  { title: 'Italian', id: 'ita' },
-  { title: 'Spanish', id: 'spa' },
-];
-
 const serializeSuggestions = (suggestions) =>
   suggestions.map((item) => ({
     text: item.title,
@@ -52,6 +42,17 @@ export class RemoteSelectField extends Component {
     });
   };
 
+  handleAddition = (e, { value }) => {
+    const selectedSuggestions = [{ text: value, value, key: value }, ...this.state.selectedSuggestions];
+    this.setState((prevState) => ({
+      selectedSuggestions: selectedSuggestions,
+      suggestions: _uniqBy(
+        [...prevState.suggestions, ...selectedSuggestions],
+        'value'
+      ),
+    }))
+  }
+
   onSearchChange = _debounce(async (e, { searchQuery }) => {
     this.setState({ isFetching: true, searchQuery });
     try {
@@ -79,13 +80,12 @@ export class RemoteSelectField extends Component {
 
   fetchSuggestions = (searchQuery) => {
     // TODO: replace when REST api is integrated
-    // const resp = await axios.get(this.props.suggestionAPIUrl, { params: { q: searchQuery } });
+    // const resp = await axios.get(this.props.suggestionAPIUrl, { params: { q: searchQuery, ...suggestionAPIQueryParams } });
     // return resp.data.hits.hits
-
     const response = {
       data: {
         hits: {
-          hits: fetchOptions().filter((item) =>
+          hits: this.props.fetchedOptions.filter((item) =>
             item.title.toLowerCase().includes(searchQuery.toLowerCase())
           ),
         },
@@ -93,12 +93,13 @@ export class RemoteSelectField extends Component {
     };
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const random_boolean = Math.random() < 0.5;
-        if (random_boolean) {
-          resolve(response.data.hits.hits);
-        } else {
-          reject('Something went wrong');
-        }
+        // const random_boolean = Math.random() < 0.5;
+        // if (random_boolean) {
+        //   resolve(response.data.hits.hits);
+        // } else {
+        //   reject('Something went wrong');
+        // }
+        resolve(response.data.hits.hits);
       }, 100);
     });
   };
@@ -156,6 +157,7 @@ export class RemoteSelectField extends Component {
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onSearchChange={this.onSearchChange}
+        onAddItem={this.handleAddition}
         onChange={({ event, data, formikProps }) => {
           this.onSelectValue(event, data);
           formikProps.form.setFieldValue(compProps.fieldPath, data.value);
@@ -169,6 +171,7 @@ export class RemoteSelectField extends Component {
 RemoteSelectField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   suggestionAPIUrl: PropTypes.string.isRequired,
+  suggestionAPIQueryParams: PropTypes.object,
   serializeSuggestions: PropTypes.func,
   debounceTime: PropTypes.number,
   noResultsMessage: PropTypes.string,
@@ -177,10 +180,12 @@ RemoteSelectField.propTypes = {
     PropTypes.object,
   ]),
   noQueryMessage: PropTypes.string,
+  fetchedOptions: PropTypes.array
 };
 
 RemoteSelectField.defaultProps = {
   debounceTime: 500,
+  suggestionAPIQueryParams: {},
   serializeSuggestions: serializeSuggestions,
   suggestionsErrorMessage: 'Something went wrong...',
   noQueryMessage: 'Search...',
