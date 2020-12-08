@@ -49,6 +49,7 @@ export class RemoteSelectField extends Component {
       selectedSuggestions: selectedSuggestions,
       searchQuery: null,
       error: false,
+      open: this.props.multiple ? true : false,
     });
   };
 
@@ -194,6 +195,7 @@ export class RemoteSelectField extends Component {
     return (
       <SelectField
         {...uiProps}
+        allowAdditions={this.state.error ? false : uiProps.allowAdditions}
         fieldPath={compProps.fieldPath}
         options={this.state.suggestions}
         noResultsMessage={this.getNoResultsMessage()}
