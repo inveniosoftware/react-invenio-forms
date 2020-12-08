@@ -43,15 +43,18 @@ export class RemoteSelectField extends Component {
   };
 
   handleAddition = (e, { value }) => {
-    const selectedSuggestions = [{ text: value, value, key: value }, ...this.state.selectedSuggestions];
+    const selectedSuggestions = [
+      { text: value, value, key: value },
+      ...this.state.selectedSuggestions,
+    ];
     this.setState((prevState) => ({
       selectedSuggestions: selectedSuggestions,
       suggestions: _uniqBy(
         [...prevState.suggestions, ...selectedSuggestions],
         'value'
       ),
-    }))
-  }
+    }));
+  };
 
   onSearchChange = _debounce(async (e, { searchQuery }) => {
     this.setState({ isFetching: true, searchQuery });
@@ -134,12 +137,29 @@ export class RemoteSelectField extends Component {
   };
 
   getProps = () => {
-    const uiProps = _pickBy(this.props, (value, key) => {
-      return !RemoteSelectField.propTypes[key];
-    });
-    const compProps = _pickBy(this.props, (value, key) => {
-      return RemoteSelectField.propTypes[key];
-    });
+    const {
+      fieldPath,
+      suggestionAPIUrl,
+      suggestionAPIQueryParams,
+      serializeSuggestions,
+      debounceTime,
+      noResultsMessage,
+      suggestionsErrorMessage,
+      noQueryMessage,
+      fetchedOptions,
+      ...uiProps
+    } = this.props;
+    const compProps = {
+      fieldPath,
+      suggestionAPIUrl,
+      suggestionAPIQueryParams,
+      serializeSuggestions,
+      debounceTime,
+      noResultsMessage,
+      suggestionsErrorMessage,
+      noQueryMessage,
+      fetchedOptions,
+    };
     return { compProps, uiProps };
   };
 
@@ -180,7 +200,7 @@ RemoteSelectField.propTypes = {
     PropTypes.object,
   ]),
   noQueryMessage: PropTypes.string,
-  fetchedOptions: PropTypes.array
+  fetchedOptions: PropTypes.array,
 };
 
 RemoteSelectField.defaultProps = {
