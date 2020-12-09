@@ -14,6 +14,16 @@ import axios from 'axios';
 import { Message } from 'semantic-ui-react';
 import { SelectField } from './SelectField';
 
+const DEFAULT_SUGGESTION_SIZE = 5;
+
+// Replace part is needed since encodeURIComponent leaves some characters unescaped
+// Code is taken from MDN web docs
+const encodeQuery = (query) =>
+  encodeURIComponent(query).replace(
+    /[!'()-~*]/g,
+    (char) => `%${char.charCodeAt(0).toString(16)}`
+  );
+
 const serializeSuggestions = (suggestions) =>
   suggestions.map((item) => ({
     text: item.title,
@@ -63,7 +73,6 @@ export class RemoteSelectField extends Component {
       const serializedSuggestions = this.props.serializeSuggestions(
         suggestions
       );
-
       this.setState((prevState) => ({
         suggestions: _uniqBy(
           [...prevState.selectedSuggestions, ...serializedSuggestions],
@@ -81,30 +90,47 @@ export class RemoteSelectField extends Component {
     }
   }, this.props.debounceTime);
 
-  fetchSuggestions = (searchQuery) => {
-    // TODO: replace when REST api is integrated
-    // const resp = await axios.get(this.props.suggestionAPIUrl, { params: { q: searchQuery, ...suggestionAPIQueryParams } });
-    // return resp.data.hits.hits
-    const response = {
-      data: {
-        hits: {
-          hits: this.props.fetchedOptions.filter((item) =>
-            item.title.toLowerCase().includes(searchQuery.toLowerCase())
-          ),
+  fetchSuggestions = async (searchQuery) => {
+    const {
+      fetchedOptions,
+      suggestionAPIUrl,
+      suggestionAPIQueryParams,
+    } = this.props;
+
+    // TODO: remove this part once backend will be implemented
+    // for Subjects and Affiliations components
+    if (fetchedOptions) {
+      const response = {
+        data: {
+          hits: {
+            hits: fetchedOptions.filter((item) =>
+              item.title.toLowerCase().includes(searchQuery.toLowerCase())
+            ),
+          },
         },
-      },
-    };
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // const random_boolean = Math.random() < 0.5;
-        // if (random_boolean) {
-        //   resolve(response.data.hits.hits);
-        // } else {
-        //   reject('Something went wrong');
-        // }
-        resolve(response.data.hits.hits);
-      }, 100);
-    });
+      };
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // const random_boolean = Math.random() < 0.5;
+          // if (random_boolean) {
+          //   resolve(response.data.hits.hits);
+          // } else {
+          //   reject('Something went wrong');
+          // }
+          resolve(response.data.hits.hits);
+        }, 100);
+      });
+    }
+
+    return axios
+      .get(suggestionAPIUrl, {
+        params: {
+          q: `${encodeQuery(searchQuery)}*`,
+          size: DEFAULT_SUGGESTION_SIZE,
+          ...suggestionAPIQueryParams,
+        },
+      })
+      .then((resp) => resp?.data?.hits?.hits);
   };
 
   getNoResultsMessage = () => {
@@ -200,7 +226,7 @@ RemoteSelectField.propTypes = {
     PropTypes.object,
   ]),
   noQueryMessage: PropTypes.string,
-  fetchedOptions: PropTypes.array,
+  fetchedOptions: PropTypes.array, //TODO: remove this after vocabularies implementation
 };
 
 RemoteSelectField.defaultProps = {
