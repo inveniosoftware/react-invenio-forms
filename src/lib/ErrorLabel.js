@@ -9,11 +9,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label } from 'semantic-ui-react';
 import { Field } from 'formik';
+import _get from 'lodash/get';
 
 export class ErrorLabel extends Component {
   renderFormField = ({ form: { errors } }) => {
-    return errors[this.props.fieldPath] ? (
-      <Label pointing prompt content={errors[this.props.fieldPath]}></Label>
+    return _get(errors, this.props.fieldPath, '') ? (
+      <Label
+        pointing
+        prompt
+        content={_get(errors, this.props.fieldPath, '')}
+      ></Label>
     ) : null;
   };
 
