@@ -1,6 +1,8 @@
 # Changes
 
-Version 0.4.0 (released 2020-12-08)
+Version 0.4.2 (released 2020-12-09)
+
+Version 0.4.1 (released 2020-12-08)
 
 Version 0.4.0 (released 2020-12-07)
 
