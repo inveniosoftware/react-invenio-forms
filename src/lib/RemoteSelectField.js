@@ -150,6 +150,10 @@ export class RemoteSelectField extends Component {
     return this.props.noResultsMessage;
   };
 
+  onClose = () => {
+    this.setState({ open: false });
+  };
+
   onBlur = () => {
     this.setState((prevState) => ({
       open: false,
@@ -202,6 +206,7 @@ export class RemoteSelectField extends Component {
         search
         lazyLoad
         open={this.state.open}
+        onClose={this.onClose}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onSearchChange={this.onSearchChange}
