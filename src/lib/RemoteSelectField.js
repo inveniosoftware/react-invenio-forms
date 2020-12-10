@@ -20,7 +20,7 @@ const DEFAULT_SUGGESTION_SIZE = 5;
 // Code is taken from MDN web docs
 const encodeQuery = (query) =>
   encodeURIComponent(query).replace(
-    /[!'()-~*]/g,
+    /[!'()*~-]/g,
     (char) => `%${char.charCodeAt(0).toString(16)}`
   );
 
