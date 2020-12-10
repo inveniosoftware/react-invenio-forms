@@ -32,14 +32,20 @@ const serializeSuggestions = (suggestions) =>
   }));
 
 export class RemoteSelectField extends Component {
-  state = {
-    isFetching: false,
-    suggestions: [],
-    selectedSuggestions: [],
-    error: false,
-    searchQuery: null,
-    open: false,
-  };
+  constructor(props) {
+    super(props);
+    const initialSuggestions = props.initialSuggestions
+      ? props.serializeSuggestions(props.initialSuggestions)
+      : [];
+    this.state = {
+      isFetching: false,
+      suggestions: initialSuggestions,
+      selectedSuggestions: initialSuggestions,
+      error: false,
+      searchQuery: null,
+      open: false,
+    };
+  }
 
   onSelectValue = (event, { options, value, ...rest }) => {
     const selectedSuggestions = options.filter((item) =>
@@ -178,6 +184,7 @@ export class RemoteSelectField extends Component {
       suggestionsErrorMessage,
       noQueryMessage,
       fetchedOptions,
+      initialSuggestions,
       ...uiProps
     } = this.props;
     const compProps = {
@@ -190,6 +197,7 @@ export class RemoteSelectField extends Component {
       suggestionsErrorMessage,
       noQueryMessage,
       fetchedOptions,
+      initialSuggestions,
     };
     return { compProps, uiProps };
   };
@@ -226,6 +234,7 @@ RemoteSelectField.propTypes = {
   suggestionAPIUrl: PropTypes.string.isRequired,
   suggestionAPIQueryParams: PropTypes.object,
   serializeSuggestions: PropTypes.func,
+  initialSuggestions: PropTypes.arrayOf(PropTypes.object),
   debounceTime: PropTypes.number,
   noResultsMessage: PropTypes.string,
   suggestionsErrorMessage: PropTypes.oneOfType([
