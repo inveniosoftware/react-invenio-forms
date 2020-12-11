@@ -141,6 +141,9 @@ export class RemoteSelectField extends Component {
   };
 
   getNoResultsMessage = () => {
+    if (this.state.isFetching) {
+      return this.props.loadingMessage;
+    }
     if (this.state.error) {
       return (
         <Message
@@ -181,6 +184,7 @@ export class RemoteSelectField extends Component {
       serializeSuggestions,
       debounceTime,
       noResultsMessage,
+      loadingMessage,
       suggestionsErrorMessage,
       noQueryMessage,
       fetchedOptions,
@@ -194,6 +198,7 @@ export class RemoteSelectField extends Component {
       serializeSuggestions,
       debounceTime,
       noResultsMessage,
+      loadingMessage,
       suggestionsErrorMessage,
       noQueryMessage,
       fetchedOptions,
@@ -237,6 +242,7 @@ RemoteSelectField.propTypes = {
   initialSuggestions: PropTypes.arrayOf(PropTypes.object),
   debounceTime: PropTypes.number,
   noResultsMessage: PropTypes.string,
+  loadingMessage: PropTypes.string,
   suggestionsErrorMessage: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
@@ -252,4 +258,5 @@ RemoteSelectField.defaultProps = {
   suggestionsErrorMessage: 'Something went wrong...',
   noQueryMessage: 'Search...',
   noResultsMessage: 'No results found.',
+  loadingMessage: 'Loading...',
 };
