@@ -20,3 +20,4 @@ export { TextAreaField } from './TextAreaField';
 export { ActionButton } from './ActionButton';
 export { RadioField } from './RadioField';
 export { RichInputField } from './RichInputField';
+export { ToggleField } from './ToggleField';
