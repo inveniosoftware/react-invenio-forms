@@ -10,19 +10,18 @@ import PropTypes from 'prop-types';
 import { FastField, Field, getIn } from 'formik';
 import { Form } from 'semantic-ui-react';
 
-
 export class TextField extends Component {
   renderFormField = (formikBag) => {
     const { fieldPath, optimized, error, ...uiProps } = this.props;
     return (
       <Form.Input
-          id={fieldPath}
-          name={fieldPath}
-          onChange={formikBag.form.handleChange}
-          onBlur={formikBag.form.handleBlur}
-          value={getIn(formikBag.form.values, fieldPath, '')}
-          error={error || getIn(formikBag.form.errors, fieldPath, null)}
-          {...uiProps}
+        id={fieldPath}
+        name={fieldPath}
+        onChange={formikBag.form.handleChange}
+        onBlur={formikBag.form.handleBlur}
+        value={getIn(formikBag.form.values, fieldPath, '')}
+        error={error || getIn(formikBag.form.errors, fieldPath, null)}
+        {...uiProps}
       />
     );
   };
@@ -43,6 +42,7 @@ export class TextField extends Component {
 TextField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
+  width: PropTypes.number,
 };
 
 TextField.defaultProps = {

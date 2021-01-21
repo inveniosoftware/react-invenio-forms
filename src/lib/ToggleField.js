@@ -1,11 +1,11 @@
 // This file is part of React-Invenio-Forms
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FastField, Field, getIn } from 'formik';
 import { RadioField } from './RadioField';
@@ -33,33 +33,30 @@ export class ToggleField extends Component {
       optimized,
       ...uiProps
     } = this.props;
-    const [checked, setChecked] = useState(
-      getIn(formikProps.form.values, fieldPath) === onValue
-    );
-    const handleChange = () => {
-      setChecked((prevChecked) => {
-        return !prevChecked;
-      });
-    };
 
-    useEffect(() => {
-      if (checked) {
-        formikProps.form.setFieldValue(fieldPath, onValue);
-      } else {
+    const isChecked = getIn(formikProps.form.values, fieldPath) === onValue;
+    const handleChange = ({ data }) => {
+      if (isChecked) {
         formikProps.form.setFieldValue(fieldPath, offValue);
+      } else {
+        formikProps.form.setFieldValue(fieldPath, onValue);
       }
       if (onChange) {
-        onChange({ checked });
+        onChange({ checked: !isChecked });
       }
-    }, [checked]);
+    };
 
     return (
       <RadioField
         {...uiProps}
         toggle
         fieldPath={fieldPath}
-        checked={checked}
-        label={checked ? onLabel : offLabel}
+        checked={getIn(formikProps.form.values, fieldPath) === onValue}
+        label={
+          getIn(formikProps.form.values, fieldPath) === onValue
+            ? onLabel
+            : offLabel
+        }
         onChange={handleChange}
       />
     );

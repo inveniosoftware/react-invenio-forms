@@ -7,7 +7,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FastField, Field } from 'formik';
+import { FastField, Field, getIn } from 'formik';
 import { Form } from 'semantic-ui-react';
 
 import { FieldLabel } from './FieldLabel';
@@ -15,7 +15,7 @@ import { FieldLabel } from './FieldLabel';
 export class RadioField extends Component {
   /** Radio Formik wrapper Component */
 
-  renderFormField = ({ field, form }) => {
+  renderFormField = (formikProps) => {
     /** Radio Formik + Semantic-UI Field Component
      *
      * NOTE: renderFormField is run multiple times
@@ -37,9 +37,12 @@ export class RadioField extends Component {
       ...uiProps
     } = this.props;
 
-    const handleChange = (e, { value }) => {
-      this.props.onChange(e, { value });
-      form.setFieldValue(fieldPath, value);
+    const handleChange = (event, data) => {
+      if (this.props.onChange) {
+        this.props.onChange({ event, data, formikProps });
+      } else {
+        formikProps.form.setFieldValue(fieldPath, value);
+      }
     };
 
     return (
@@ -48,7 +51,7 @@ export class RadioField extends Component {
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
-        value={value}
+        value={getIn(formikProps.form.values, fieldPath, '')}
         checked={checked}
         onChange={handleChange}
         {...uiProps}
