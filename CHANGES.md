@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.5.0 (released 2021-01-22)
+
+- Refactor `Accordion` component to use `Segment`
+
 Version 0.4.5 (released 2020-12-11)
 
 Version 0.4.4 (released 2020-12-10)
