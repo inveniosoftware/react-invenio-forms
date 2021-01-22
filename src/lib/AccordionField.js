@@ -7,8 +7,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'formik';
-import { Accordion, Form, Icon } from 'semantic-ui-react';
+import { Field, FastField } from 'formik';
+import { Container, Icon, Segment } from 'semantic-ui-react';
 
 export class AccordionField extends Component {
   constructor(props) {
@@ -48,24 +48,29 @@ export class AccordionField extends Component {
     const hasError = status ? this.hasError(status) : this.hasError(errors);
 
     return (
-      <Accordion fluid index={0}>
-        <Form.Field required={this.props.required}>
-          <Accordion.Title as="label" onClick={() => this.handleClick(active)}>
-            {hasError && <Icon color="red" name="exclamation triangle" />}
-            <label>{this.props.label}</label>
-            <span>{active ? this.iconActive : this.iconInactive}</span>
-          </Accordion.Title>
-          <Accordion.Content active={active}>
-            {active && this.props.children}
-          </Accordion.Content>
-        </Form.Field>
-      </Accordion>
+      <>
+        <Segment
+          onClick={() => this.handleClick(active)}
+          {...(hasError && { ...this.props.ui?.error })}
+          {...this.props.ui?.header}
+        >
+          <label>{this.props.label}</label>
+          <span>{active ? this.iconActive : this.iconInactive}</span>
+        </Segment>
+        <Container {...this.props.ui?.content}>
+          {active && this.props.children}
+        </Container>
+      </>
     );
   };
 
   render() {
+    const FormikField = this.props.optimized ? FastField : Field;
     return (
-      <Field name={this.props.fieldPath} component={this.renderAccordion} />
+      <FormikField
+        name={this.props.fieldPath}
+        component={this.renderAccordion}
+      />
     );
   }
 }
@@ -75,10 +80,20 @@ AccordionField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   required: PropTypes.bool,
+  ui: PropTypes.shape({
+    header: PropTypes.object,
+    content: PropTypes.object,
+    error: PropTypes.object,
+  }),
+  optimized: PropTypes.bool,
 };
 
 AccordionField.defaultProps = {
   active: false,
   label: '',
   required: false,
+  ui: {
+    error: { inverted: true, color: 'red', secondary: true },
+  },
+  optimized: false,
 };
