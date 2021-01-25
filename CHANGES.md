@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.5.2 (released 2021-01-25)
+
+* Revert right alignment in arrayField add button
+
 Version 0.5.1 (released 2021-01-25)
 
 * ArrayField add button
