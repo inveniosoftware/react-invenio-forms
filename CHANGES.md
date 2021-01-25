@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.5.1 (released 2021-01-25)
+
+* ArrayField add button
+  - Use default SUI color
+  - Right align
+
 Version 0.5.0 (released 2021-01-22)
 
 - Refactor `Accordion` component to use `Segment`
