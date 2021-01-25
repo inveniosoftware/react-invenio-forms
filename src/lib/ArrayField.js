@@ -65,8 +65,6 @@ export class ArrayField extends Component {
 
         <Form.Group>
           <Form.Button
-            width="16"
-            floated="right"
             icon
             type="button"
             onClick={() => arrayHelpers.push(defaultNewValue)}
