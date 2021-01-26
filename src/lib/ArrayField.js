@@ -34,6 +34,7 @@ export class ArrayField extends Component {
       fieldPath,
       label,
       labelIcon,
+      helpText,
       ...uiProps
     } = this.props;
 
@@ -63,9 +64,12 @@ export class ArrayField extends Component {
           );
         })}
 
+        <label className="helptext">
+          {helpText}
+        </label>
+
         <Form.Group>
           <Form.Button
-            icon
             type="button"
             onClick={() => arrayHelpers.push(defaultNewValue)}
           >
@@ -93,12 +97,14 @@ ArrayField.propTypes = {
   defaultNewValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
     .isRequired,
   fieldPath: PropTypes.string.isRequired,
+  helpText: PropTypes.string,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   labelIcon: PropTypes.string,
 };
 
 ArrayField.defaultProps = {
-  label: '',
   addButtonLabel: 'Add new row',
+  helpText: '',
+  label: '',
   placeholder: '',
 };
