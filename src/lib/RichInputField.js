@@ -39,16 +39,15 @@ export class RichInputField extends Component {
     const FormikField = this.props.optimized ? FastField : Field;
 
     return (
-      <div className="form-group">
-        <FormikField
-          id={this.props.fieldPath}
-          name={this.props.fieldPath}
-          component={this.renderFormField}
-        />
-      </div>
+      <FormikField
+        id={this.props.fieldPath}
+        name={this.props.fieldPath}
+        component={this.renderFormField}
+      />
     );
   }
 }
+
 RichInputField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
