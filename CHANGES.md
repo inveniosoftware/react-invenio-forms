@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.5.4 (released 2021-01-28)
+
+- Adds help text in ArrayField
+- Adds Toggle component
+
 Version 0.5.3 (released 2021-01-26)
 
 * Fixes TextField double form field layer
