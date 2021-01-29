@@ -102,6 +102,7 @@ export class RemoteSelectField extends Component {
       fetchedOptions,
       suggestionAPIUrl,
       suggestionAPIQueryParams,
+      suggestionAPIHeaders,
     } = this.props;
 
     // TODO: remove this part once backend will be implemented
@@ -128,7 +129,6 @@ export class RemoteSelectField extends Component {
         }, 100);
       });
     }
-
     return axios
       .get(suggestionAPIUrl, {
         params: {
@@ -136,6 +136,7 @@ export class RemoteSelectField extends Component {
           size: DEFAULT_SUGGESTION_SIZE,
           ...suggestionAPIQueryParams,
         },
+        headers: suggestionAPIHeaders,
       })
       .then((resp) => resp?.data?.hits?.hits);
   };
@@ -182,6 +183,7 @@ export class RemoteSelectField extends Component {
       suggestionAPIUrl,
       suggestionAPIQueryParams,
       serializeSuggestions,
+      suggestionAPIHeaders,
       debounceTime,
       noResultsMessage,
       loadingMessage,
@@ -195,6 +197,7 @@ export class RemoteSelectField extends Component {
       fieldPath,
       suggestionAPIUrl,
       suggestionAPIQueryParams,
+      suggestionAPIHeaders,
       serializeSuggestions,
       debounceTime,
       noResultsMessage,
@@ -238,6 +241,7 @@ RemoteSelectField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   suggestionAPIUrl: PropTypes.string.isRequired,
   suggestionAPIQueryParams: PropTypes.object,
+  suggestionAPIHeaders: PropTypes.object,
   serializeSuggestions: PropTypes.func,
   initialSuggestions: PropTypes.arrayOf(PropTypes.object),
   debounceTime: PropTypes.number,
@@ -254,6 +258,7 @@ RemoteSelectField.propTypes = {
 RemoteSelectField.defaultProps = {
   debounceTime: 500,
   suggestionAPIQueryParams: {},
+  suggestionAPIHeaders: {},
   serializeSuggestions: serializeSuggestions,
   suggestionsErrorMessage: 'Something went wrong...',
   noQueryMessage: 'Search...',
