@@ -1,5 +1,7 @@
 # Changes
 
+Version 0.6.0 (released 2021-02-03)
+
 Version 0.5.5 (released 2021-01-29)
 
 - Adds `suggestionAPIHeaders` into RemoteSelectField
