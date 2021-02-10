@@ -1,16 +1,20 @@
 # Changes
 
+Version 0.6.1 (released 2021-02-10)
+
+* Add `className` prop to FieldLabel component
+
 Version 0.6.0 (released 2021-02-03)
 
 Version 0.5.5 (released 2021-01-29)
 
-- Adds `suggestionAPIHeaders` into RemoteSelectField
-- Fixed RichInputField bottom margin
+* Adds `suggestionAPIHeaders` into RemoteSelectField
+* Fixed RichInputField bottom margin
 
 Version 0.5.4 (released 2021-01-28)
 
-- Adds help text in ArrayField
-- Adds Toggle component
+* Adds help text in ArrayField
+* Adds Toggle component
 
 Version 0.5.3 (released 2021-01-26)
 
