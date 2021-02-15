@@ -14,11 +14,9 @@ export class BaseForm extends Component {
   render() {
     const { formik } = this.props;
     return (
-      <Container>
-        <Formik onSubmit={this.props.onSubmit} {...formik}>
-          <Form>{this.props.children}</Form>
-        </Formik>
-      </Container>
+      <Formik onSubmit={this.props.onSubmit} {...formik}>
+        <Form>{this.props.children}</Form>
+      </Formik>
     );
   }
 }
