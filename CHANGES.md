@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.6.2 (released 2021-02-17)
+
+* Remove BaseForm Container
+
 Version 0.6.1 (released 2021-02-10)
 
 * Add `className` prop to FieldLabel component
