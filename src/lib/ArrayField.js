@@ -64,9 +64,7 @@ export class ArrayField extends Component {
           );
         })}
 
-        <label className="helptext">
-          {helpText}
-        </label>
+        <label className="helptext">{helpText}</label>
 
         <Form.Group>
           <Form.Button
@@ -97,7 +95,7 @@ ArrayField.propTypes = {
   defaultNewValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
     .isRequired,
   fieldPath: PropTypes.string.isRequired,
-  helpText: PropTypes.string,
+  helpText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   labelIcon: PropTypes.string,
 };

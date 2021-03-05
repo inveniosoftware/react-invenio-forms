@@ -16,18 +16,16 @@ export class TextField extends Component {
     const { fieldPath, optimized, error, helpText, ...uiProps } = this.props;
     return (
       <>
-      <Form.Input
-        id={fieldPath}
-        name={fieldPath}
-        onChange={formikBag.form.handleChange}
-        onBlur={formikBag.form.handleBlur}
-        value={getIn(formikBag.form.values, fieldPath, '')}
-        error={error || getIn(formikBag.form.errors, fieldPath, null)}
-        {...uiProps}
-      />
-        <label className="helptext">
-          {helpText}
-        </label>
+        <Form.Input
+          id={fieldPath}
+          name={fieldPath}
+          onChange={formikBag.form.handleChange}
+          onBlur={formikBag.form.handleBlur}
+          value={getIn(formikBag.form.values, fieldPath, '')}
+          error={error || getIn(formikBag.form.errors, fieldPath, null)}
+          {...uiProps}
+        />
+        <label className="helptext">{helpText}</label>
       </>
     );
   };
@@ -49,10 +47,10 @@ TextField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
   width: PropTypes.number,
-  helpText: PropTypes.string
+  helpText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 TextField.defaultProps = {
   optimized: false,
-  helpText: ''
+  helpText: '',
 };
