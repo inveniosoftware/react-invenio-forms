@@ -182,6 +182,7 @@ export class RemoteSelectField extends Component {
       noQueryMessage,
       fetchedOptions,
       initialSuggestions,
+      onChange,
       ...uiProps
     } = this.props;
     const compProps = {
@@ -221,6 +222,7 @@ export class RemoteSelectField extends Component {
         onChange={({ event, data, formikProps }) => {
           this.onSelectValue(event, data);
           formikProps.form.setFieldValue(compProps.fieldPath, data.value);
+          this.props.onChange(data, formikProps);
         }}
         loading={this.state.isFetching}
       />
@@ -244,6 +246,7 @@ RemoteSelectField.propTypes = {
   ]),
   noQueryMessage: PropTypes.string,
   fetchedOptions: PropTypes.array, //TODO: remove this after vocabularies implementation
+  onChange: PropTypes.func,
 };
 
 RemoteSelectField.defaultProps = {
@@ -255,4 +258,5 @@ RemoteSelectField.defaultProps = {
   noQueryMessage: 'Search...',
   noResultsMessage: 'No results found.',
   loadingMessage: 'Loading...',
+  onChange: () => {},
 };
