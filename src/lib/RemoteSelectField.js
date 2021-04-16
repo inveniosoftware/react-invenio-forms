@@ -123,7 +123,7 @@ export class RemoteSelectField extends Component {
     return axios
       .get(suggestionAPIUrl, {
         params: {
-          q: searchQuery,
+          suggest: searchQuery,
           size: DEFAULT_SUGGESTION_SIZE,
           ...suggestionAPIQueryParams,
         },
