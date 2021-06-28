@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -65,9 +65,10 @@ export class RemoteSelectField extends Component {
   };
 
   onSearchChange = _debounce(async (e, { searchQuery }) => {
-    this.setState({ isFetching: true, searchQuery });
+    const query = this.props.preSearchChange(searchQuery);
+    this.setState({ isFetching: true, searchQuery: query });
     try {
-      const suggestions = await this.fetchSuggestions(searchQuery);
+      const suggestions = await this.fetchSuggestions(query);
       const serializedSuggestions = this.props.serializeSuggestions(
         suggestions
       );
@@ -182,6 +183,7 @@ export class RemoteSelectField extends Component {
       noQueryMessage,
       fetchedOptions,
       initialSuggestions,
+      preSearchChange,
       ...uiProps
     } = this.props;
     const compProps = {
@@ -197,6 +199,7 @@ export class RemoteSelectField extends Component {
       noQueryMessage,
       fetchedOptions,
       initialSuggestions,
+      preSearchChange,
     };
     return { compProps, uiProps };
   };
@@ -244,6 +247,7 @@ RemoteSelectField.propTypes = {
   ]),
   noQueryMessage: PropTypes.string,
   fetchedOptions: PropTypes.array, //TODO: remove this after vocabularies implementation
+  preSearchChange: PropTypes.func  // Takes a string and returns a string
 };
 
 RemoteSelectField.defaultProps = {
@@ -255,4 +259,5 @@ RemoteSelectField.defaultProps = {
   noQueryMessage: 'Search...',
   noResultsMessage: 'No results found.',
   loadingMessage: 'Loading...',
+  preSearchChange: (x) => x
 };
