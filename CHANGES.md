@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.8.2 (released 2021-06-29)
+* Add preSearchChange prop on RemoteSelectField to
+  customize searchQuery sent to backend.
+
 Version 0.7.0 (released 2021-03-26)
 
 Version 0.6.2 (released 2021-02-17)
