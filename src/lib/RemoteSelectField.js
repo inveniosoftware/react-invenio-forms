@@ -38,30 +38,36 @@ export class RemoteSelectField extends Component {
     };
   }
 
-  onSelectValue = (event, { options, value, ...rest }) => {
+  onSelectValue = (event, { options, value }, callbackFunc) => {
     const selectedSuggestions = options.filter((item) =>
       value.includes(item.value)
     );
-    this.setState({
-      selectedSuggestions: selectedSuggestions,
-      searchQuery: null,
-      error: false,
-      open: this.props.multiple ? true : false,
-    });
+    this.setState(
+      {
+        selectedSuggestions: selectedSuggestions,
+        searchQuery: null,
+        error: false,
+        open: this.props.multiple ? true : false,
+      },
+      () => callbackFunc(this.state.selectedSuggestions)
+    );
   };
 
-  handleAddition = (e, { value }) => {
+  handleAddition = (e, { value }, callbackFunc) => {
     const selectedSuggestions = [
-      { text: value, value, key: value },
       ...this.state.selectedSuggestions,
+      { text: value, value, key: value, name: value },
     ];
-    this.setState((prevState) => ({
-      selectedSuggestions: selectedSuggestions,
-      suggestions: _uniqBy(
-        [...prevState.suggestions, ...selectedSuggestions],
-        'value'
-      ),
-    }));
+    this.setState(
+      (prevState) => ({
+        selectedSuggestions: selectedSuggestions,
+        suggestions: _uniqBy(
+          [...prevState.suggestions, ...selectedSuggestions],
+          'value'
+        ),
+      }),
+      () => callbackFunc(this.state.selectedSuggestions)
+    );
   };
 
   onSearchChange = _debounce(async (e, { searchQuery }) => {
@@ -69,9 +75,8 @@ export class RemoteSelectField extends Component {
     this.setState({ isFetching: true, searchQuery: query });
     try {
       const suggestions = await this.fetchSuggestions(query);
-      const serializedSuggestions = this.props.serializeSuggestions(
-        suggestions
-      );
+      const serializedSuggestions =
+        this.props.serializeSuggestions(suggestions);
       this.setState((prevState) => ({
         suggestions: _uniqBy(
           [...prevState.selectedSuggestions, ...serializedSuggestions],
@@ -184,6 +189,7 @@ export class RemoteSelectField extends Component {
       fetchedOptions,
       initialSuggestions,
       preSearchChange,
+      onValueChange,
       ...uiProps
     } = this.props;
     const compProps = {
@@ -200,6 +206,7 @@ export class RemoteSelectField extends Component {
       fetchedOptions,
       initialSuggestions,
       preSearchChange,
+      onValueChange,
     };
     return { compProps, uiProps };
   };
@@ -220,10 +227,27 @@ export class RemoteSelectField extends Component {
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onSearchChange={this.onSearchChange}
-        onAddItem={this.handleAddition}
+        onAddItem={({ event, data, formikProps }) => {
+          this.handleAddition(event, data, (selectedSuggestions) => {
+            if (compProps.onValueChange) {
+              compProps.onValueChange(
+                { event, data, formikProps },
+                selectedSuggestions
+              );
+            }
+          });
+        }}
         onChange={({ event, data, formikProps }) => {
-          this.onSelectValue(event, data);
-          formikProps.form.setFieldValue(compProps.fieldPath, data.value);
+          this.onSelectValue(event, data, (selectedSuggestions) => {
+            if (compProps.onValueChange) {
+              compProps.onValueChange(
+                { event, data, formikProps },
+                selectedSuggestions
+              );
+            } else {
+              formikProps.form.setFieldValue(compProps.fieldPath, data.value);
+            }
+          });
         }}
         loading={this.state.isFetching}
       />
@@ -247,7 +271,8 @@ RemoteSelectField.propTypes = {
   ]),
   noQueryMessage: PropTypes.string,
   fetchedOptions: PropTypes.array, //TODO: remove this after vocabularies implementation
-  preSearchChange: PropTypes.func  // Takes a string and returns a string
+  preSearchChange: PropTypes.func, // Takes a string and returns a string
+  onValueChange: PropTypes.func, // Takes the SUI hanf and updated selectedSuggestions
 };
 
 RemoteSelectField.defaultProps = {
@@ -259,5 +284,5 @@ RemoteSelectField.defaultProps = {
   noQueryMessage: 'Search...',
   noResultsMessage: 'No results found.',
   loadingMessage: 'Loading...',
-  preSearchChange: (x) => x
+  preSearchChange: (x) => x,
 };

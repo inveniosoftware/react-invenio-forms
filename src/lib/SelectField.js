@@ -48,6 +48,7 @@ export class SelectField extends Component {
       optimized,
       options,
       onChange,
+      onAddItem,
       ...uiProps
     } = this.props;
     const value = getIn(values, fieldPath, defaultValue);
@@ -65,6 +66,11 @@ export class SelectField extends Component {
             onChange({ event, data, formikProps });
           } else {
             setFieldValue(fieldPath, data.value);
+          }
+        }}
+        onAddItem={(event, data) => {
+          if (onAddItem) {
+            onAddItem({ event, data, formikProps });
           }
         }}
         options={options}
