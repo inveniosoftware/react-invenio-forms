@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.8.3 (released 2021-07-09)
+* Add onValueChange property in the RemoteSelectField
+
 Version 0.8.2 (released 2021-06-29)
 * Add preSearchChange prop on RemoteSelectField to
   customize searchQuery sent to backend.
