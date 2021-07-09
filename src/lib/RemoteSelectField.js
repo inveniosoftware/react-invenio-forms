@@ -54,15 +54,20 @@ export class RemoteSelectField extends Component {
   };
 
   handleAddition = (e, { value }, callbackFunc) => {
-    const selectedSuggestions = [
+    const selectedSuggestion = this.props.serializeAddedValue
+      ? this.props.serializeAddedValue(value)
+      : { text: value, value, key: value, name: value };
+
+    const newSelectedSuggestions = [
       ...this.state.selectedSuggestions,
-      { text: value, value, key: value, name: value },
+      selectedSuggestion,
     ];
+
     this.setState(
       (prevState) => ({
-        selectedSuggestions: selectedSuggestions,
+        selectedSuggestions: newSelectedSuggestions,
         suggestions: _uniqBy(
-          [...prevState.suggestions, ...selectedSuggestions],
+          [...prevState.suggestions, ...newSelectedSuggestions],
           'value'
         ),
       }),
@@ -180,6 +185,7 @@ export class RemoteSelectField extends Component {
       suggestionAPIUrl,
       suggestionAPIQueryParams,
       serializeSuggestions,
+      serializeAddedValue,
       suggestionAPIHeaders,
       debounceTime,
       noResultsMessage,
@@ -198,6 +204,7 @@ export class RemoteSelectField extends Component {
       suggestionAPIQueryParams,
       suggestionAPIHeaders,
       serializeSuggestions,
+      serializeAddedValue,
       debounceTime,
       noResultsMessage,
       loadingMessage,
@@ -261,6 +268,7 @@ RemoteSelectField.propTypes = {
   suggestionAPIQueryParams: PropTypes.object,
   suggestionAPIHeaders: PropTypes.object,
   serializeSuggestions: PropTypes.func,
+  serializeAddedValue: PropTypes.func,
   initialSuggestions: PropTypes.arrayOf(PropTypes.object),
   debounceTime: PropTypes.number,
   noResultsMessage: PropTypes.string,
