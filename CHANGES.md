@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.8.4 (released 2021-07-09)
+* Expose added value serialization in the RemoteSelectField
+
 Version 0.8.3 (released 2021-07-09)
 * Add onValueChange property in the RemoteSelectField
 
