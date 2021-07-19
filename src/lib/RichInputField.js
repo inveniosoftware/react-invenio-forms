@@ -15,11 +15,12 @@ import { ErrorLabel, FieldLabel } from 'react-invenio-forms';
 
 export class RichInputField extends Component {
   renderFormField = (formikBag) => {
-    const { fieldPath, label, editorConfig } = this.props;
+    const { editorConfig, fieldPath, label, required } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, '');
+    const error = getIn(formikBag.form.errors, fieldPath, false);
     return (
-      <Form.Field id={fieldPath}>
-        {<FieldLabel htmlFor={fieldPath} label={label}></FieldLabel>}
+      <Form.Field id={fieldPath} required={required} error={error}>
+        {React.isValidElement(label) ? label : <label htmlFor={fieldPath}>{label}</label>}
         <CKEditor
           editor={ClassicEditor}
           config={editorConfig}
