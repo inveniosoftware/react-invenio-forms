@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.8.6 (released 2021-07-20)
+* Improve RichInputField (error-able, require-able)
+
+Version 0.8.5 (released 2021-07-19)
+* Security bump of peerDependency axios to 0.21.1
+
 Version 0.8.4 (released 2021-07-09)
 * Expose added value serialization in the RemoteSelectField
 
