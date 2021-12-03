@@ -43,6 +43,7 @@ export class RemoteSelectField extends Component {
     const selectedSuggestions = options.filter((item) =>
       value.includes(item.value)
     );
+
     this.setState(
       {
         selectedSuggestions: selectedSuggestions,
@@ -81,17 +82,26 @@ export class RemoteSelectField extends Component {
     this.setState({ isFetching: true, searchQuery: query });
     try {
       const suggestions = await this.fetchSuggestions(query);
+
       const serializedSuggestions =
         this.props.serializeSuggestions(suggestions);
-      this.setState((prevState) => ({
-        suggestions: _uniqBy(
-          [...prevState.selectedSuggestions, ...serializedSuggestions],
-          'value'
-        ),
-        isFetching: false,
-        error: false,
-        open: true,
-      }));
+      this.setState((prevState) => {
+        console.log(
+          _uniqBy(
+            [...prevState.selectedSuggestions, ...serializedSuggestions],
+            'value'
+          )
+        );
+        return {
+          suggestions: _uniqBy(
+            [...prevState.selectedSuggestions, ...serializedSuggestions],
+            'value'
+          ),
+          isFetching: false,
+          error: false,
+          open: true,
+        };
+      });
     } catch (e) {
       this.setState({
         error: true,
@@ -140,7 +150,7 @@ export class RemoteSelectField extends Component {
           ...suggestionAPIQueryParams,
         },
         headers: suggestionAPIHeaders,
-        // There is a bug in axios that prevents brackets from being encoded, 
+        // There is a bug in axios that prevents brackets from being encoded,
         // remove the paramsSerializer when fixed.
         // https://github.com/axios/axios/issues/3316
         paramsSerializer: (params) => {
@@ -203,6 +213,7 @@ export class RemoteSelectField extends Component {
       initialSuggestions,
       preSearchChange,
       onValueChange,
+      search,
       ...uiProps
     } = this.props;
     const compProps = {
@@ -221,6 +232,7 @@ export class RemoteSelectField extends Component {
       initialSuggestions,
       preSearchChange,
       onValueChange,
+      search,
     };
     return { compProps, uiProps };
   };
@@ -234,7 +246,7 @@ export class RemoteSelectField extends Component {
         fieldPath={compProps.fieldPath}
         options={this.state.suggestions}
         noResultsMessage={this.getNoResultsMessage()}
-        search
+        search={compProps.search}
         lazyLoad
         open={this.state.open}
         onClose={this.onClose}
@@ -288,6 +300,7 @@ RemoteSelectField.propTypes = {
   fetchedOptions: PropTypes.array, //TODO: remove this after vocabularies implementation
   preSearchChange: PropTypes.func, // Takes a string and returns a string
   onValueChange: PropTypes.func, // Takes the SUI hanf and updated selectedSuggestions
+  search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
 };
 
 RemoteSelectField.defaultProps = {
@@ -300,4 +313,5 @@ RemoteSelectField.defaultProps = {
   noResultsMessage: 'No results found.',
   loadingMessage: 'Loading...',
   preSearchChange: (x) => x,
+  search: true,
 };
