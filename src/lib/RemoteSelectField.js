@@ -85,23 +85,15 @@ export class RemoteSelectField extends Component {
 
       const serializedSuggestions =
         this.props.serializeSuggestions(suggestions);
-      this.setState((prevState) => {
-        console.log(
-          _uniqBy(
-            [...prevState.selectedSuggestions, ...serializedSuggestions],
-            'value'
-          )
-        );
-        return {
-          suggestions: _uniqBy(
-            [...prevState.selectedSuggestions, ...serializedSuggestions],
-            'value'
-          ),
-          isFetching: false,
-          error: false,
-          open: true,
-        };
-      });
+      this.setState((prevState) => ({
+        suggestions: _uniqBy(
+          [...prevState.selectedSuggestions, ...serializedSuggestions],
+          'value'
+        ),
+        isFetching: false,
+        error: false,
+        open: true,
+      }));
     } catch (e) {
       this.setState({
         error: true,

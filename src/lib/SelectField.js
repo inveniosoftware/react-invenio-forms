@@ -60,7 +60,6 @@ export class SelectField extends Component {
     } = this.props;
     const value = getIn(values, fieldPath, defaultValue);
     const initialValue = getIn(initialValues, fieldPath, '');
-    console.log('Options', options);
     return (
       <Form.Dropdown
         fluid

@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.9.1 (released 2021-12-03)
+* Pass the `search` property down to RemoteSelectField
+
 Version 0.8.7 (released 2021-07-20)
 * Improve error display
 
