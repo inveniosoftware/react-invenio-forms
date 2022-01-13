@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Forms
 // Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -13,6 +13,14 @@ import { Form, Icon } from 'semantic-ui-react';
 import { FieldLabel } from './FieldLabel';
 
 export class ArrayField extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // Chosen because it will never cross with 0-indexed pre-existing keys.
+      nextKey: -1,
+    };
+  }
+
   hasGroupErrors = (errors) => {
     for (const field in errors) {
       if (field.startsWith(this.props.fieldPath)) {
@@ -46,10 +54,7 @@ export class ArrayField extends Component {
         {getIn(values, fieldPath, []).map((value, index, array) => {
           const arrayPath = fieldPath;
           const indexPath = index;
-          const key = `${arrayPath}.${indexPath}`;
-          // TODO: Revise what we pass to children to have a nice interface
-          // Passing: array, arrayHelpers, parentFieldPath, index and ...props
-          //          seems enough.
+          const key = value.__key || index;
           return (
             <div key={key}>
               {children({
@@ -69,7 +74,13 @@ export class ArrayField extends Component {
         <Form.Group>
           <Form.Button
             type="button"
-            onClick={() => arrayHelpers.push(defaultNewValue)}
+            onClick={() => {
+              arrayHelpers.push({
+                ...defaultNewValue,
+                __key: this.state.nextKey
+              });
+              this.setState((state) => ({ nextKey: state.nextKey - 1 }));
+            }}
           >
             <Icon name="add" />
             {addButtonLabel}
