@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.9.2 (released 2022-01-13)
+* ArrayField: Use injected `__key` as stable array item key.
+
 Version 0.9.1 (released 2021-12-03)
 * Pass the `search` property down to RemoteSelectField
 
