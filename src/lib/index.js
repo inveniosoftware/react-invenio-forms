@@ -6,6 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export { AccordionField } from './AccordionField';
+export { ActionButton } from './ActionButton';
 export { ArrayField } from './ArrayField';
 export { BaseForm } from './BaseForm';
 export { BooleanField } from './BooleanField';
@@ -13,11 +14,10 @@ export { ErrorLabel } from './ErrorLabel';
 export { ErrorMessage } from './ErrorMessage';
 export { FieldLabel } from './FieldLabel';
 export { GroupField } from './GroupField';
-export { SelectField } from './SelectField';
-export { RemoteSelectField } from './RemoteSelectField';
-export { TextField } from './TextField';
-export { TextAreaField } from './TextAreaField';
-export { ActionButton } from './ActionButton';
 export { RadioField } from './RadioField';
+export { RemoteSelectField } from './RemoteSelectField';
 export { RichInputField } from './RichInputField';
+export { SelectField } from './SelectField';
+export { TextAreaField } from './TextAreaField';
+export { TextField } from './TextField';
 export { ToggleField } from './ToggleField';

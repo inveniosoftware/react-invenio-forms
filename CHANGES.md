@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.9.3 (released 2022-11-02)
+* Upgrades semantic-ui-react.
+* Relax dependencies requirements patch versions.
+
 Version 0.9.2 (released 2022-01-13)
 * ArrayField: Use injected `__key` as stable array item key.
 
