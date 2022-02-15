@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import * as Yup from 'yup';
 import { Header, Message, Container } from 'semantic-ui-react';
 
-import { TextField, BaseForm } from '../lib/core';
+import { TextField, BaseForm } from '../lib/forms';
 
 const CurrentRecord = (props) => (
   <Message>
