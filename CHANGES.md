@@ -1,6 +1,14 @@
 # Changes
 
-Version 0.9.3 (released 2022-11-02)
+Version 0.9.4 (released 2022-02-17)
+* Restructring the library to 2 main subforlders:
+
+  `forms`: This is where all the formik aware components are living. These components can be used in forms where formik is used to build them.
+  `elements`: This is where all general-purpose reusable components are living. No context is assumed apart from react.
+
+  The purpose of this PR is to centralize common components in one library. The name of the library might change in the future due to its name specificity but this work is a step towards the direction of a common component repository.
+
+Version 0.9.3 (released 2022-02-11)
 * Upgrades semantic-ui-react.
 * Relax dependencies requirements patch versions.
 
