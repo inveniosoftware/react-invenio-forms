@@ -15,16 +15,15 @@ export class Image extends Component {
   render() {
     const { alt, src, fallbackSrc, className } = this.props;
     return (
-      <div className={className}>
-        <img
-          alt={alt}
-          src={src}
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = null; // prevents looping
-            currentTarget.src = fallbackSrc;
-          }}
-        />
-      </div>
+      <img
+        className={className}
+        alt={alt}
+        src={src}
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null; // prevents looping
+          currentTarget.src = fallbackSrc;
+        }}
+      />
     );
   }
 }
