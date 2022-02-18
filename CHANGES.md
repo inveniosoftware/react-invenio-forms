@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.9.5 (released 2022-02-18)
+* Remove div element from Image component
+
 Version 0.9.4 (released 2022-02-17)
 * Restructring the library to 2 main subforlders:
 
