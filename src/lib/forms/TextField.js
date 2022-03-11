@@ -6,9 +6,9 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Field, getIn } from 'formik';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
 
 export class TextField extends Component {
@@ -20,9 +20,9 @@ export class TextField extends Component {
     };
   }
 
-  handleChange = e => {
+  handleChange = newValue => {
     this.setState({
-      value: e.target.value,
+      value: newValue,
       valueUpdated: true,
     });
   };
@@ -30,29 +30,34 @@ export class TextField extends Component {
   renderFormField = formikBag => {
     const { fieldPath, error, helpText, ...uiProps } = this.props;
     const { value, valueUpdated } = this.state;
+
     const formikValue = getIn(formikBag.form.values, fieldPath, '');
+    const fieldValue = formikValue && !valueUpdated ? formikValue : value;
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, '');
+    const fieldHasErrors = getIn(formikBag.form.errors, fieldPath, null);
+    const fieldHasInitialErrors = getIn(formikBag.form.initialErrors, fieldPath, null);
 
     return (
       <>
         <Form.Input
           id={fieldPath}
           name={fieldPath}
-          onChange={this.handleChange}
+          onChange={e => this.handleChange(e.target.value)}
           onBlur={e => {
-            formikBag.form.setFieldValue(
-              fieldPath,
-              formikValue && !valueUpdated ? formikValue : value
-            );
-            formikBag.form.handleBlur(e);
+            formikBag.form.setFieldValue(fieldPath, fieldValue);
+            if (valueUpdated) {
+              // reset error onBlur because the value has been changed
+              formikBag.form.setFieldError(fieldPath, '');
+              formikBag.form.handleBlur(e);
+            }
           }}
-          value={formikValue && !valueUpdated ? formikValue : value}
+          value={fieldValue}
           error={
             error ||
-            (formikValue === value && getIn(formikBag.form.errors, fieldPath, null)) ||
+            (formikValue === value && fieldHasErrors) ||
             // We check if initialValue changed to display the initialError,
             // otherwise it would be displayed despite updating the field
-            (initialValue === value && getIn(formikBag.form.initialErrors, fieldPath, null))
+            (initialValue === value && fieldHasInitialErrors)
           }
           {...uiProps}
         />
