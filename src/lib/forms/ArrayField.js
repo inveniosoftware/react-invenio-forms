@@ -76,6 +76,9 @@ export class ArrayField extends Component {
         <Form.Group>
           <Form.Button
             type="button"
+            icon
+            className="align-self-end"
+            labelPosition="left"
             onClick={() => {
               arrayHelpers.push({
                 ...defaultNewValue,
