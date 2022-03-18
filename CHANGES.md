@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.10.2 (released 2022-03-18)
+* Image: replace img with SUI component
+* forms: refactor array button field theming
+
 Version 0.10.1 (released 2022-03-14)
 * TextField: resets form errors onBlur to remove any previous error.
 
