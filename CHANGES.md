@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.10.3 (released 2022-03-25)
+* Image: add default fallback
+* forms: refactor AccordionField
+
 Version 0.10.2 (released 2022-03-18)
 * Image: replace img with SUI component
 * forms: refactor array button field theming
