@@ -8,22 +8,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FastField } from 'formik';
-import { Container, Icon, Segment } from 'semantic-ui-react';
+import { Accordion, Container } from 'semantic-ui-react';
 
 export class AccordionField extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { active: props.active || false };
-  }
-
-  iconActive = (<Icon name="angle down" size="large" style={{ float: 'right' }} />);
-
-  iconInactive = (<Icon name="angle right" size="large" style={{ float: 'right' }} />);
-
-  handleClick = showContent => {
-    this.setState({ active: !showContent });
-  };
-
   hasError(errors) {
     const { fieldPath } = this.props;
     if (fieldPath in errors) {
@@ -41,22 +28,34 @@ export class AccordionField extends Component {
     const {
       form: { errors, status },
     } = props;
-    const { ui, label, children } = this.props;
-    const { active } = this.state;
+
+    // eslint-disable-next-line no-unused-vars
+    const { label, children, active, fieldPath, ...ui } = this.props;
+
     const hasError = status ? this.hasError(status) : this.hasError(errors);
+    const panels = [
+      {
+        key: `panel-${label}`,
+        title: {
+          content: label,
+          icon: 'angle right',
+        },
+        content: {
+          content: <Container>{children}</Container>,
+        },
+      },
+    ];
+
+    const errorClass = hasError ? 'error secondary' : '';
 
     return (
-      <>
-        <Segment
-          onClick={() => this.handleClick(active)}
-          {...(hasError && { ...ui?.error })}
-          {...ui?.header}
-        >
-          <label>{label}</label>
-          <span>{active ? this.iconActive : this.iconInactive}</span>
-        </Segment>
-        <Container {...ui?.content}>{active && children}</Container>
-      </>
+      <Accordion
+        defaultActiveIndex={active ? 0 : null}
+        panels={panels}
+        inverted
+        className={`invenio-accordion-field ${errorClass}`}
+        {...ui}
+      />
     );
   };
 
@@ -72,23 +71,15 @@ AccordionField.propTypes = {
   active: PropTypes.bool,
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
-  required: PropTypes.bool,
-  ui: PropTypes.shape({
-    header: PropTypes.object,
-    content: PropTypes.object,
-    error: PropTypes.object,
-  }),
   optimized: PropTypes.bool,
   children: PropTypes.node,
+  ui: PropTypes.object,
 };
 
 AccordionField.defaultProps = {
   active: false,
   label: '',
-  required: false,
-  ui: {
-    error: { inverted: true, color: 'red', secondary: true },
-  },
   optimized: false,
   children: null,
+  ui: null,
 };

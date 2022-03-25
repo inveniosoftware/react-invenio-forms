@@ -40,6 +40,7 @@ export class TextField extends Component {
     return (
       <>
         <Form.Input
+          className="invenio-text-input-field"
           id={fieldPath}
           name={fieldPath}
           onChange={e => this.handleChange(e.target.value)}

@@ -62,6 +62,7 @@ export class GroupField extends React.Component {
         name={fieldPath}
         component={this.renderFormField}
         fieldPath={fieldPath}
+        className="invenio-group-field"
         {...uiProps}
       />
     );

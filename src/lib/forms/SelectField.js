@@ -44,6 +44,7 @@ export class SelectField extends Component {
     return (
       <Form.Dropdown
         fluid
+        className="invenio-select-field"
         selection
         error={
           error ||

@@ -97,7 +97,13 @@ export class ArrayField extends Component {
 
   render() {
     const { fieldPath } = this.props;
-    return <FieldArray name={fieldPath} component={this.renderFormField} />;
+    return (
+      <FieldArray
+        className="invenio-array-field"
+        name={fieldPath}
+        component={this.renderFormField}
+      />
+    );
   }
 }
 

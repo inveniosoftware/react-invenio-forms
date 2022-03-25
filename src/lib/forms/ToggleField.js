@@ -40,6 +40,7 @@ export class ToggleField extends Component {
     return (
       <RadioField
         {...uiProps}
+        className="invenio-toggle-field"
         toggle
         fieldPath={fieldPath}
         checked={getIn(formikProps.form.values, fieldPath) === onValue}

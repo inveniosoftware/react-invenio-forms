@@ -43,6 +43,7 @@ export class RadioField extends Component {
         value={getIn(formikProps.form.values, fieldPath, '')}
         checked={checked}
         onChange={handleChange}
+        className="invenio-radio-field"
         {...uiProps}
       />
     );

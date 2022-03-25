@@ -18,7 +18,11 @@ export class ErrorMessage extends Component {
 
   render() {
     const { fieldPath } = this.props;
-    return <Field name={fieldPath}>{this.renderFormField}</Field>;
+    return (
+      <Field className="invenio-error-message-field" name={fieldPath}>
+        {this.renderFormField}
+      </Field>
+    );
   }
 }
 

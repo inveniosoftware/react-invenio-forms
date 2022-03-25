@@ -30,7 +30,7 @@ FieldLabel.propTypes = {
 };
 
 FieldLabel.defaultProps = {
-  className: 'field-label-class',
+  className: 'field-label-class invenio-field-label',
   icon: '',
   htmlFor: undefined,
   label: undefined,

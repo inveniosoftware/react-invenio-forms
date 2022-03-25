@@ -20,6 +20,7 @@ export class ActionButton extends Component {
             disabled={isDisabled ? isDisabled(formik) : false}
             name={name}
             content={content}
+            className="invenio-action-button"
             type="button"
             {...uiProps} // able to override above props
             onClick={e => onClick(e, formik)}

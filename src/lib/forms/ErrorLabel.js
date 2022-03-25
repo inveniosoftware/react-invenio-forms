@@ -20,7 +20,11 @@ export class ErrorLabel extends Component {
 
   render() {
     const { fieldPath } = this.props;
-    return <Field name={fieldPath}>{this.renderFormField}</Field>;
+    return (
+      <Field className="invenio-error-label-field" name={fieldPath}>
+        {this.renderFormField}
+      </Field>
+    );
   }
 }
 

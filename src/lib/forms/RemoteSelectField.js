@@ -242,6 +242,7 @@ export class RemoteSelectField extends Component {
           });
         }}
         loading={isFetching}
+        className="invenio-remote-select-field"
       />
     );
   }

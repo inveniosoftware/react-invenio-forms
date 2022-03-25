@@ -49,7 +49,13 @@ export class BooleanField extends Component {
   render() {
     const { optimized, fieldPath } = this.props;
     const FormikField = optimized ? FastField : Field;
-    return <FormikField name={fieldPath} component={this.renderFormField} />;
+    return (
+      <FormikField
+        className="invenio-boolean-field"
+        name={fieldPath}
+        component={this.renderFormField}
+      />
+    );
   }
 }
 

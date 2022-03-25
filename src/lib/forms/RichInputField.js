@@ -24,7 +24,12 @@ export class RichInputField extends Component {
       // otherwise it would be displayed despite updating the field
       (initialValue === value && getIn(formikBag.form.initialErrors, fieldPath, false));
     return (
-      <Form.Field id={fieldPath} required={required} error={error}>
+      <Form.Field
+        id={fieldPath}
+        required={required}
+        error={error}
+        className="invenio-rich-input-field"
+      >
         {React.isValidElement(label) ? label : <label htmlFor={fieldPath}>{label}</label>}
         <CKEditor
           editor={ClassicEditor}

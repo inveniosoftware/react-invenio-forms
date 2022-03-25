@@ -16,7 +16,7 @@ export class TextAreaField extends Component {
   renderFormField = formikBag => {
     const { fieldPath, ...uiProps } = this.props;
     return (
-      <Form.Field id={fieldPath}>
+      <Form.Field id={fieldPath} className="invenio-text-area-field">
         <Form.TextArea
           id={fieldPath}
           name={fieldPath}
