@@ -5,18 +5,22 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FastField, Field, getIn } from 'formik';
-import { Form } from 'semantic-ui-react';
-import isEmpty from 'lodash/isEmpty';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { FastField, Field, getIn } from "formik";
+import { Form } from "semantic-ui-react";
+import isEmpty from "lodash/isEmpty";
 
 export class SelectField extends Component {
-  renderError = (errors, name, value, direction = 'above') => {
+  renderError = (errors, name, value, direction = "above") => {
     const { options } = this.props;
     let error = null;
     if (!Array.isArray(value)) {
-      if (!isEmpty(options) && !options.find(o => o.value === value) && !isEmpty(value)) {
+      if (
+        !isEmpty(options) &&
+        !options.find((o) => o.value === value) &&
+        !isEmpty(value)
+      ) {
         error = `The current value "${value}" is invalid, please select another value.`;
       }
     }
@@ -32,15 +36,23 @@ export class SelectField extends Component {
       : null;
   };
 
-  renderFormField = formikProps => {
+  renderFormField = (formikProps) => {
     const {
       form: { values, setFieldValue, handleBlur, errors, initialErrors, initialValues },
       ...cmpProps
     } = formikProps;
-    const { defaultValue, error, fieldPath, label, options, onChange, onAddItem, ...uiProps } =
-      cmpProps;
+    const {
+      defaultValue,
+      error,
+      fieldPath,
+      label,
+      options,
+      onChange,
+      onAddItem,
+      ...uiProps
+    } = cmpProps;
     const value = getIn(values, fieldPath, defaultValue);
-    const initialValue = getIn(initialValues, fieldPath, '');
+    const initialValue = getIn(initialValues, fieldPath, "");
     return (
       <Form.Dropdown
         fluid
@@ -60,7 +72,7 @@ export class SelectField extends Component {
         onChange={(event, data) => {
           if (onChange) {
             onChange({ event, data, formikProps });
-            event.target.value = '';
+            event.target.value = "";
           } else {
             setFieldValue(fieldPath, data.value);
           }
@@ -103,10 +115,10 @@ SelectField.propTypes = {
 };
 
 SelectField.defaultProps = {
-  defaultValue: '',
+  defaultValue: "",
   optimized: false,
   error: undefined,
-  label: '',
+  label: "",
   onChange: undefined,
   onAddItem: undefined,
 };

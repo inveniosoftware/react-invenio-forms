@@ -5,15 +5,15 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FastField, Field, getIn } from 'formik';
-import { RadioField } from './RadioField';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { FastField, Field, getIn } from "formik";
+import { RadioField } from "./RadioField";
 
 export class ToggleField extends Component {
   /** Radio toggle Formik wrapper Component */
 
-  renderFormField = formikProps => {
+  renderFormField = (formikProps) => {
     /** Radio toggle Formik + Semantic-UI Field Component
      *
      * NOTE: renderFormField is run multiple times
@@ -23,7 +23,8 @@ export class ToggleField extends Component {
      * formikProps: current Formik props (ToggleField instance)
      */
 
-    const { onValue, offValue, onLabel, offLabel, fieldPath, onChange, ...uiProps } = this.props;
+    const { onValue, offValue, onLabel, offLabel, fieldPath, onChange, ...uiProps } =
+      this.props;
 
     const isChecked = getIn(formikProps.form.values, fieldPath) === onValue;
     const handleChange = () => {
@@ -44,7 +45,9 @@ export class ToggleField extends Component {
         toggle
         fieldPath={fieldPath}
         checked={getIn(formikProps.form.values, fieldPath) === onValue}
-        label={getIn(formikProps.form.values, fieldPath) === onValue ? onLabel : offLabel}
+        label={
+          getIn(formikProps.form.values, fieldPath) === onValue ? onLabel : offLabel
+        }
         onChange={handleChange}
       />
     );

@@ -27,7 +27,7 @@ jobs:
     - name: Install
       run: npm ci
 
-    - name: Run eslint
+    - name: Run linter
       run: npm run lint
 
     - name: Test

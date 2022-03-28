@@ -9,19 +9,19 @@
  * This folder contains reusable components that can be used a form.
  * The components are assuming that formik is used as a form creation library.
  */
-export { AccordionField } from './AccordionField';
-export { ArrayField } from './ArrayField';
-export { BaseForm } from './BaseForm';
-export { BooleanField } from './BooleanField';
-export { ErrorLabel } from './ErrorLabel';
-export { ErrorMessage } from './ErrorMessage';
-export { FieldLabel } from './FieldLabel';
-export { GroupField } from './GroupField';
-export { SelectField } from './SelectField';
-export { RemoteSelectField } from './RemoteSelectField';
-export { TextField } from './TextField';
-export { TextAreaField } from './TextAreaField';
-export { ActionButton } from './ActionButton';
-export { RadioField } from './RadioField';
-export { RichInputField } from './RichInputField';
-export { ToggleField } from './ToggleField';
+export { AccordionField } from "./AccordionField";
+export { ArrayField } from "./ArrayField";
+export { BaseForm } from "./BaseForm";
+export { BooleanField } from "./BooleanField";
+export { ErrorLabel } from "./ErrorLabel";
+export { ErrorMessage } from "./ErrorMessage";
+export { FieldLabel } from "./FieldLabel";
+export { GroupField } from "./GroupField";
+export { SelectField } from "./SelectField";
+export { RemoteSelectField } from "./RemoteSelectField";
+export { TextField } from "./TextField";
+export { TextAreaField } from "./TextAreaField";
+export { ActionButton } from "./ActionButton";
+export { RadioField } from "./RadioField";
+export { RichInputField } from "./RichInputField";
+export { ToggleField } from "./ToggleField";

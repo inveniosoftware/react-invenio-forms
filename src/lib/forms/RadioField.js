@@ -5,17 +5,16 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FastField, Field, getIn } from 'formik';
-import { Form } from 'semantic-ui-react';
-
-import { FieldLabel } from './FieldLabel';
+import { FastField, Field, getIn } from "formik";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Form } from "semantic-ui-react";
+import { FieldLabel } from "./FieldLabel";
 
 export class RadioField extends Component {
   /** Radio Formik wrapper Component */
 
-  renderFormField = formikProps => {
+  renderFormField = (formikProps) => {
     /** Radio Formik + Semantic-UI Field Component
      *
      * NOTE: renderFormField is run multiple times
@@ -26,7 +25,8 @@ export class RadioField extends Component {
      * form: current Formik form (holds formik state that drives the UI)
      */
 
-    const { checked, fieldPath, label, labelIcon, onChange, value, ...uiProps } = this.props;
+    const { checked, fieldPath, label, labelIcon, onChange, value, ...uiProps } =
+      this.props;
 
     const handleChange = (event, data) => {
       if (onChange) {
@@ -40,7 +40,7 @@ export class RadioField extends Component {
       <Form.Radio
         name={fieldPath}
         label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
-        value={getIn(formikProps.form.values, fieldPath, '')}
+        value={getIn(formikProps.form.values, fieldPath, "")}
         checked={checked}
         onChange={handleChange}
         className="invenio-radio-field"
@@ -69,9 +69,9 @@ RadioField.propTypes = {
 
 RadioField.defaultProps = {
   checked: false,
-  label: '',
+  label: "",
   optimized: false,
-  labelIcon: '',
+  labelIcon: "",
   onChange: undefined,
-  value: '',
+  value: "",
 };

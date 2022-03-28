@@ -5,10 +5,10 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Field } from 'formik';
-import { Button } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Field } from "formik";
+import { Button } from "semantic-ui-react";
 
 export class ActionButton extends Component {
   render() {
@@ -23,7 +23,7 @@ export class ActionButton extends Component {
             className="invenio-action-button"
             type="button"
             {...uiProps} // able to override above props
-            onClick={e => onClick(e, formik)}
+            onClick={(e) => onClick(e, formik)}
           >
             {children ? children(formik) : null}
           </Button>
@@ -42,8 +42,8 @@ ActionButton.propTypes = {
 };
 
 ActionButton.defaultProps = {
-  name: '',
-  content: '',
+  name: "",
+  content: "",
   isDisabled: undefined,
   children: undefined,
   onClick: undefined,

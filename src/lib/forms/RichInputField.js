@@ -5,19 +5,19 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import { FastField, Field, getIn } from 'formik';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
-import { ErrorLabel } from './ErrorLabel';
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import { FastField, Field, getIn } from "formik";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Form } from "semantic-ui-react";
+import { ErrorLabel } from "./ErrorLabel";
 
 export class RichInputField extends Component {
-  renderFormField = formikBag => {
+  renderFormField = (formikBag) => {
     const { editorConfig, fieldPath, label, required } = this.props;
-    const value = getIn(formikBag.form.values, fieldPath, '');
-    const initialValue = getIn(formikBag.form.initialValues, fieldPath, '');
+    const value = getIn(formikBag.form.values, fieldPath, "");
+    const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
     const error =
       getIn(formikBag.form.errors, fieldPath, false) ||
       // We check if initialValue changed to display the initialError,
@@ -30,7 +30,11 @@ export class RichInputField extends Component {
         error={error}
         className="invenio-rich-input-field"
       >
-        {React.isValidElement(label) ? label : <label htmlFor={fieldPath}>{label}</label>}
+        {React.isValidElement(label) ? (
+          label
+        ) : (
+          <label htmlFor={fieldPath}>{label}</label>
+        )}
         <CKEditor
           editor={ClassicEditor}
           config={editorConfig}
@@ -50,7 +54,9 @@ export class RichInputField extends Component {
 
     const FormikField = optimized ? FastField : Field;
 
-    return <FormikField id={fieldPath} name={fieldPath} component={this.renderFormField} />;
+    return (
+      <FormikField id={fieldPath} name={fieldPath} component={this.renderFormField} />
+    );
   }
 }
 
@@ -66,5 +72,5 @@ RichInputField.defaultProps = {
   optimized: false,
   editorConfig: {},
   required: false,
-  label: '',
+  label: "",
 };

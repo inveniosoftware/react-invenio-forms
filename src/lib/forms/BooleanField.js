@@ -5,13 +5,13 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FastField, Field, getIn } from 'formik';
-import { Form } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { FastField, Field, getIn } from "formik";
+import { Form } from "semantic-ui-react";
 
 export class BooleanField extends Component {
-  renderError(errors, name, direction = 'left') {
+  renderError(errors, name, direction = "left") {
     const error = errors[name];
     return error
       ? {
@@ -21,7 +21,7 @@ export class BooleanField extends Component {
       : null;
   }
 
-  renderFormField = props => {
+  renderFormField = (props) => {
     const { fieldPath, label, ...uiProps } = this.props;
     const {
       form: { values, handleBlur, errors, initialErrors, initialValues, setFieldValue },
@@ -66,6 +66,6 @@ BooleanField.propTypes = {
 };
 
 BooleanField.defaultProps = {
-  label: '',
+  label: "",
   optimized: false,
 };

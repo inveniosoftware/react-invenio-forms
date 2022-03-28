@@ -5,10 +5,10 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Field, FastField } from 'formik';
-import { Accordion, Container } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Field, FastField } from "formik";
+import { Accordion, Container } from "semantic-ui-react";
 
 export class AccordionField extends Component {
   hasError(errors) {
@@ -24,7 +24,7 @@ export class AccordionField extends Component {
     return false;
   }
 
-  renderAccordion = props => {
+  renderAccordion = (props) => {
     const {
       form: { errors, status },
     } = props;
@@ -38,7 +38,7 @@ export class AccordionField extends Component {
         key: `panel-${label}`,
         title: {
           content: label,
-          icon: 'angle right',
+          icon: "angle right",
         },
         content: {
           content: <Container>{children}</Container>,
@@ -46,7 +46,7 @@ export class AccordionField extends Component {
       },
     ];
 
-    const errorClass = hasError ? 'error secondary' : '';
+    const errorClass = hasError ? "error secondary" : "";
 
     return (
       <Accordion
@@ -78,7 +78,7 @@ AccordionField.propTypes = {
 
 AccordionField.defaultProps = {
   active: false,
-  label: '',
+  label: "",
   optimized: false,
   children: null,
   ui: null,

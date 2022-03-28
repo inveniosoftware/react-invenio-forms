@@ -4,9 +4,9 @@
 // Invenio RDM Records is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Image as SUIImage } from 'semantic-ui-react';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Image as SUIImage } from "semantic-ui-react";
 
 /**
  * Primary UI Image component providing a fallback url if src one is not
@@ -38,7 +38,7 @@ Image.propTypes = {
 };
 
 Image.defaultProps = {
-  className: '',
-  alt: 'No image found',
-  fallbackSrc: '/static/images/square-placeholder.png',
+  className: "",
+  alt: "No image found",
+  fallbackSrc: "/static/images/square-placeholder.png",
 };

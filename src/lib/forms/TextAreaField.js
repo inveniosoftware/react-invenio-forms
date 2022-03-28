@@ -5,15 +5,15 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FastField, Field, getIn } from 'formik';
-import { Form } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { FastField, Field, getIn } from "formik";
+import { Form } from "semantic-ui-react";
 
-import { ErrorLabel } from './ErrorLabel';
+import { ErrorLabel } from "./ErrorLabel";
 
 export class TextAreaField extends Component {
-  renderFormField = formikBag => {
+  renderFormField = (formikBag) => {
     const { fieldPath, ...uiProps } = this.props;
     return (
       <Form.Field id={fieldPath} className="invenio-text-area-field">
@@ -22,7 +22,7 @@ export class TextAreaField extends Component {
           name={fieldPath}
           onChange={formikBag.form.handleChange}
           onBlur={formikBag.form.handleBlur}
-          value={getIn(formikBag.form.values, fieldPath, '')}
+          value={getIn(formikBag.form.values, fieldPath, "")}
           {...uiProps}
         />
         <ErrorLabel fieldPath={fieldPath} />
@@ -35,7 +35,9 @@ export class TextAreaField extends Component {
 
     const FormikField = optimized ? FastField : Field;
 
-    return <FormikField id={fieldPath} name={fieldPath} component={this.renderFormField} />;
+    return (
+      <FormikField id={fieldPath} name={fieldPath} component={this.renderFormField} />
+    );
   }
 }
 

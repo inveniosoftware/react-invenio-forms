@@ -7,4 +7,4 @@
 /**
  * This folder contains general purpose reusable components.
  */
-export { Image } from './Image';
+export { Image } from "./Image";

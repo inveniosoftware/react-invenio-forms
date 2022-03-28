@@ -5,19 +5,19 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import _debounce from 'lodash/debounce';
-import _uniqBy from 'lodash/uniqBy';
-import axios from 'axios';
-import { Message } from 'semantic-ui-react';
-import { SelectField } from './SelectField';
-import queryString from 'query-string';
+import axios from "axios";
+import _debounce from "lodash/debounce";
+import _uniqBy from "lodash/uniqBy";
+import PropTypes from "prop-types";
+import queryString from "query-string";
+import React, { Component } from "react";
+import { Message } from "semantic-ui-react";
+import { SelectField } from "./SelectField";
 
 const DEFAULT_SUGGESTION_SIZE = 20;
 
-const serializeSuggestions = suggestions =>
-  suggestions.map(item => ({
+const serializeSuggestions = (suggestions) =>
+  suggestions.map((item) => ({
     text: item.title,
     value: item.id,
     key: item.id,
@@ -41,7 +41,7 @@ export class RemoteSelectField extends Component {
 
   onSelectValue = (event, { options, value }, callbackFunc) => {
     const { multiple } = this.props;
-    const newSelectedSuggestions = options.filter(item => value.includes(item.value));
+    const newSelectedSuggestions = options.filter((item) => value.includes(item.value));
 
     this.setState(
       {
@@ -64,9 +64,12 @@ export class RemoteSelectField extends Component {
     const newSelectedSuggestions = [...selectedSuggestions, selectedSuggestion];
 
     this.setState(
-      prevState => ({
+      (prevState) => ({
         selectedSuggestions: newSelectedSuggestions,
-        suggestions: _uniqBy([...prevState.suggestions, ...newSelectedSuggestions], 'value'),
+        suggestions: _uniqBy(
+          [...prevState.suggestions, ...newSelectedSuggestions],
+          "value"
+        ),
       }),
       () => callbackFunc(selectedSuggestions)
     );
@@ -80,8 +83,11 @@ export class RemoteSelectField extends Component {
       const suggestions = await this.fetchSuggestions(query);
 
       const serializedSuggestions = serializeSuggestions(suggestions);
-      this.setState(prevState => ({
-        suggestions: _uniqBy([...prevState.selectedSuggestions, ...serializedSuggestions], 'value'),
+      this.setState((prevState) => ({
+        suggestions: _uniqBy(
+          [...prevState.selectedSuggestions, ...serializedSuggestions],
+          "value"
+        ),
         isFetching: false,
         error: false,
         open: true,
@@ -92,11 +98,16 @@ export class RemoteSelectField extends Component {
         isFetching: false,
       });
     }
+    // eslint-disable-next-line react/destructuring-assignment
   }, this.props.debounceTime);
 
-  fetchSuggestions = async searchQuery => {
-    const { fetchedOptions, suggestionAPIUrl, suggestionAPIQueryParams, suggestionAPIHeaders } =
-      this.props;
+  fetchSuggestions = async (searchQuery) => {
+    const {
+      fetchedOptions,
+      suggestionAPIUrl,
+      suggestionAPIQueryParams,
+      suggestionAPIHeaders,
+    } = this.props;
 
     // TODO: remove this part once backend will be implemented
     // for Subjects and Affiliations components
@@ -104,13 +115,13 @@ export class RemoteSelectField extends Component {
       const response = {
         data: {
           hits: {
-            hits: fetchedOptions.filter(item =>
+            hits: fetchedOptions.filter((item) =>
               item.title.toLowerCase().includes(searchQuery.toLowerCase())
             ),
           },
         },
       };
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           resolve(response.data.hits.hits);
         }, 100);
@@ -127,16 +138,20 @@ export class RemoteSelectField extends Component {
         // There is a bug in axios that prevents brackets from being encoded,
         // remove the paramsSerializer when fixed.
         // https://github.com/axios/axios/issues/3316
-        paramsSerializer: params => {
-          return queryString.stringify(params, { arrayFormat: 'repeat' });
+        paramsSerializer: (params) => {
+          return queryString.stringify(params, { arrayFormat: "repeat" });
         },
       })
-      .then(resp => resp?.data?.hits?.hits);
+      .then((resp) => resp?.data?.hits?.hits);
   };
 
   getNoResultsMessage = () => {
-    const { loadingMessage, suggestionsErrorMessage, noQueryMessage, noResultsMessage } =
-      this.props;
+    const {
+      loadingMessage,
+      suggestionsErrorMessage,
+      noQueryMessage,
+      noResultsMessage,
+    } = this.props;
     const { isFetching, error, searchQuery } = this.state;
     if (isFetching) {
       return loadingMessage;
@@ -155,7 +170,7 @@ export class RemoteSelectField extends Component {
   };
 
   onBlur = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       open: false,
       error: false,
       searchQuery: null,
@@ -226,16 +241,22 @@ export class RemoteSelectField extends Component {
         onBlur={this.onBlur}
         onSearchChange={this.onSearchChange}
         onAddItem={({ event, data, formikProps }) => {
-          this.handleAddition(event, data, selectedSuggestions => {
+          this.handleAddition(event, data, (selectedSuggestions) => {
             if (compProps.onValueChange) {
-              compProps.onValueChange({ event, data, formikProps }, selectedSuggestions);
+              compProps.onValueChange(
+                { event, data, formikProps },
+                selectedSuggestions
+              );
             }
           });
         }}
         onChange={({ event, data, formikProps }) => {
-          this.onSelectValue(event, data, selectedSuggestions => {
+          this.onSelectValue(event, data, (selectedSuggestions) => {
             if (compProps.onValueChange) {
-              compProps.onValueChange({ event, data, formikProps }, selectedSuggestions);
+              compProps.onValueChange(
+                { event, data, formikProps },
+                selectedSuggestions
+              );
             } else {
               formikProps.form.setFieldValue(compProps.fieldPath, data.value);
             }
@@ -273,11 +294,11 @@ RemoteSelectField.defaultProps = {
   suggestionAPIQueryParams: {},
   suggestionAPIHeaders: {},
   serializeSuggestions: serializeSuggestions,
-  suggestionsErrorMessage: 'Something went wrong...',
-  noQueryMessage: 'Search...',
-  noResultsMessage: 'No results found.',
-  loadingMessage: 'Loading...',
-  preSearchChange: x => x,
+  suggestionsErrorMessage: "Something went wrong...",
+  noQueryMessage: "Search...",
+  noResultsMessage: "No results found.",
+  loadingMessage: "Loading...",
+  preSearchChange: (x) => x,
   search: true,
   multiple: false,
   serializeAddedValue: undefined,

@@ -5,12 +5,12 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { getIn, FieldArray } from 'formik';
-import { Form, Icon } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { getIn, FieldArray } from "formik";
+import { Form, Icon } from "semantic-ui-react";
 
-import { FieldLabel } from './FieldLabel';
+import { FieldLabel } from "./FieldLabel";
 
 export class ArrayField extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export class ArrayField extends Component {
     };
   }
 
-  hasGroupErrors = errors => {
+  hasGroupErrors = (errors) => {
     const { fieldPath } = this.props;
     for (const field in errors) {
       if (field.startsWith(fieldPath)) {
@@ -31,7 +31,7 @@ export class ArrayField extends Component {
     return false;
   };
 
-  renderFormField = props => {
+  renderFormField = (props) => {
     const {
       form: { values, errors },
       ...arrayHelpers
@@ -84,7 +84,7 @@ export class ArrayField extends Component {
                 ...defaultNewValue,
                 __key: nextKey,
               });
-              this.setState(state => ({ nextKey: state.nextKey - 1 }));
+              this.setState((state) => ({ nextKey: state.nextKey - 1 }));
             }}
           >
             <Icon name="add" />
@@ -118,8 +118,8 @@ ArrayField.propTypes = {
 };
 
 ArrayField.defaultProps = {
-  addButtonLabel: 'Add new row',
-  helpText: '',
-  label: '',
-  labelIcon: '',
+  addButtonLabel: "Add new row",
+  helpText: "",
+  label: "",
+  labelIcon: "",
 };
