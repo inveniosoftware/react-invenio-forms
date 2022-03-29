@@ -13,9 +13,9 @@ import _get from 'lodash/get';
 
 export class ErrorLabel extends Component {
   renderFormField = ({ form: { errors, initialErrors } }) => {
-    const { fieldPath } = this.props;
+    const { fieldPath, ...uiProps } = this.props;
     const error = _get(errors, fieldPath, '') || _get(initialErrors, fieldPath, '');
-    return error ? <Label pointing prompt content={error} /> : null;
+    return error ? <Label pointing prompt content={error} {...uiProps} /> : null;
   };
 
   render() {
