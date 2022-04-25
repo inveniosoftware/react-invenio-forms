@@ -15,7 +15,7 @@ import { ErrorLabel } from "./ErrorLabel";
 
 export class RichInputField extends Component {
   renderFormField = (formikBag) => {
-    const { editorConfig, fieldPath, label, required } = this.props;
+    const { editorConfig, fieldPath, label, required, className } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
     const error =
@@ -28,7 +28,7 @@ export class RichInputField extends Component {
         id={fieldPath}
         required={required}
         error={error}
-        className="invenio-rich-input-field"
+        className={className}
       >
         {React.isValidElement(label) ? (
           label
@@ -61,6 +61,7 @@ export class RichInputField extends Component {
 }
 
 RichInputField.propTypes = {
+  className: PropTypes.string,
   fieldPath: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
   editorConfig: PropTypes.object,
@@ -69,6 +70,7 @@ RichInputField.propTypes = {
 };
 
 RichInputField.defaultProps = {
+  className: "invenio-rich-input-field",
   optimized: false,
   editorConfig: {},
   required: false,
