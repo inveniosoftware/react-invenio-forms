@@ -62,7 +62,7 @@ export class TextField extends Component {
           }
           {...uiProps}
         />
-        <label className="helptext">{helpText}</label>
+        {helpText && <label className="helptext">{helpText}</label>}
       </>
     );
   };
