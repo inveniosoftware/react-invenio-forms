@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.10.6 (released 2022-04-12)
+* Accessibility improvements
+
 Version 0.10.5 (released 2022-04-12)
 * Adds a new cmp for a responsive sidebar
 
