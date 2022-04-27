@@ -12,13 +12,11 @@ import { Accordion, Container } from "semantic-ui-react";
 
 export class AccordionField extends Component {
   hasError(errors) {
-    const { fieldPath } = this.props;
-    if (fieldPath in errors) {
-      return true;
-    }
+    const { includesPaths } = this.props;
+
     for (const errorPath in errors) {
-      if (errorPath.startsWith(fieldPath)) {
-        return true;
+      for (const subPath in errors[errorPath]) {
+        if (includesPaths.includes(`${errorPath}.${subPath}`)) return true;
       }
     }
     return false;
@@ -30,7 +28,7 @@ export class AccordionField extends Component {
     } = props;
 
     // eslint-disable-next-line no-unused-vars
-    const { label, children, active, fieldPath, ...ui } = this.props;
+    const { label, children, active, ...ui } = this.props;
 
     const hasError = status ? this.hasError(status) : this.hasError(errors);
     const panels = [
@@ -60,16 +58,16 @@ export class AccordionField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath } = this.props;
+    const { optimized } = this.props;
 
     const FormikField = optimized ? FastField : Field;
-    return <FormikField name={fieldPath} component={this.renderAccordion} />;
+    return <FormikField name="" component={this.renderAccordion} />;
   }
 }
 
 AccordionField.propTypes = {
   active: PropTypes.bool,
-  fieldPath: PropTypes.string.isRequired,
+  includesPaths: PropTypes.array,
   label: PropTypes.string,
   optimized: PropTypes.bool,
   children: PropTypes.node,
@@ -78,6 +76,7 @@ AccordionField.propTypes = {
 
 AccordionField.defaultProps = {
   active: false,
+  includesPaths: [],
   label: "",
   optimized: false,
   children: null,
