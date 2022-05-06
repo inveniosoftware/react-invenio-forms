@@ -1,6 +1,11 @@
 # Changes
 
-Version 0.10.6 (released 2022-04-12)
+Version 0.10.7 (released 2022-05-06)
+* Improve `elements.Image` component to support loading and prioritizing fallbackSrc
+  image load first.
+* Fix AccordionField error state to dependend on children fieldPaths
+
+Version 0.10.6 (released 2022-04-26)
 * Accessibility improvements
 
 Version 0.10.5 (released 2022-04-12)
