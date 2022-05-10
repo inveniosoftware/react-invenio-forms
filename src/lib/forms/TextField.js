@@ -10,6 +10,7 @@ import { Field, getIn } from "formik";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Form } from "semantic-ui-react";
+import _omit from "lodash/omit";
 
 export class TextField extends Component {
   constructor(props) {
@@ -20,15 +21,20 @@ export class TextField extends Component {
     };
   }
 
-  handleChange = (newValue) => {
+  handleChange = (e) => {
+    let newValue = e.target.value;
+    const { onChange } = this.props;
     this.setState({
       value: newValue,
       valueUpdated: true,
     });
+
+    if (onChange) onChange(e);
   };
 
   renderFormField = (formikBag) => {
-    const { fieldPath, error, helpText, ...uiProps } = this.props;
+    const { fieldPath, error, helpText, ...ui } = this.props;
+    const uiProps = _omit({ ...ui }, ["onChange"]);
     const { value, valueUpdated } = this.state;
 
     const formikValue = getIn(formikBag.form.values, fieldPath, "");
@@ -43,7 +49,7 @@ export class TextField extends Component {
           className="invenio-text-input-field"
           id={fieldPath}
           name={fieldPath}
-          onChange={(e) => this.handleChange(e.target.value)}
+          onChange={this.handleChange}
           onBlur={(e) => {
             formikBag.form.setFieldValue(fieldPath, fieldValue);
             if (valueUpdated) {
@@ -82,9 +88,11 @@ TextField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   error: PropTypes.any,
   helpText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  onChange: PropTypes.func,
 };
 
 TextField.defaultProps = {
   error: undefined,
   helpText: "",
+  onChange: null,
 };
