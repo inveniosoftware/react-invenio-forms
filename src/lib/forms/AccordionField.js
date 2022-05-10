@@ -9,6 +9,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, FastField } from "formik";
 import { Accordion, Container } from "semantic-ui-react";
+import _omit from "lodash/omit";
 
 export class AccordionField extends Component {
   hasError(errors) {
@@ -29,6 +30,7 @@ export class AccordionField extends Component {
 
     // eslint-disable-next-line no-unused-vars
     const { label, children, active, ...ui } = this.props;
+    const uiProps = _omit({ ...ui }, ["optimized", "includesPaths"]);
 
     const hasError = status ? this.hasError(status) : this.hasError(errors);
     const panels = [
@@ -52,7 +54,7 @@ export class AccordionField extends Component {
         panels={panels}
         inverted
         className={`invenio-accordion-field ${errorClass}`}
-        {...ui}
+        {...uiProps}
       />
     );
   };
