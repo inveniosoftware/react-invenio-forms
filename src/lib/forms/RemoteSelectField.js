@@ -71,7 +71,7 @@ export class RemoteSelectField extends Component {
           "value"
         ),
       }),
-      () => callbackFunc(selectedSuggestions)
+      () => callbackFunc(newSelectedSuggestions)
     );
   };
 
