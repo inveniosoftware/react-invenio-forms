@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Form } from "semantic-ui-react";
 import { FieldLabel } from "./FieldLabel";
+import _omit from "lodash/omit";
 
 export class RadioField extends Component {
   /** Radio Formik wrapper Component */
@@ -25,8 +26,7 @@ export class RadioField extends Component {
      * form: current Formik form (holds formik state that drives the UI)
      */
 
-    const { checked, fieldPath, label, labelIcon, onChange, value, ...uiProps } =
-      this.props;
+    const { checked, fieldPath, label, labelIcon, onChange, value, ...ui } = this.props;
 
     const handleChange = (event, data) => {
       if (onChange) {
@@ -35,6 +35,8 @@ export class RadioField extends Component {
         formikProps.form.setFieldValue(fieldPath, value);
       }
     };
+
+    const uiProps = _omit(ui, ["optimized"]);
 
     return (
       <Form.Radio

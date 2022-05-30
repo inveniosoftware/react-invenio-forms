@@ -21,7 +21,6 @@ export { SelectField } from "./SelectField";
 export { RemoteSelectField } from "./RemoteSelectField";
 export { TextField } from "./TextField";
 export { TextAreaField } from "./TextAreaField";
-export { ActionButton } from "./ActionButton";
 export { RadioField } from "./RadioField";
 export { RichInputField } from "./RichInputField";
 export { ToggleField } from "./ToggleField";

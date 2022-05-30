@@ -282,7 +282,7 @@ RemoteSelectField.propTypes = {
   loadingMessage: PropTypes.string,
   suggestionsErrorMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   noQueryMessage: PropTypes.string,
-  fetchedOptions: PropTypes.array.isRequired, //TODO: remove this after vocabularies implementation
+  fetchedOptions: PropTypes.array, //TODO: remove this after vocabularies implementation
   preSearchChange: PropTypes.func, // Takes a string and returns a string
   onValueChange: PropTypes.func, // Takes the SUI hanf and updated selectedSuggestions
   search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
@@ -304,4 +304,5 @@ RemoteSelectField.defaultProps = {
   serializeAddedValue: undefined,
   initialSuggestions: [],
   onValueChange: undefined,
+  fetchedOptions: [],
 };
