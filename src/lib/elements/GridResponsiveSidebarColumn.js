@@ -5,11 +5,21 @@ import { Grid, Sidebar, Button, Segment } from "semantic-ui-react";
 export class GridResponsiveSidebarColumn extends React.Component {
   render() {
     const closeSidebarBtnRef = React.createRef();
-    const { width, open, onHideClick, children } = this.props;
+    const {
+      mobile,
+      tablet,
+      computer,
+      widescreen,
+      largeScreen,
+      width,
+      open,
+      onHideClick,
+      children,
+    } = this.props;
 
     return (
       <>
-        <Grid.Column width={width} only="mobile tablet">
+        <Grid.Column mobile={mobile} tablet={tablet} width={width} only="mobile tablet">
           <Sidebar
             as={Segment}
             animation="overlay"
@@ -33,7 +43,13 @@ export class GridResponsiveSidebarColumn extends React.Component {
           </Sidebar>
         </Grid.Column>
 
-        <Grid.Column width={width} only="computer">
+        <Grid.Column
+          width={width}
+          only="computer"
+          computer={computer}
+          largeScreen={largeScreen}
+          widescreen={widescreen}
+        >
           {children}
         </Grid.Column>
       </>
@@ -46,8 +62,18 @@ GridResponsiveSidebarColumn.propTypes = {
   open: PropTypes.bool.isRequired,
   onHideClick: PropTypes.func.isRequired,
   children: PropTypes.any.isRequired,
+  mobile: PropTypes.number,
+  tablet: PropTypes.number,
+  computer: PropTypes.number,
+  largeScreen: PropTypes.number,
+  widescreen: PropTypes.number,
 };
 
 GridResponsiveSidebarColumn.defaultProps = {
   width: 4,
+  mobile: undefined,
+  tablet: undefined,
+  computer: undefined,
+  widescreen: undefined,
+  largeScreen: undefined,
 };
