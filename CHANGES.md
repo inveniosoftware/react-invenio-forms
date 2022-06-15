@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.10.10 (released 2022-06-15)
+
+* Image: add fallback class name
+
 Version 0.10.9 (released 2022-06-08)
 
 * fix new element addition in RemoteSelectField
