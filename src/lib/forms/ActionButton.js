@@ -12,7 +12,7 @@ import { Button } from "semantic-ui-react";
 
 export class ActionButton extends Component {
   render() {
-    const { name, content, isDisabled, onClick, children, ...uiProps } = this.props;
+    const { name, content, isDisabled, onClick, children, isLoading, ...uiProps } = this.props;
     return (
       <Field>
         {({ form: formik }) => (
@@ -22,6 +22,7 @@ export class ActionButton extends Component {
             content={content}
             className="invenio-action-button"
             type="button"
+            loading={isLoading ? isLoading(formik) : false}
             {...uiProps} // able to override above props
             onClick={(e) => onClick(e, formik)}
           >
@@ -37,6 +38,7 @@ ActionButton.propTypes = {
   name: PropTypes.string,
   content: PropTypes.string,
   isDisabled: PropTypes.func,
+  isLoading: PropTypes.func,
   children: PropTypes.any,
   onClick: PropTypes.func,
 };
@@ -45,6 +47,7 @@ ActionButton.defaultProps = {
   name: "",
   content: "",
   isDisabled: undefined,
+  isLoading: undefined,
   children: undefined,
   onClick: undefined,
 };
