@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.10.12 (released 2022-07-12)
+
+* fields: remove mock data from RemoteSelectField
+
 Version 0.10.11 (released 2022-07-01)
 
 * Sidebar: introduce responsive props
