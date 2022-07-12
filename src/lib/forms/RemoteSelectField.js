@@ -48,7 +48,7 @@ export class RemoteSelectField extends Component {
         selectedSuggestions: newSelectedSuggestions,
         searchQuery: null,
         error: false,
-        open: multiple ? true : false,
+        open: !!multiple,
       },
       () => callbackFunc(newSelectedSuggestions)
     );
@@ -102,31 +102,9 @@ export class RemoteSelectField extends Component {
   }, this.props.debounceTime);
 
   fetchSuggestions = async (searchQuery) => {
-    const {
-      fetchedOptions,
-      suggestionAPIUrl,
-      suggestionAPIQueryParams,
-      suggestionAPIHeaders,
-    } = this.props;
+    const { suggestionAPIUrl, suggestionAPIQueryParams, suggestionAPIHeaders } =
+      this.props;
 
-    // TODO: remove this part once backend will be implemented
-    // for Subjects and Affiliations components
-    if (fetchedOptions) {
-      const response = {
-        data: {
-          hits: {
-            hits: fetchedOptions.filter((item) =>
-              item.title.toLowerCase().includes(searchQuery.toLowerCase())
-            ),
-          },
-        },
-      };
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(response.data.hits.hits);
-        }, 100);
-      });
-    }
     return axios
       .get(suggestionAPIUrl, {
         params: {
@@ -142,7 +120,9 @@ export class RemoteSelectField extends Component {
           return queryString.stringify(params, { arrayFormat: "repeat" });
         },
       })
-      .then((resp) => resp?.data?.hits?.hits);
+      .then((resp) => {
+        return resp?.data?.hits?.hits;
+      });
   };
 
   getNoResultsMessage = () => {
@@ -195,7 +175,6 @@ export class RemoteSelectField extends Component {
       loadingMessage,
       suggestionsErrorMessage,
       noQueryMessage,
-      fetchedOptions,
       initialSuggestions,
       preSearchChange,
       onValueChange,
@@ -214,7 +193,6 @@ export class RemoteSelectField extends Component {
       loadingMessage,
       suggestionsErrorMessage,
       noQueryMessage,
-      fetchedOptions,
       initialSuggestions,
       preSearchChange,
       onValueChange,
@@ -282,7 +260,6 @@ RemoteSelectField.propTypes = {
   loadingMessage: PropTypes.string,
   suggestionsErrorMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   noQueryMessage: PropTypes.string,
-  fetchedOptions: PropTypes.array, //TODO: remove this after vocabularies implementation
   preSearchChange: PropTypes.func, // Takes a string and returns a string
   onValueChange: PropTypes.func, // Takes the SUI hanf and updated selectedSuggestions
   search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
@@ -304,5 +281,4 @@ RemoteSelectField.defaultProps = {
   serializeAddedValue: undefined,
   initialSuggestions: [],
   onValueChange: undefined,
-  fetchedOptions: [],
 };
