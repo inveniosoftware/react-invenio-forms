@@ -70,7 +70,7 @@ GridResponsiveSidebarColumn.propTypes = {
 };
 
 GridResponsiveSidebarColumn.defaultProps = {
-  width: 4,
+  width: undefined,
   mobile: undefined,
   tablet: undefined,
   computer: undefined,
