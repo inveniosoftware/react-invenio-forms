@@ -14,7 +14,6 @@ import _omit from "lodash/omit";
 export class AccordionField extends Component {
   hasError(errors) {
     const { includesPaths } = this.props;
-
     for (const errorPath in errors) {
       for (const subPath in errors[errorPath]) {
         if (includesPaths.includes(`${errorPath}.${subPath}`)) return true;

@@ -24,3 +24,4 @@ export { TextAreaField } from "./TextAreaField";
 export { RadioField } from "./RadioField";
 export { RichInputField } from "./RichInputField";
 export { ToggleField } from "./ToggleField";
+export * from "./widgets";

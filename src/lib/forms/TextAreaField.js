@@ -13,16 +13,16 @@ import { Form } from "semantic-ui-react";
 import { ErrorLabel } from "./ErrorLabel";
 
 export class TextAreaField extends Component {
-  renderFormField = (formikBag) => {
-    const { fieldPath, ...uiProps } = this.props;
+  renderFormField = ({ form, ...cmpProps }) => {
+    const { fieldPath, ...uiProps } = cmpProps;
     return (
       <Form.Field id={fieldPath} className="invenio-text-area-field">
         <Form.TextArea
           id={fieldPath}
           name={fieldPath}
-          onChange={formikBag.form.handleChange}
-          onBlur={formikBag.form.handleBlur}
-          value={getIn(formikBag.form.values, fieldPath, "")}
+          onChange={form.handleChange}
+          onBlur={form.handleBlur}
+          value={getIn(form.values, fieldPath, "")}
           {...uiProps}
         />
         <ErrorLabel fieldPath={fieldPath} />
@@ -31,12 +31,18 @@ export class TextAreaField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath } = this.props;
+    const { optimized, fieldPath, ...props } = this.props;
 
     const FormikField = optimized ? FastField : Field;
 
     return (
-      <FormikField id={fieldPath} name={fieldPath} component={this.renderFormField} />
+      <FormikField
+        id={fieldPath}
+        name={fieldPath}
+        component={this.renderFormField}
+        fieldPath={fieldPath}
+        {...props}
+      />
     );
   }
 }

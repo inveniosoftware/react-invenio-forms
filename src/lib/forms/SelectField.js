@@ -106,7 +106,7 @@ export class SelectField extends Component {
 SelectField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   optimized: PropTypes.bool,
   error: PropTypes.any,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
