@@ -14,10 +14,15 @@ export class CustomFields extends Component {
   state = { sections: [] };
 
   componentDidMount() {
+    const { includesPaths, fieldPathPrefix } = this.props;
     // use of `Promise.then()` as eslint is giving an error when calling setState() directly
     // in the componentDidMount() method
     this.loadCustomFieldsWidgets()
       .then((sections) => {
+        sections = sections.map((sectionCfg) => {
+          const paths = includesPaths(sectionCfg.fields, fieldPathPrefix);
+          return { ...sectionCfg, paths };
+        });
         this.setState({ sections });
       })
       .catch((error) => {
@@ -43,16 +48,10 @@ export class CustomFields extends Component {
 
   render() {
     const { sections } = this.state;
-    const { includesPaths, fieldPathPrefix } = this.props;
     return (
       <>
-        {sections.map(({ section, fields }) => (
-          <AccordionField
-            key={section}
-            includesPaths={includesPaths(fields, fieldPathPrefix)}
-            label={section}
-            active
-          >
+        {sections.map(({ section, fields, paths }) => (
+          <AccordionField key={section} includesPaths={paths} label={section} active>
             {fields}
           </AccordionField>
         ))}
