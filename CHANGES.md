@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.10.15 (released 2022-09-01)
+
+- widgets: extract template loading as a prop. '@templates' is not working when
+  publishing the library as it should be injected from the user of the library.
+
 Version 0.10.13 (released 2022-09-01)
 
 - form: add widgets folder. It includes basic types components derived from the core
