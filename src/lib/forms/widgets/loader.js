@@ -8,13 +8,13 @@ import React from "react";
  * dynamic import cannot rely on purely a dynamic path i.e a variable.
  */
 export async function importWidget(
-  templatePath,
+  templateLoader,
   { ui_widget: UIWidget, fieldPath, props }
 ) {
   let component = null;
   try {
-    // First look into the prefixed path for the component i.e check if user defined them
-    const module = await import(`@templates/${templatePath}/${UIWidget}.js`);
+    // First try import widget from user's defined templateLoader
+    const module = await templateLoader(UIWidget);
     component = module.default ?? module[UIWidget];
   } catch (error) {
     try {
@@ -41,7 +41,7 @@ export async function importWidget(
  *
  * {
  *  fieldPathPrefix: "mynamespace" or empty,
- *  templatePath: "my_folder",
+ *  templateLoader: UIWidget => import(`my_folder/${UIWidget}.js`),
  *  fields: [{
  *    ui_widget: "MyWidget",
  *    field: "field_id",
@@ -61,7 +61,11 @@ export async function importWidget(
  * ]
  *
  */
-export async function loadWidgetsFromConfig({ templatePath, fieldPathPrefix, fields }) {
+export async function loadWidgetsFromConfig({
+  templateLoader,
+  fieldPathPrefix,
+  fields,
+}) {
   const importWidgetsFromFolder = (templateFolder, fieldPathPrefix, fieldsConfig) => {
     const tplPromises = [];
     fieldsConfig.forEach((fieldCfg) => {
@@ -76,6 +80,10 @@ export async function loadWidgetsFromConfig({ templatePath, fieldPathPrefix, fie
     });
     return Promise.all(tplPromises);
   };
-  const _fields = await importWidgetsFromFolder(templatePath, fieldPathPrefix, fields);
+  const _fields = await importWidgetsFromFolder(
+    templateLoader,
+    fieldPathPrefix,
+    fields
+  );
   return [..._fields];
 }
