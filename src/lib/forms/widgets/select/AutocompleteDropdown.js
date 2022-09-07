@@ -18,8 +18,8 @@ export default class AutocompleteDropdown extends Component {
       clearable,
       placeholder,
       multiple,
-      autocomleteFrom,
-      autocompleteFromAccepttHeader,
+      autocompleteFrom,
+      autocompleteFromAcceptHeader,
     } = this.props;
     return (
       <>
@@ -34,9 +34,9 @@ export default class AutocompleteDropdown extends Component {
                 multiple={multiple}
                 noQueryMessage={placeholder}
                 placeholder={placeholder}
-                suggestionAPIUrl={autocomleteFrom}
+                suggestionAPIUrl={autocompleteFrom}
                 suggestionAPIHeaders={{
-                  Accept: autocompleteFromAccepttHeader,
+                  Accept: autocompleteFromAcceptHeader,
                 }}
                 serializeSuggestions={(suggestions) => {
                   return _isArray(suggestions)
@@ -69,8 +69,8 @@ AutocompleteDropdown.propTypes = {
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  autocomleteFrom: PropTypes.string.isRequired,
-  autocompleteFromAccepttHeader: PropTypes.string,
+  autocompleteFrom: PropTypes.string.isRequired,
+  autocompleteFromAcceptHeader: PropTypes.string,
   icon: PropTypes.string,
   clearable: PropTypes.bool,
   multiple: PropTypes.bool,
@@ -79,7 +79,7 @@ AutocompleteDropdown.propTypes = {
 
 AutocompleteDropdown.defaultProps = {
   icon: undefined,
-  autocompleteFromAccepttHeader: "application/vnd.inveniordm.v1+json",
+  autocompleteFromAcceptHeader: "application/vnd.inveniordm.v1+json",
   clearable: false,
   multiple: false,
   required: false,

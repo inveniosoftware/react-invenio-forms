@@ -6,81 +6,39 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { Field, getIn } from "formik";
+import { Field } from "formik";
 import _omit from "lodash/omit";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Form } from "semantic-ui-react";
 
 export class TextField extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: "",
-      valueUpdated: false,
-    };
-  }
-
-  handleChange = (e) => {
-    const newValue = e.target.value;
-    const { onChange } = this.props;
-    this.setState({
-      value: newValue,
-      valueUpdated: true,
-    });
-
-    onChange && onChange(newValue);
-  };
-
-  renderFormField = (formikBag) => {
-    const { fieldPath, error, helpText, ...ui } = this.props;
+  render() {
+    const { fieldPath, error, helpText, disabled, label, ...ui } = this.props;
     const uiProps = _omit({ ...ui }, ["onChange"]);
-    const { value, valueUpdated } = this.state;
-
-    const formikValue = getIn(formikBag.form.values, fieldPath, "");
-    const fieldValue = formikValue && !valueUpdated ? formikValue : value;
-    const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
-    const fieldHasErrors = getIn(formikBag.form.errors, fieldPath, null);
-    const fieldHasInitialErrors = getIn(formikBag.form.initialErrors, fieldPath, null);
-
     return (
       <>
-        <Form.Input
+        <Field
           className="invenio-text-input-field"
           id={fieldPath}
           name={fieldPath}
-          onChange={this.handleChange}
-          onBlur={(e) => {
-            formikBag.form.setFieldValue(fieldPath, fieldValue);
-            if (valueUpdated) {
-              // reset error onBlur because the value has been changed
-              formikBag.form.setFieldError(fieldPath, "");
-              formikBag.form.handleBlur(e);
-            }
-          }}
-          value={fieldValue}
-          error={
-            error ||
-            (formikValue === value && fieldHasErrors) ||
-            // We check if initialValue changed to display the initialError,
-            // otherwise it would be displayed despite updating the field
-            (initialValue === value && fieldHasInitialErrors)
-          }
           {...uiProps}
-        />
+        >
+          {({ field, form: { touched, errors }, meta }) => {
+            return (
+              <Form.Input
+                {...field}
+                error={meta.touched && meta.error}
+                disabled={disabled}
+                fluid
+                label={label}
+              />
+            );
+          }}
+        </Field>
         {helpText && <label className="helptext">{helpText}</label>}
       </>
     );
-  };
-
-  render() {
-    /*
-     * TextField manages the value internally using the components
-     * state instead of formik's state to avoid slowness.
-     * Do not change to FastField or this won't work!
-     */
-    const { fieldPath } = this.props;
-    return <Field id={fieldPath} name={fieldPath} component={this.renderFormField} />;
   }
 }
 
@@ -89,10 +47,13 @@ TextField.propTypes = {
   error: PropTypes.any,
   helpText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  label: PropTypes.string.isRequired,
 };
 
 TextField.defaultProps = {
   error: undefined,
   helpText: "",
   onChange: null,
+  disabled: false,
 };

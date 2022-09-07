@@ -6,7 +6,8 @@ import { TextField } from "../../TextField";
 
 export default class Input extends Component {
   render() {
-    const { fieldPath, required, label, icon, placeholder, description } = this.props;
+    const { fieldPath, required, label, icon, placeholder, description, disabled } =
+      this.props;
 
     return (
       <TextField
@@ -14,6 +15,7 @@ export default class Input extends Component {
         fieldPath={fieldPath}
         required={required}
         helpText={description}
+        disabled={disabled}
         label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
         placeholder={placeholder}
       />
@@ -28,9 +30,11 @@ Input.propTypes = {
   description: PropTypes.string.isRequired,
   icon: PropTypes.string,
   required: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 Input.defaultProps = {
   icon: undefined,
   required: false,
+  disabled: false,
 };
