@@ -13,8 +13,16 @@ import { Form } from "semantic-ui-react";
 
 export class TextField extends Component {
   render() {
-    const { fieldPath, error, helpText, disabled, label, optimized, ...uiProps } =
-      this.props;
+    const {
+      fieldPath,
+      error,
+      helpText,
+      disabled,
+      label,
+      optimized,
+      required,
+      ...uiProps
+    } = this.props;
     const FormikField = optimized ? FastField : Field;
     return (
       <>
@@ -27,10 +35,11 @@ export class TextField extends Component {
             return (
               <Form.Input
                 {...field}
-                error={meta.touched && meta.error}
+                error={(meta.touched || required) && meta.error}
                 disabled={disabled}
                 fluid
                 label={label}
+                required={required}
                 {...uiProps}
               />
             );
@@ -49,6 +58,7 @@ TextField.propTypes = {
   disabled: PropTypes.bool,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   optimized: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 TextField.defaultProps = {
@@ -56,4 +66,5 @@ TextField.defaultProps = {
   helpText: "",
   disabled: false,
   optimized: false,
+  required: false,
 };
