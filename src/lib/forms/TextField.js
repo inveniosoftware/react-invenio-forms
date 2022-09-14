@@ -6,25 +6,24 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { Field } from "formik";
-import _omit from "lodash/omit";
+import { FastField, Field } from "formik";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Form } from "semantic-ui-react";
 
 export class TextField extends Component {
   render() {
-    const { fieldPath, error, helpText, disabled, label, ...ui } = this.props;
-    const uiProps = _omit({ ...ui }, ["onChange"]);
+    const { fieldPath, error, helpText, disabled, label, optimized, ...uiProps } =
+      this.props;
+    const FormikField = optimized ? FastField : Field;
     return (
       <>
-        <Field
+        <FormikField
           className="invenio-text-input-field"
           id={fieldPath}
           name={fieldPath}
-          {...uiProps}
         >
-          {({ field, form: { touched, errors }, meta }) => {
+          {({ field, meta }) => {
             return (
               <Form.Input
                 {...field}
@@ -32,10 +31,11 @@ export class TextField extends Component {
                 disabled={disabled}
                 fluid
                 label={label}
+                {...uiProps}
               />
             );
           }}
-        </Field>
+        </FormikField>
         {helpText && <label className="helptext">{helpText}</label>}
       </>
     );
@@ -46,14 +46,14 @@ TextField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   error: PropTypes.any,
   helpText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  onChange: PropTypes.func,
   disabled: PropTypes.bool,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  optimized: PropTypes.bool,
 };
 
 TextField.defaultProps = {
   error: undefined,
   helpText: "",
-  onChange: null,
   disabled: false,
+  optimized: false,
 };

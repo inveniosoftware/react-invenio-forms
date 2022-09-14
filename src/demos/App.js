@@ -90,8 +90,6 @@ class App extends Component {
           formik={{
             initialValues: this.initialValues,
             validationSchema: this.MyFormSchema,
-            // Custom validation function
-            // validate: this.validate,
           }}
         >
           <Header textAlign="center">My Form</Header>
