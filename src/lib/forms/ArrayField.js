@@ -46,7 +46,6 @@ export class ArrayField extends Component {
       helpText,
       ...uiProps
     } = this.props;
-
     const hasError = this.hasGroupErrors(errors) ? { error: {} } : {};
     const { nextKey } = this.state;
     return (

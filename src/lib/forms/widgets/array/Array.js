@@ -11,7 +11,6 @@ export default class Array extends Component {
       required,
       label,
       icon,
-      placeholder,
       description,
       disabled,
       children,
@@ -28,7 +27,6 @@ export default class Array extends Component {
         helpText={description}
         disabled={disabled}
         label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
-        placeholder={placeholder}
         addButtonLabel={addButtonLabel}
         defaultNewValue={defaultNewValue}
         className={className}
@@ -42,7 +40,6 @@ export default class Array extends Component {
 Array.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   icon: PropTypes.string,
   required: PropTypes.bool,
