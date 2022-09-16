@@ -36,7 +36,7 @@ export default function MultiInput({
         clearable
         optimized
         defaultValue={[]}
-        noResultsMessage={null} // hide the no results message
+        noResultsMessage={placeholder} // show the placeholder to instruct user how to add new values
         additionLabel={additionLabel}
         onChange={({ data, formikProps }) => {
           setOptions(serializeValues(data.value));
