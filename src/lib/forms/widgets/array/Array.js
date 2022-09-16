@@ -44,7 +44,7 @@ Array.propTypes = {
   icon: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.func.isRequired,
   addButtonLabel: PropTypes.string.isRequired,
   defaultNewValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   className: PropTypes.string,

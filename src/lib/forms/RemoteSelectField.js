@@ -254,10 +254,10 @@ RemoteSelectField.propTypes = {
   suggestionAPIHeaders: PropTypes.object,
   serializeSuggestions: PropTypes.func,
   serializeAddedValue: PropTypes.func,
-  initialSuggestions: PropTypes.oneOfType(
+  initialSuggestions: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.object),
-    PropTypes.object
-  ),
+    PropTypes.object,
+  ]),
   debounceTime: PropTypes.number,
   noResultsMessage: PropTypes.string,
   loadingMessage: PropTypes.string,
