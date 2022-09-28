@@ -6,7 +6,7 @@ import { TextAreaField } from "../../TextAreaField";
 
 export default class TextArea extends Component {
   render() {
-    const { fieldPath, required, label, icon, placeholder, description } = this.props;
+    const { fieldPath, required, label, icon, description } = this.props;
 
     return (
       <>
@@ -15,7 +15,6 @@ export default class TextArea extends Component {
           fieldPath={fieldPath}
           required={required}
           label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
-          placeholder={placeholder}
         />
         {description && <label className="helptext">{description}</label>}
       </>
@@ -26,7 +25,6 @@ export default class TextArea extends Component {
 TextArea.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   icon: PropTypes.string,
   required: PropTypes.bool,
