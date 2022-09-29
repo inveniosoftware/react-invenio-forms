@@ -35,7 +35,7 @@ export class TextField extends Component {
             return (
               <Form.Input
                 {...field}
-                error={(meta.touched || required) && meta.error}
+                error={meta.error}
                 disabled={disabled}
                 fluid
                 label={label}
