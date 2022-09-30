@@ -49,10 +49,12 @@ export class SelectField extends Component {
       options,
       onChange,
       onAddItem,
+      multiple,
       ...uiProps
     } = cmpProps;
-    const value = getIn(values, fieldPath, defaultValue);
-    const initialValue = getIn(initialValues, fieldPath, "");
+    const _defaultValue = multiple ? [] : "";
+    const value = getIn(values, fieldPath, defaultValue || _defaultValue);
+    const initialValue = getIn(initialValues, fieldPath, _defaultValue);
     return (
       <Form.Dropdown
         fluid
@@ -84,6 +86,7 @@ export class SelectField extends Component {
         }}
         options={options}
         value={value}
+        multiple={multiple}
         {...uiProps}
       />
     );
@@ -112,6 +115,7 @@ SelectField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   onChange: PropTypes.func,
   onAddItem: PropTypes.func,
+  multiple: PropTypes.bool,
 };
 
 SelectField.defaultProps = {
@@ -121,4 +125,5 @@ SelectField.defaultProps = {
   label: "",
   onChange: undefined,
   onAddItem: undefined,
+  multiple: false,
 };

@@ -6,8 +6,16 @@ import { TextField } from "../../TextField";
 
 export default class Input extends Component {
   render() {
-    const { fieldPath, required, label, icon, placeholder, description, disabled } =
-      this.props;
+    const {
+      fieldPath,
+      required,
+      label,
+      icon,
+      placeholder,
+      description,
+      disabled,
+      type,
+    } = this.props;
 
     return (
       <TextField
@@ -18,6 +26,7 @@ export default class Input extends Component {
         disabled={disabled}
         label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
         placeholder={placeholder}
+        type={type}
       />
     );
   }
@@ -31,10 +40,12 @@ Input.propTypes = {
   icon: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 Input.defaultProps = {
   icon: undefined,
   required: false,
   disabled: false,
+  type: "input",
 };
