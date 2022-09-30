@@ -7,9 +7,10 @@
 
 import PropTypes from "prop-types";
 import React from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Label } from "semantic-ui-react";
 import { FieldLabel } from "../../FieldLabel";
 import { RadioField } from "../../RadioField";
+
 import { useField } from "formik";
 
 export default function BooleanInput({
@@ -21,12 +22,11 @@ export default function BooleanInput({
   trueLabel,
   required,
 }) {
-  const [meta] = useField(fieldPath);
-  console.log(meta);
+  const [_, meta] = useField(fieldPath);
   return (
     <>
-      <Form.Group inline className="mb-0" required>
-        <Form.Field required={required} error={meta.error}>
+      <Form.Group inline className="mb-0">
+        <Form.Field required={required}>
           <FieldLabel htmlFor={fieldPath} icon={icon} label={label} />
         </Form.Field>
         <RadioField
@@ -43,6 +43,13 @@ export default function BooleanInput({
           value={false}
           optimized
         />
+        {meta.error && (
+          <Form.Field required={required} className="error">
+            <Label pointing="left" prompt>
+              {meta.error}
+            </Label>
+          </Form.Field>
+        )}
       </Form.Group>
       {description && <label className="helptext">{description}</label>}
     </>
