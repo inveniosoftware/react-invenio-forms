@@ -13,7 +13,7 @@ import { RadioField } from "../../RadioField";
 
 import { useField } from "formik";
 
-export default function BooleanInput({
+export default function BooleanCheckbox({
   description,
   icon,
   falseLabel,
@@ -56,7 +56,7 @@ export default function BooleanInput({
   );
 }
 
-BooleanInput.propTypes = {
+BooleanCheckbox.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   trueLabel: PropTypes.string.isRequired,
@@ -66,7 +66,7 @@ BooleanInput.propTypes = {
   required: PropTypes.bool,
 };
 
-BooleanInput.defaultProps = {
+BooleanCheckbox.defaultProps = {
   icon: undefined,
   required: false,
 };
