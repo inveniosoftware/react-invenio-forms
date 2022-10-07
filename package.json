@@ -34,8 +34,7 @@
     "lodash": "^4.17.0",
     "query-string": "^7.0.0",
     "semantic-ui-css": "^2.4.0",
-    "semantic-ui-react": "^2.1.0",
-    "yup": "^0.32.11"
+    "semantic-ui-react": "^2.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
@@ -70,7 +69,7 @@
     "rollup-plugin-url": "^3.0.0",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^2.1.0",
-    "yup": "^0.28.0"
+    "yup": "^0.32.11"
   },
   "author": {
     "name": "CERN",
