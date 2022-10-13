@@ -29,10 +29,10 @@
     "@semantic-ui-react/css-patch": "^1.0.0",
     "axios": "^0.21.0",
     "formik": "^2.1.0",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
     "lodash": "^4.17.0",
     "query-string": "^7.0.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^2.1.0"
   },
