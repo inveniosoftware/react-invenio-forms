@@ -1,5 +1,10 @@
 # Changes
 
+Version 1.0.0 (released 2022-10-24)
+
+- upgrade to node 18
+- align yup package version
+
 Version 0.10.15 (released 2022-09-01)
 
 - widgets: extract template loading as a prop. '@templates' is not working when
