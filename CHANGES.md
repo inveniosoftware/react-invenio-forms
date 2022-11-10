@@ -1,5 +1,9 @@
 # Changes
 
+Version 1.0.1 (released 2022-11-10)
+
+- add central axios config
+
 Version 1.0.0 (released 2022-10-24)
 
 - upgrade to node 18
