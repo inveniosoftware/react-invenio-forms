@@ -22,4 +22,14 @@ const baseAxiosConfiguration = {
   },
 };
 
+const v1JsonAxiosConfiguration = {
+  withCredentials: true,
+  xsrfCookieName: "csrftoken",
+  xsrfHeaderName: "X-CSRFToken",
+  headers: {
+    Accept: "application/vnd.inveniordm.v1+json",
+  },
+};
+
 export const http = axios.create(baseAxiosConfiguration);
+export const v1Jsonhttp = axios.create(v1JsonAxiosConfiguration);

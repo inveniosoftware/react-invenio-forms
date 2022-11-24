@@ -4,4 +4,4 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export { http } from "./connector";
+export { http, v1Jsonhttp } from "./connector";
