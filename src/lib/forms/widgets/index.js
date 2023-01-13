@@ -3,3 +3,4 @@ export * from "./loader";
 export * from "./select";
 export * from "./text";
 export * from "./array";
+export * from "./date";
