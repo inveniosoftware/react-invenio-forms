@@ -20,6 +20,7 @@ export class ArrayField extends Component {
     this.state = {
       // Chosen because it will never cross with 0-indexed pre-existing keys.
       nextKey: -1,
+      hasBeenShown: false,
     };
   }
 
@@ -41,10 +42,17 @@ export class ArrayField extends Component {
    */
   getValues = (values, fieldPath) => {
     const { requiredOptions, defaultNewValue, showEmptyValue } = this.props;
+    const { hasBeenShown } = this.state;
     const existingValues = getIn(values, fieldPath, []);
 
-    if (_isEmpty(requiredOptions) && _isEmpty(existingValues) && showEmptyValue) {
+    if (
+      !hasBeenShown &&
+      _isEmpty(requiredOptions) &&
+      _isEmpty(existingValues) &&
+      showEmptyValue
+    ) {
       existingValues.push({ __key: existingValues.length, ...defaultNewValue });
+      this.setState({ hasBeenShown: true });
     }
 
     for (const requiredOption of requiredOptions) {
