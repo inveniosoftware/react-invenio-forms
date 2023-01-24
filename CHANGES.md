@@ -1,5 +1,9 @@
 # Changes
 
+Version 1.1.1 (released 2023-01-24)
+
+- forms: fix ArrayField element remove button 
+
 Version 1.1.0 (released 2022-11-29)
 
 - add required options to array field
