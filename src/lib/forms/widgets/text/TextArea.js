@@ -6,7 +6,7 @@ import { TextAreaField } from "../../TextAreaField";
 
 export default class TextArea extends Component {
   render() {
-    const { fieldPath, required, label, icon, description } = this.props;
+    const { fieldPath, required, label, icon, description, rows } = this.props;
 
     return (
       <>
@@ -15,6 +15,7 @@ export default class TextArea extends Component {
           fieldPath={fieldPath}
           required={required}
           label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+          rows={rows}
         />
         {description && <label className="helptext">{description}</label>}
       </>
@@ -28,9 +29,11 @@ TextArea.propTypes = {
   description: PropTypes.string.isRequired,
   icon: PropTypes.string,
   required: PropTypes.bool,
+  rows: PropTypes.number,
 };
 
 TextArea.defaultProps = {
   icon: undefined,
   required: false,
+  rows: 3,
 };
