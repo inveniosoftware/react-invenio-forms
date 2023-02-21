@@ -8,30 +8,37 @@ import React from "react";
  * dynamic import cannot rely on purely a dynamic path i.e a variable.
  */
 export async function importWidget(
-  templateLoader,
+  templateLoaders,
   { ui_widget: UIWidget, fieldPath, props }
 ) {
-  let component = null;
-  try {
-    // First try import widget from user's defined templateLoader
-    const module = await templateLoader(UIWidget);
-    component = module.default ?? module[UIWidget];
-  } catch (error) {
+  let component = undefined;
+
+  // Try import widget from user's defined templateLoaders
+  for (const loader of templateLoaders) {
     try {
-      // If not then look into widgets folder for the component
-      const module = await import("./index");
+      const module = await loader(UIWidget);
       component = module.default ?? module[UIWidget];
+      // Component was found, stop looking.
+      if (component) {
+        break;
+      }
     } catch (error) {
-      console.error(`Failed to import default component ${UIWidget}.js`);
+      // If the component failed to load from a loader, try other loaders first.
+      continue;
     }
   }
-  if (component) {
-    return React.createElement(component, {
-      ...props,
-      key: fieldPath,
-      fieldPath: fieldPath,
-    });
+
+  // Loading failed, log it and throw an error.
+  if (component === undefined) {
+    console.error(`Failed to import default component ${UIWidget}.js`);
+    throw Error("Component not found in any loader");
   }
+
+  return React.createElement(component, {
+    ...props,
+    key: fieldPath,
+    fieldPath: fieldPath,
+  });
 }
 
 /**
@@ -62,7 +69,7 @@ export async function importWidget(
  *
  */
 export async function loadWidgetsFromConfig({
-  templateLoader,
+  templateLoaders,
   fieldPathPrefix,
   fields,
 }) {
@@ -81,7 +88,7 @@ export async function loadWidgetsFromConfig({
     return Promise.all(tplPromises);
   };
   const _fields = await importWidgetsFromFolder(
-    templateLoader,
+    templateLoaders,
     fieldPathPrefix,
     fields
   );

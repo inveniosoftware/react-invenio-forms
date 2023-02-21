@@ -31,13 +31,13 @@ export class CustomFields extends Component {
   }
 
   async loadCustomFieldsWidgets() {
-    const { config, fieldPathPrefix, templateLoader } = this.props;
+    const { config, fieldPathPrefix, templateLoaders } = this.props;
 
     const sections = [];
     for (const sectionCfg of config) {
       // Path to end user's folder defining custom fields ui widgets
       const fields = await loadWidgetsFromConfig({
-        templateLoader: templateLoader,
+        templateLoaders: templateLoaders,
         fieldPathPrefix: fieldPathPrefix,
         fields: sectionCfg.fields,
       });
@@ -73,7 +73,7 @@ CustomFields.propTypes = {
       ),
     })
   ).isRequired,
-  templateLoader: PropTypes.func.isRequired,
+  templateLoaders: PropTypes.array.isRequired,
   fieldPathPrefix: PropTypes.string.isRequired,
   includesPaths: PropTypes.func,
 };
