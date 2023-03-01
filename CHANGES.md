@@ -1,5 +1,9 @@
 # Changes
 
+Version 2.0.0 (released 2023-03-01)
+
+- add multiple folders to dynamic loader
+
 Version 1.1.2 (released 2023-02-15)
 
 - widgets: add rows prop to TextArea component
