@@ -5,3 +5,4 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export { http } from "./connector";
+export { withCancel } from "./withCancel";

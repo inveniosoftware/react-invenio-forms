@@ -8,3 +8,4 @@
 export * from "./elements";
 export * from "./forms";
 export * from "./api";
+export * from "./locale";

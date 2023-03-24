@@ -8,5 +8,4 @@
  * This folder contains general purpose reusable components.
  */
 export { Image } from "./Image";
-export { withCancel } from "./withCancel";
 export { GridResponsiveSidebarColumn } from "./GridResponsiveSidebarColumn";

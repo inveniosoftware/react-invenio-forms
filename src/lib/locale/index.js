@@ -1,0 +1,1 @@
+export { toRelativeTime } from "./RelativeTime";
