@@ -9,6 +9,34 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import _isEmpty from "lodash/isEmpty";
 
+const FieldErrorList = ({ fieldErrors }) => {
+  return (
+    <Message.List>
+      {fieldErrors.map((error) => {
+        return (
+          <Message.Item key={error}>
+            {/* when there is no field Marshmallow returns _schema */}
+            {error.field !== "_schema" && <strong>{error.field}: </strong>}
+            {error.messages.length === 1 ? (
+              error.messages[0]
+            ) : (
+              <Message.List>
+                {error.messages.map((message) => (
+                  <Message.Item key={message}>{message}</Message.Item>
+                ))}
+              </Message.List>
+            )}
+          </Message.Item>
+        );
+      })}
+    </Message.List>
+  );
+};
+
+FieldErrorList.propTypes = {
+  fieldErrors: PropTypes.array.isRequired,
+};
+
 /**
  * General component for error messages.
  * Handles:
@@ -20,38 +48,13 @@ export class ErrorMessage extends Component {
   render() {
     const { header, errors, content, icon, ...uiProps } = this.props;
 
-    const errorsList = () => {
-      return (
-        <Message.List>
-          {errors.map((error) => {
-            const errorMessages = error.messages;
-            return (
-              <Message.Item key={error}>
-                {/* when there is no field Marshmallow returns _schema */}
-                {error.field !== "_schema" && <strong>{error.field}: </strong>}
-                {errorMessages.length === 1 ? (
-                  errorMessages[0]
-                ) : (
-                  <Message.List>
-                    {errorMessages.map((message) => (
-                      <Message.Item key={message}>{message}</Message.Item>
-                    ))}
-                  </Message.List>
-                )}
-              </Message.Item>
-            );
-          })}
-        </Message.List>
-      );
-    };
-
     return (
       <Message icon {...uiProps}>
         {icon && <Icon name={icon} />}
         <Message.Content>
           {header && <Message.Header>{header}</Message.Header>}
           {content}
-          {!_isEmpty(errors) && errorsList()}
+          {!_isEmpty(errors) && <FieldErrorList fieldErrors={errors} />}
         </Message.Content>
       </Message>
     );
