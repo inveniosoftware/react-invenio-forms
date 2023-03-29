@@ -51,7 +51,7 @@ export class ErrorMessage extends Component {
     return (
       <Message icon {...uiProps}>
         {icon && <Icon name={icon} />}
-        <Message.Content>
+        <Message.Content role="alert">
           {header && <Message.Header>{header}</Message.Header>}
           {content}
           {!_isEmpty(errors) && <FieldErrorList fieldErrors={errors} />}
