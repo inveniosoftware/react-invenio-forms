@@ -7,6 +7,7 @@
 /**
  * This folder contains general purpose reusable components.
  */
+export * from "./accessibility";
 export { Image } from "./Image";
 export { GridResponsiveSidebarColumn } from "./GridResponsiveSidebarColumn";
 export { ErrorMessage } from "./ErrorMessage";
