@@ -16,8 +16,12 @@ const FieldErrorList = ({ fieldErrors }) => {
         return (
           <Message.Item key={error}>
             {/* when there is no field Marshmallow returns _schema */}
-            {error.field !== "_schema" && <strong>{error.field}: </strong>}
-            {error.messages.length === 1 ? (
+            {error.field && error.field !== "_schema" && (
+              <strong>{error.field}: </strong>
+            )}
+            {error.message ? (
+              error.message
+            ) : error.messages && error.messages.length === 1 ? (
               error.messages[0]
             ) : (
               <Message.List>
