@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.10.24 (released 2023-08-23)
+
+- upgrade "yup" dependency to be compatible with invenio-app-rdm v9
+- include all in-between fixes and updates
+
 Version 0.10.15 (released 2022-09-01)
 
 - widgets: extract template loading as a prop. '@templates' is not working when
