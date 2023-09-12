@@ -1,6 +1,10 @@
 # Changes
 
-Version 2.5.0 (released 2023-09-04)
+Version 2.6.0 (released 2023-09-12)
+
+- responsive sidebar: add aria-label prop
+
+- Version 2.5.0 (released 2023-09-04)
 
 - add RDM contrib components
 - package: fix 'browser' entry in dist/package.json
@@ -32,7 +36,7 @@ Version 1.1.2 (released 2023-02-15)
 
 Version 1.1.1 (released 2023-01-24)
 
-- forms: fix ArrayField element remove button 
+- forms: fix ArrayField element remove button
 
 Version 1.1.0 (released 2022-11-29)
 
