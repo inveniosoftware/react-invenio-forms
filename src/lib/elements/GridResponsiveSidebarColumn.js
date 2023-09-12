@@ -15,11 +15,19 @@ export class GridResponsiveSidebarColumn extends React.Component {
       open,
       onHideClick,
       children,
+      ariaLabel,
     } = this.props;
 
     return (
       <>
-        <Grid.Column mobile={mobile} tablet={tablet} width={width} only="mobile tablet">
+        <Grid.Column
+          as="aside"
+          aria-label={ariaLabel}
+          mobile={mobile}
+          tablet={tablet}
+          width={width}
+          only="mobile tablet"
+        >
           <Sidebar
             as={Segment}
             animation="overlay"
@@ -44,6 +52,8 @@ export class GridResponsiveSidebarColumn extends React.Component {
         </Grid.Column>
 
         <Grid.Column
+          as="aside"
+          aria-label={ariaLabel}
           width={width}
           only="computer"
           computer={computer}
@@ -67,6 +77,7 @@ GridResponsiveSidebarColumn.propTypes = {
   computer: PropTypes.number,
   largeScreen: PropTypes.number,
   widescreen: PropTypes.number,
+  ariaLabel: PropTypes.string,
 };
 
 GridResponsiveSidebarColumn.defaultProps = {
@@ -76,4 +87,5 @@ GridResponsiveSidebarColumn.defaultProps = {
   computer: undefined,
   widescreen: undefined,
   largeScreen: undefined,
+  ariaLabel: undefined,
 };
