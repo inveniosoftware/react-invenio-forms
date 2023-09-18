@@ -212,6 +212,9 @@ export class RemoteSelectField extends Component {
         options={suggestions}
         noResultsMessage={this.getNoResultsMessage()}
         search={compProps.search}
+        searchInput={{
+          id: compProps.fieldPath,
+        }}
         lazyLoad
         open={open}
         onClose={this.onClose}

@@ -110,13 +110,13 @@ export class ArrayField extends Component {
           );
         })}
 
-        <label className="helptext">{helpText}</label>
+      {helpText && <label className="helptext">{helpText}</label>}
 
         <Form.Group>
           <Form.Button
             type="button"
             icon
-            className="align-self-end"
+            className="align-self-end mt-15"
             labelPosition="left"
             onClick={() => {
               arrayHelpers.push({
@@ -140,6 +140,7 @@ export class ArrayField extends Component {
       <FieldArray
         className="invenio-array-field"
         name={fieldPath}
+        id={fieldPath}
         component={this.renderFormField}
       />
     );

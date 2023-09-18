@@ -67,8 +67,7 @@ export class SelectField extends Component {
           // otherwise it would be displayed despite updating the fieldu
           (initialValue === value && getIn(initialErrors, fieldPath, null))
         }
-        id={fieldPath}
-        label={{ children: label, htmlFor: fieldPath }}
+        label={{ children: label}}
         name={fieldPath}
         onBlur={handleBlur}
         onChange={(event, data) => {

@@ -32,8 +32,12 @@ export default class Dropdown extends Component {
           label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
           options={this.serializeOptions(options)}
           search={search}
+          aria-label={label}
           multiple={multiple}
-          placeholder={placeholder}
+          placeholder={{
+            role: "option",
+            content: placeholder,
+          }}
           clearable={clearable}
           required={required}
           optimized
