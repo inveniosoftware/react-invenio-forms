@@ -110,7 +110,7 @@ export class ArrayField extends Component {
           );
         })}
 
-      {helpText && <label className="helptext">{helpText}</label>}
+        {helpText && <label className="helptext">{helpText}</label>}
 
         <Form.Group>
           <Form.Button
