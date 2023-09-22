@@ -16,7 +16,7 @@ export class TextAreaField extends Component {
   renderFormField = ({ form, ...cmpProps }) => {
     const { fieldPath, ...uiProps } = cmpProps;
     return (
-      <Form.Field id={fieldPath} className="invenio-text-area-field">
+      <Form.Field className="invenio-text-area-field">
         <Form.TextArea
           id={fieldPath}
           name={fieldPath}
