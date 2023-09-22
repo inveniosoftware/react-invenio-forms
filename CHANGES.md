@@ -1,5 +1,9 @@
 # Changes
 
+Version 2.7.1 (released 2023-09-22)
+
+- a11y: remove duplicate field ids
+
 Version 2.7.0 (released 2023-09-21)
 
 - elements: add accessibility attributes
@@ -7,7 +11,7 @@ Version 2.7.0 (released 2023-09-21)
 
 Version 2.6.1 (released 2023-09-19)
 
-- forms: fix missing display of initial errors 
+- forms: fix missing display of initial errors
 
 Version 2.6.0 (released 2023-09-12)
 
