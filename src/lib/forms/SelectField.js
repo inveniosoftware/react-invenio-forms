@@ -86,6 +86,7 @@ export class SelectField extends Component {
         options={options}
         value={value}
         multiple={multiple}
+        selectOnBlur={false}
         {...uiProps}
       />
     );
