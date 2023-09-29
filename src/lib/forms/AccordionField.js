@@ -5,10 +5,10 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import { Field, FastField } from "formik";
-import { Accordion, Container } from "semantic-ui-react";
+import { Accordion, Container, Icon } from "semantic-ui-react";
 import _omit from "lodash/omit";
 import _get from "lodash/get";
 
@@ -44,7 +44,6 @@ export class AccordionField extends Component {
         key: `panel-${label}`,
         title: {
           content: label,
-          icon: "angle right",
         },
         content: {
           content: <Container>{children}</Container>,
@@ -53,15 +52,40 @@ export class AccordionField extends Component {
     ];
 
     const errorClass = hasError ? "error secondary" : "";
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const handleTitleClick = (e, { index }) => {
+      setActiveIndex(activeIndex === index ? -1 : index);
+    };
 
     return (
       <Accordion
-        defaultActiveIndex={active ? 0 : null}
-        panels={panels}
         inverted
         className={`invenio-accordion-field ${errorClass}`}
         {...uiProps}
-      />
+      >
+        {panels.map((panel, index) => (
+          <React.Fragment key={panel.key}>
+            <Accordion.Title
+              active={activeIndex === index}
+              index={index}
+              onClick={handleTitleClick}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleTitleClick(e, { index });
+                }
+              }}
+              tabIndex={0}
+            >
+              {panel.title.content}
+              <Icon name="angle right" />
+            </Accordion.Title>
+            <Accordion.Content active={activeIndex === index}>
+              {panel.content.content}
+            </Accordion.Content>
+          </React.Fragment>
+        ))}
+      </Accordion>
     );
   };
 
