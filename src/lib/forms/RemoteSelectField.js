@@ -179,6 +179,7 @@ export class RemoteSelectField extends Component {
       preSearchChange,
       onValueChange,
       search,
+      isFocused,
       ...uiProps
     } = this.props;
     const compProps = {
@@ -197,6 +198,7 @@ export class RemoteSelectField extends Component {
       preSearchChange,
       onValueChange,
       search,
+      isFocused,
     };
     return { compProps, uiProps };
   };
@@ -214,6 +216,7 @@ export class RemoteSelectField extends Component {
         search={compProps.search}
         searchInput={{
           id: compProps.fieldPath,
+          autoFocus: compProps.isFocused,
         }}
         lazyLoad
         open={open}
@@ -270,6 +273,7 @@ RemoteSelectField.propTypes = {
   onValueChange: PropTypes.func, // Takes the SUI hanf and updated selectedSuggestions
   search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   multiple: PropTypes.bool,
+  isFocused: PropTypes.bool,
 };
 
 RemoteSelectField.defaultProps = {
@@ -287,4 +291,5 @@ RemoteSelectField.defaultProps = {
   serializeAddedValue: undefined,
   initialSuggestions: [],
   onValueChange: undefined,
+  isFocused: false,
 };
