@@ -1,5 +1,11 @@
 # Changes
 
+Version 2.8.0 (released 2023-10-02)
+
+- ui: added toggle and keyboard focus for accordion
+- ui: adds focus prop to dropdown select
+- ui: prevents auto-selection of dropdown on focus
+
 Version 2.7.1 (released 2023-09-22)
 
 - a11y: remove duplicate field ids
