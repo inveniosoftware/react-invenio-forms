@@ -93,6 +93,7 @@ export class RemoteSelectField extends Component {
         open: true,
       }));
     } catch (e) {
+      console.error(e);
       this.setState({
         error: true,
         isFetching: false,
@@ -105,8 +106,8 @@ export class RemoteSelectField extends Component {
     const { suggestionAPIUrl, suggestionAPIQueryParams, suggestionAPIHeaders } =
       this.props;
 
-    return axios
-      .get(suggestionAPIUrl, {
+    try {
+      const response = await axios.get(suggestionAPIUrl, {
         params: {
           suggest: searchQuery,
           size: DEFAULT_SUGGESTION_SIZE,
@@ -116,13 +117,13 @@ export class RemoteSelectField extends Component {
         // There is a bug in axios that prevents brackets from being encoded,
         // remove the paramsSerializer when fixed.
         // https://github.com/axios/axios/issues/3316
-        paramsSerializer: (params) => {
-          return queryString.stringify(params, { arrayFormat: "repeat" });
-        },
-      })
-      .then((resp) => {
-        return resp?.data?.hits?.hits;
+        paramsSerializer: (params) =>
+          queryString.stringify(params, { arrayFormat: "repeat" }),
       });
+      return response?.data?.hits?.hits;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   getNoResultsMessage = () => {
