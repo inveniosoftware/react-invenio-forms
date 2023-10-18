@@ -6,7 +6,7 @@ import { Item, Label } from "semantic-ui-react";
 export class UserListItemCompact extends Component {
   render() {
     const { id, user, linkToDetailView } = this.props;
-    const name = user.profile.full_name || user.profile.email || user.profile.username;
+    const name = user.profile.full_name || user.username;
     return (
       <Item className="flex" key={id}>
         <Image src={user.links.avatar} avatar loadFallbackFirst />
