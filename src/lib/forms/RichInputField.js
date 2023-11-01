@@ -7,6 +7,7 @@
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-react";
+import { Bold, Code, Italic, Strikethrough,Underline } from '@ckeditor/ckeditor5-basic-styles';
 import { FastField, Field, getIn } from "formik";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
@@ -15,7 +16,13 @@ import { ErrorLabel } from "./ErrorLabel";
 
 export class RichInputField extends Component {
   renderFormField = (formikBag) => {
-    const { editorConfig, fieldPath, label, required, className } = this.props;
+    const { fieldPath, label, required, className } = this.props;
+    const editorConfig = {
+      plugins: [ Bold, Italic, Underline, Strikethrough, Code ],
+      toolbar: {
+          items: [ 'bold', 'italic', 'underline', 'strikethrough', 'code' ]
+      }
+    };
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
     const error =
