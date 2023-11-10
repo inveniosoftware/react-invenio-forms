@@ -51,11 +51,11 @@ export class ErrorMessage extends Component {
     return (
       <Message icon {...uiProps}>
         {icon && <Icon name={icon} />}
-        <Message.Content role="alert">
+        <div role="alert">
           {header && <Message.Header>{header}</Message.Header>}
-          {content}
+          <p>{content}</p>
           {!_isEmpty(errors) && <FieldErrorList fieldErrors={errors} />}
-        </Message.Content>
+        </div>
       </Message>
     );
   }
