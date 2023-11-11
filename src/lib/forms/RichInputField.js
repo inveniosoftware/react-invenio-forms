@@ -5,17 +5,16 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import CKEditor from "@ckeditor/ckeditor5-react";
 import { FastField, Field, getIn } from "formik";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Form } from "semantic-ui-react";
+import { RichEditor } from "./RichEditor";
 import { ErrorLabel } from "./ErrorLabel";
+import { Form } from "semantic-ui-react";
 
 export class RichInputField extends Component {
   renderFormField = (formikBag) => {
-    const { editorConfig, fieldPath, label, required, className } = this.props;
+    const { fieldPath, label, required, className, editor, editorConfig } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
     const error =
@@ -23,6 +22,7 @@ export class RichInputField extends Component {
       // We check if initialValue changed to display the initialError,
       // otherwise it would be displayed despite updating the field
       (initialValue === value && getIn(formikBag.form.initialErrors, fieldPath, false));
+
     return (
       <Form.Field
         id={fieldPath}
@@ -35,15 +35,19 @@ export class RichInputField extends Component {
         ) : (
           <label htmlFor={fieldPath}>{label}</label>
         )}
-        <CKEditor
-          editor={ClassicEditor}
-          config={editorConfig}
-          data={value}
-          onBlur={(event, editor) => {
-            formikBag.form.setFieldValue(fieldPath, editor.getData());
-            formikBag.form.setFieldTouched(fieldPath, true);
-          }}
-        />
+        {editor ? (
+          editor
+        ) : (
+          <RichEditor
+            value={value}
+            optimized
+            editorConfig={editorConfig}
+            onBlur={(event, editor) => {
+              formikBag.form.setFieldValue(fieldPath, editor.getContent());
+              formikBag.form.setFieldTouched(fieldPath, true);
+            }}
+          />
+        )}
         <ErrorLabel fieldPath={fieldPath} />
       </Form.Field>
     );
@@ -62,17 +66,19 @@ export class RichInputField extends Component {
 
 RichInputField.propTypes = {
   className: PropTypes.string,
+  editor: PropTypes.elementType,
   fieldPath: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
-  editorConfig: PropTypes.object,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   required: PropTypes.bool,
+  editorConfig: PropTypes.object,
 };
 
 RichInputField.defaultProps = {
   className: "invenio-rich-input-field",
   optimized: false,
-  editorConfig: {},
   required: false,
   label: "",
+  editor: undefined,
+  editorConfig: undefined,
 };
