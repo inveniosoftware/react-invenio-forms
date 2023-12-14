@@ -13,8 +13,11 @@ import "tinymce/icons/default";
 import "tinymce/plugins/table";
 import "tinymce/plugins/autoresize";
 import "tinymce/plugins/codesample";
+import "tinymce/plugins/code";
 import "tinymce/plugins/link";
 import "tinymce/plugins/lists";
+import "tinymce/plugins/charmap";
+import "tinymce/plugins/fullscreen";
 import PropTypes from "prop-types";
 
 export class RichEditor extends Component {
@@ -27,10 +30,20 @@ export class RichEditor extends Component {
       statusbar: false,
       min_height: minHeight,
       content_style: "body { font-size: 14px; }",
-      plugins: ["codesample", "link", "lists", "table", "autoresize"],
+      plugins: [
+        "codesample",
+        "link",
+        "lists",
+        "table",
+        "autoresize",
+        "code",
+        "charmap",
+        "fullscreen",
+      ],
       toolbar:
-        "blocks | bold italic link codesample blockquote table | bullist numlist | outdent indent | undo redo",
+        "blocks | bold italic subscript superscript strikethrough charmap | link codesample code blockquote table | bullist numlist | outdent indent | undo redo fullscreen",
       autoresize_bottom_margin: 20,
+
       block_formats: "Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3",
       table_advtab: false,
     };
