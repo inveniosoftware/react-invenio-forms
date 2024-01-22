@@ -28,6 +28,7 @@ export class RichEditor extends Component {
       min_height: minHeight,
       content_style: "body { font-size: 14px; }",
       plugins: ["codesample", "link", "lists", "table", "autoresize"],
+      contextmenu: false,
       toolbar:
         "blocks | bold italic link codesample blockquote table | bullist numlist | outdent indent | undo redo",
       autoresize_bottom_margin: 20,
