@@ -9,7 +9,7 @@ import React from "react";
  */
 export async function importWidget(
   templateLoaders,
-  { ui_widget: UIWidget, fieldPath, props }
+  { ui_widget: UIWidget, fieldPath, record, props }
 ) {
   let component = undefined;
 
@@ -36,6 +36,7 @@ export async function importWidget(
 
   return React.createElement(component, {
     ...props,
+    record: record,
     key: fieldPath,
     fieldPath: fieldPath,
   });
@@ -72,6 +73,7 @@ export async function loadWidgetsFromConfig({
   templateLoaders,
   fieldPathPrefix,
   fields,
+  record,
 }) {
   const importWidgetsFromFolder = (templateFolder, fieldPathPrefix, fieldsConfig) => {
     const tplPromises = [];
@@ -82,6 +84,7 @@ export async function loadWidgetsFromConfig({
           fieldPath: fieldPathPrefix
             ? `${fieldPathPrefix}.${fieldCfg.field}`
             : fieldCfg.field,
+          record,
         })
       );
     });
