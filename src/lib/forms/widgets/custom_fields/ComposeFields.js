@@ -11,6 +11,8 @@ export class ComposeFields extends Component {
     const { composeSections } = this.props;
 
     this.state = { sections: composeSections, tempFields: [] };
+    this.fieldsCfg = this.getFieldsConfig(composeSections);
+    this.sectionsList = composeSections.map((section) => section.section);
   }
 
   getFieldsConfig = (sectionCfg) => {
@@ -57,7 +59,9 @@ export class ComposeFields extends Component {
     const sectionToUpdate = this.getSectionOfField(field);
     for (const section of sections) {
       if (section.section === sectionToUpdate) {
-        section["fields"] = [...section.fields, field];
+        section["fields"] = [...section.fields, field].sort((a, b) =>
+          a.key.localeCompare(b.key)
+        );
       }
     }
     this.setState({ sections: [...sections], tempFields: [...prevTempFields, field] });
@@ -67,7 +71,6 @@ export class ComposeFields extends Component {
     const { templateLoaders, record } = this.props;
     const { sections } = this.state;
 
-    const fields = this.getFieldsConfig(sections);
     return (
       <AccordionField key="compose fields" label="Domain specific fields" active>
         {sections.map(({ fields, paths, ...sectionConfig }) => (
@@ -83,9 +86,10 @@ export class ComposeFields extends Component {
         ))}
         <Extensions
           fieldPath="custom_fields"
-          {...fields}
+          {...this.fieldsCfg}
           templateLoaders={templateLoaders}
           addFieldCallback={this.addFieldCallback}
+          sections={this.sectionsList}
           record={record}
         />
       </AccordionField>
