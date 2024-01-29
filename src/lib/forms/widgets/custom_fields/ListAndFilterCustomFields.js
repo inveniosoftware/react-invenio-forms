@@ -7,7 +7,6 @@ import {
   Input,
   Item,
   Label,
-  List,
   Modal,
   Segment,
 } from "semantic-ui-react";
@@ -16,39 +15,47 @@ export class ListAndFilterCustomFields extends Component {
   constructor(props) {
     super(props);
     const { fieldsList } = props;
-    this.state = { filteredFieldsList: fieldsList };
+    this.state = {
+      filteredFieldsList: fieldsList,
+      searchPhrase: undefined,
+      filter: undefined,
+    };
   }
 
   resetFilter = () => {
     const { fieldsList } = this.props;
     this.setState({ filteredFieldsList: fieldsList });
   };
-  handleSearch = (e, { value }) => {
-    const { fieldsList } = this.props;
-    if (value) {
-      const filteredResults = Object.fromEntries(
-        Object.entries(fieldsList).filter(([key, val]) => {
-          return val.label.toLowerCase().includes(value.toLowerCase());
-        })
-      );
 
-      this.setState({ filteredFieldsList: filteredResults });
-    } else {
+  filter = () => {
+    const { fieldsList } = this.props;
+    const { searchPhrase, filter } = this.state;
+    if (!searchPhrase && !filter) {
       this.resetFilter();
     }
+    const filteredResults = Object.fromEntries(
+      Object.entries(fieldsList).filter(([key, val]) => {
+        if (filter && searchPhrase) {
+          return (
+            val.section.section === filter &&
+            val.label.toLowerCase().includes(searchPhrase.toLowerCase())
+          );
+        } else if (filter) {
+          return val.section.section === filter;
+        } else if (searchPhrase) {
+          return val.label.toLowerCase().includes(searchPhrase.toLowerCase());
+        }
+      })
+    );
+    this.setState({ filteredFieldsList: filteredResults });
+  };
+
+  handleSearch = (e, { value }) => {
+    this.setState({ searchPhrase: value }, () => this.filter());
   };
 
   handleDomainFilter = (e, { value }) => {
-    const { fieldsList } = this.props;
-    if (value) {
-      const filteredResults = Object.fromEntries(
-        Object.entries(fieldsList).filter(([key, val]) => val.section.section === value)
-      );
-
-      this.setState({ filteredFieldsList: filteredResults });
-    } else {
-      this.resetFilter();
-    }
+    this.setState({ filter: value }, () => this.filter());
   };
 
   render() {
@@ -59,7 +66,6 @@ export class ListAndFilterCustomFields extends Component {
       text: section,
       value: section,
     }));
-
     return (
       <>
         <Segment as={Modal.Content} attached="bottom ml-0">
@@ -68,7 +74,7 @@ export class ListAndFilterCustomFields extends Component {
               <Input
                 fluid
                 icon="search"
-                placeholder="Search..."
+                placeholder="Search field names..."
                 onChange={this.handleSearch}
               />
             </Grid.Column>
@@ -94,9 +100,7 @@ export class ListAndFilterCustomFields extends Component {
             {Object.entries(filteredFieldsList).map(([key, value]) => {
               const names = key.split(":");
 
-              const isDisabled = alreadyAddedFields
-                .map((field) => field.key)
-                .includes(`${fieldPath}.${key}`);
+              const isDisabled = alreadyAddedFields.includes(`${fieldPath}.${key}`);
 
               return (
                 <Item
@@ -110,7 +114,14 @@ export class ListAndFilterCustomFields extends Component {
                 >
                   <Item.Content>
                     <Item.Header className={isDisabled ? "text-muted mb-5" : "mb-5"}>
-                      {value.label}
+                      <>
+                        {value.label}{" "}
+                        {isDisabled && (
+                          <span className="right-floated">
+                            <Icon name="checkmark" color="green" /> <span> Added</span>
+                          </span>
+                        )}
+                      </>
                     </Item.Header>
                     <Item.Description>
                       <Grid>

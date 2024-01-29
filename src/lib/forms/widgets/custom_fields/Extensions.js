@@ -16,13 +16,17 @@ import PropTypes from "prop-types";
 export class Extensions extends Component {
   constructor(props) {
     super(props);
+    const { existingFields } = props;
     this.state = {
       modalOpen: false,
       selectedField: undefined,
       selectedFieldTarget: undefined,
-      fields: [],
+      addFields: [],
+      existingFields: [...existingFields],
+      loading: false,
     };
   }
+
   handleModalOpen = () => {
     this.setState({ modalOpen: true });
   };
@@ -36,6 +40,7 @@ export class Extensions extends Component {
     if (previousSelected) {
       previousSelected.classList.toggle("selected-background");
     }
+    e.currentTarget.classList.toggle("selected-background");
     const newField = {
       field: fieldName,
       props: { ...field },
@@ -45,23 +50,50 @@ export class Extensions extends Component {
       selectedField: { ...newField },
       selectedFieldTarget: e.currentTarget,
     });
-    e.currentTarget.classList.toggle("selected-background");
   };
 
   handleAddField = async (withClose = false) => {
-    const { selectedField } = this.state;
+    const {
+      selectedField,
+      addFields: prevFields,
+      selectedFieldTarget,
+      existingFields: prevExisting,
+    } = this.state;
     const { fieldPath, templateLoaders, addFieldCallback } = this.props;
+    this.setState({ loading: true });
     const field = await importWidget(templateLoaders, {
       ...selectedField,
       fieldPath: `${fieldPath}.${selectedField.field}`,
     });
-    const { fields: prevFields } = this.state;
-    this.setState({ fields: [...prevFields, field] });
-    if (withClose) {
-      this.handleModalClosed();
-    }
-    this.setState({ selectedField: undefined, selectedFieldTarget: undefined });
-    addFieldCallback(field);
+
+    const performCallback = (selectedFieldTarget) => {
+      const { addFields } = this.state;
+
+      if (withClose) {
+        addFieldCallback(addFields);
+        this.setState({ addFields: [], existingFields: [] });
+        this.handleModalClosed();
+      }
+    };
+    selectedFieldTarget.classList.toggle("selected-background");
+    this.setState(
+      {
+        addFields: [...prevFields, field],
+        existingFields: [...prevExisting, field.key],
+        selectedField: undefined,
+        selectedFieldTarget: undefined,
+        loading: false,
+      },
+      () => performCallback(selectedFieldTarget)
+    );
+  };
+
+  handleCancel = () => {
+    const { addFields } = this.state;
+    const { addFieldCallback } = this.props;
+    addFieldCallback(addFields);
+    this.setState({ addFields: [] });
+    this.handleModalClosed();
   };
 
   render() {
@@ -73,10 +105,10 @@ export class Extensions extends Component {
       templateLoaders,
       addFieldCallback,
       sections,
+      existingFields: selected,
       ...fieldsList
     } = this.props;
-    const { modalOpen, fields } = this.state;
-
+    const { modalOpen, existingFields, loading } = this.state;
     return (
       <>
         <Divider />
@@ -89,23 +121,35 @@ export class Extensions extends Component {
           <ListAndFilterCustomFields
             fieldPath={fieldPath}
             handleSelectField={this.handleSelectField}
-            alreadyAddedFields={fields}
+            alreadyAddedFields={existingFields}
             fieldsList={fieldsList}
             sections={sections}
           />
           <Modal.Actions>
             <Button
-              onClick={this.handleModalClosed}
+              onClick={this.handleCancel}
               floated="left"
               icon="cancel"
               labelPosition="left"
               content="Cancel"
             />
-            <Button icon labelPosition="left" onClick={this.handleAddField}>
+            <Button
+              icon
+              labelPosition="left"
+              onClick={() => this.handleAddField(false)}
+              disabled={loading}
+              loading={loading}
+            >
               <Icon name="plus" />
               Add field and continue
             </Button>
-            <Button icon labelPosition="left" onClick={() => this.handleAddField(true)}>
+            <Button
+              icon
+              labelPosition="left"
+              onClick={() => this.handleAddField(true)}
+              disabled={loading}
+              loading={loading}
+            >
               <Icon name="plus" />
               Add field and close
             </Button>
@@ -124,6 +168,7 @@ Extensions.propTypes = {
   templateLoaders: PropTypes.array.isRequired,
   addFieldCallback: PropTypes.func.isRequired,
   sections: PropTypes.array,
+  existingFields: PropTypes.array.isRequired,
 };
 
 Extensions.defaultProps = {
