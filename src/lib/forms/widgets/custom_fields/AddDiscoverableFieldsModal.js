@@ -6,6 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { Component } from "react";
+import { RemoveField } from "./RemoveField";
 import { ListAndFilterCustomFields } from "./ListAndFilterCustomFields";
 import { importWidget } from "../loader";
 
@@ -13,7 +14,7 @@ import { Button, Icon, Modal, Divider } from "semantic-ui-react";
 
 import PropTypes from "prop-types";
 
-export class Extensions extends Component {
+export class AddDiscoverableFieldsModal extends Component {
   constructor(props) {
     super(props);
     const { existingFields } = props;
@@ -61,20 +62,26 @@ export class Extensions extends Component {
     } = this.state;
     const { fieldPath, templateLoaders, addFieldCallback } = this.props;
     this.setState({ loading: true });
+    selectedField["props"]["label"] = (
+      <RemoveField
+        fieldPath={`${fieldPath}.${selectedField.field}`}
+        removeFieldCallback={this.handleRemoveField}
+        field={{ key: `${fieldPath}.${selectedField.field}` }}
+        label={selectedField.props.label}
+      />
+    );
+
     const field = await importWidget(templateLoaders, {
       ...selectedField,
       fieldPath: `${fieldPath}.${selectedField.field}`,
     });
-
-    const performCallback = (selectedFieldTarget) => {
+    const performCallback = () => {
       const { addFields } = this.state;
-
-      if (withClose) {
-        addFieldCallback(addFields);
-        this.setState({ addFields: [], existingFields: [] });
-        this.handleModalClosed();
-      }
+      addFieldCallback(addFields);
+      this.setState({ addFields: [] });
+      this.handleModalClosed();
     };
+
     selectedFieldTarget.classList.toggle("selected-background");
     this.setState(
       {
@@ -84,7 +91,7 @@ export class Extensions extends Component {
         selectedFieldTarget: undefined,
         loading: false,
       },
-      () => performCallback(selectedFieldTarget)
+      () => (withClose ? performCallback() : null)
     );
   };
 
@@ -96,6 +103,13 @@ export class Extensions extends Component {
     this.handleModalClosed();
   };
 
+  handleRemoveField = (field) => {
+    const { existingFields: prevExisting } = this.state;
+    const { removeFieldCallback } = this.props;
+    const updatedFields = prevExisting.filter((n) => field.key !== n);
+    this.setState({ existingFields: [...updatedFields] });
+    removeFieldCallback(field);
+  };
   render() {
     const {
       fieldPath, // injected by the custom field loader via the `field` config property
@@ -104,14 +118,14 @@ export class Extensions extends Component {
       record,
       templateLoaders,
       addFieldCallback,
+      removeFieldCallback,
       sections,
-      existingFields: selected,
+      existingFields: _,
       ...fieldsList
     } = this.props;
-    const { modalOpen, existingFields, loading } = this.state;
+    const { modalOpen, existingFields, loading, selectedField } = this.state;
     return (
       <>
-        <Divider />
         <Button icon labelPosition="left" onClick={this.handleModalOpen}>
           <Icon name="plus" />
           Add field
@@ -137,7 +151,7 @@ export class Extensions extends Component {
               icon
               labelPosition="left"
               onClick={() => this.handleAddField(false)}
-              disabled={loading}
+              disabled={loading || !selectedField}
               loading={loading}
             >
               <Icon name="plus" />
@@ -147,7 +161,7 @@ export class Extensions extends Component {
               icon
               labelPosition="left"
               onClick={() => this.handleAddField(true)}
-              disabled={loading}
+              disabled={loading || !selectedField}
               loading={loading}
             >
               <Icon name="plus" />
@@ -160,18 +174,19 @@ export class Extensions extends Component {
   }
 }
 
-Extensions.propTypes = {
+AddDiscoverableFieldsModal.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   record: PropTypes.object.isRequired,
   icon: PropTypes.string,
   label: PropTypes.string,
   templateLoaders: PropTypes.array.isRequired,
   addFieldCallback: PropTypes.func.isRequired,
+  removeFieldCallback: PropTypes.func.isRequired,
   sections: PropTypes.array,
   existingFields: PropTypes.array.isRequired,
 };
 
-Extensions.defaultProps = {
+AddDiscoverableFieldsModal.defaultProps = {
   icon: undefined,
   label: undefined,
   sections: undefined,

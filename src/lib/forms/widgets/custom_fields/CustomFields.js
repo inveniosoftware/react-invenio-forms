@@ -7,14 +7,14 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { ComposeFields } from "./ComposeFields";
+import { DiscoverFieldsSection } from "./DiscoverFieldsSection";
 import { AccordionField } from "../../AccordionField";
 import { loadWidgetsFromConfig } from "../loader";
 
 export class CustomFields extends Component {
   constructor(props) {
     super(props);
-    this.state = { sections: undefined, composeSections: undefined };
+    this.state = { sections: undefined, discoverFieldsSections: undefined };
   }
 
   componentDidMount() {
@@ -24,19 +24,22 @@ export class CustomFields extends Component {
   populateConfig = async () => {
     const { includesPaths, fieldPathPrefix } = this.props;
     try {
-      const { sectionsConfig, composeSectionConfig } =
+      const { sectionsConfig, discoverFieldsConfig } =
         await this.loadCustomFieldsWidgets();
       const sections = sectionsConfig.map((sectionCfg) => {
         const paths = includesPaths(sectionCfg.fields, fieldPathPrefix);
         return { ...sectionCfg, paths };
       });
 
-      const composeSections = composeSectionConfig.map((sectionCfg) => {
+      const discoverFieldsSections = discoverFieldsConfig.map((sectionCfg) => {
         const paths = includesPaths(sectionCfg.fields, fieldPathPrefix);
         return { ...sectionCfg, paths };
       });
 
-      this.setState({ sections: sections, composeSections: composeSections });
+      this.setState({
+        sections: sections,
+        discoverFieldsSections: discoverFieldsSections,
+      });
     } catch (error) {
       console.error("Couldn't load custom fields widgets.", error);
     }
@@ -46,7 +49,7 @@ export class CustomFields extends Component {
     const { config, fieldPathPrefix, templateLoaders, record } = this.props;
 
     const sections = [];
-    const composeFieldSections = [];
+    const discoverFieldsSections = []; // finds sections with discoverable fields
     for (const sectionCfg of config) {
       // Path to end user's folder defining custom fields ui widgets
       const fields = await loadWidgetsFromConfig({
@@ -55,8 +58,8 @@ export class CustomFields extends Component {
         fields: sectionCfg.fields,
         record: record,
       });
-      if (sectionCfg.compose_fields) {
-        composeFieldSections.push({
+      if (sectionCfg.discoverable_fields) {
+        discoverFieldsSections.push({
           ...sectionCfg,
           fields: fields,
           fieldsConfig: sectionCfg.fields,
@@ -65,11 +68,11 @@ export class CustomFields extends Component {
         sections.push({ ...sectionCfg, fields });
       }
     }
-    return { sectionsConfig: sections, composeSectionConfig: composeFieldSections };
+    return { sectionsConfig: sections, discoverFieldsConfig: discoverFieldsSections };
   }
 
   render() {
-    const { sections, composeSections } = this.state;
+    const { sections, discoverFieldsSections } = this.state;
     const { templateLoaders, record } = this.props;
     return (
       <>
@@ -84,10 +87,10 @@ export class CustomFields extends Component {
               {fields}
             </AccordionField>
           ))}
-        {composeSections && composeSections && (
-          <ComposeFields
+        {discoverFieldsSections && (
+          <DiscoverFieldsSection
             templateLoaders={templateLoaders}
-            composeSections={composeSections}
+            sections={discoverFieldsSections}
             record={record}
           />
         )}

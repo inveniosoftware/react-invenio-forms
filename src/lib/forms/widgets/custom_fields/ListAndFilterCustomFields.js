@@ -99,7 +99,6 @@ export class ListAndFilterCustomFields extends Component {
           <Item.Group divided relaxed>
             {Object.entries(filteredFieldsList).map(([key, value]) => {
               const names = key.split(":");
-
               const isDisabled = alreadyAddedFields.includes(`${fieldPath}.${key}`);
 
               return (
