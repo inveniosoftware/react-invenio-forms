@@ -10,9 +10,10 @@ export class ComposeFields extends Component {
   constructor(props) {
     super(props);
     const { composeSections, record } = props;
-    const filled = Object.keys(record.custom_fields).map(
-      (key) => `custom_fields.${key}`
-    );
+    const filled =
+      record.custom_fields && typeof record.custom_fields === "object"
+        ? Object.keys(record.custom_fields).map((key) => `custom_fields.${key}`)
+        : [];
     this.state = { sections: composeSections, tempFields: [], recordFields: filled };
     this.fieldsCfg = this.getFieldsConfig(composeSections);
     this.sectionsList = composeSections.map((section) => section.section);
