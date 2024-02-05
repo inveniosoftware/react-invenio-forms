@@ -30,10 +30,15 @@ export class RichEditor extends Component {
       plugins: ["codesample", "link", "lists", "table", "autoresize"],
       contextmenu: false,
       toolbar:
-        "blocks | bold italic link codesample blockquote table | bullist numlist | outdent indent | undo redo",
+        "blocks | bold italic link blockquote table | tiny_mce_wiris_formulaEditor codesample | bullist numlist | outdent indent | undo redo",
       autoresize_bottom_margin: 20,
       block_formats: "Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3",
       table_advtab: false,
+      external_plugins: {
+        tiny_mce_wiris: "mathtype-tinymce6/plugin.min.js",
+      },
+      extended_valid_elements: "*[.*]",
+      draggable_modal: true,
     };
 
     return (
