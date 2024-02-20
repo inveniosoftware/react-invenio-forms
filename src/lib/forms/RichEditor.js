@@ -21,7 +21,7 @@ export class RichEditor extends Component {
   render() {
     const { id, value, disabled, minHeight, onBlur, onChange, onFocus, editorConfig } =
       this.props;
-    const config = editorConfig || {
+    const config = {
       branding: false,
       menubar: false,
       statusbar: false,
@@ -34,6 +34,7 @@ export class RichEditor extends Component {
       autoresize_bottom_margin: 20,
       block_formats: "Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3",
       table_advtab: false,
+      ...editorConfig,
     };
 
     return (
