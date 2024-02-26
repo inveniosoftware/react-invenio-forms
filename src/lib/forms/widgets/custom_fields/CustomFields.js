@@ -87,7 +87,7 @@ export class CustomFields extends Component {
               {fields}
             </AccordionField>
           ))}
-        {discoverFieldsSections && (
+        {discoverFieldsSections && discoverFieldsSections.length > 0 && (
           <DiscoverFieldsSection
             templateLoaders={templateLoaders}
             sections={discoverFieldsSections}
