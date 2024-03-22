@@ -8,7 +8,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { getIn, FieldArray } from "formik";
-import { Form, Icon } from "semantic-ui-react";
+import { Form, Icon, Button } from "semantic-ui-react";
 import _isEmpty from "lodash/isEmpty";
 import _filter from "lodash/filter";
 import _matches from "lodash/matches";
@@ -87,30 +87,32 @@ export class ArrayField extends Component {
     const { nextKey } = this.state;
     const valuesToDisplay = this.getValues(values, fieldPath);
     return (
-      <Form.Field {...uiProps} {...hasError}>
-        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+      <>
+        <Form.Field {...uiProps} {...hasError}>
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
 
-        {valuesToDisplay.map((value, index, array) => {
-          const arrayPath = fieldPath;
-          const indexPath = index;
-          const key = value.__key || index;
+          {valuesToDisplay.map((value, index, array) => {
+            const arrayPath = fieldPath;
+            const indexPath = index;
+            const key = value.__key || index;
 
-          return (
-            <div key={key}>
-              {children({
-                array,
-                arrayHelpers,
-                arrayPath,
-                indexPath,
-                key,
-                value,
-                ...props,
-              })}
-            </div>
-          );
-        })}
+            return (
+              <div key={key}>
+                {children({
+                  array,
+                  arrayHelpers,
+                  arrayPath,
+                  indexPath,
+                  key,
+                  value,
+                  ...props,
+                })}
+              </div>
+            );
+          })}
+        </Form.Field>
 
-        {helpText && <label className="helptext">{helpText}</label>}
+        {helpText && <label className="helptext rel-mb-1">{helpText}</label>}
 
         <Form.Group>
           <Form.Button
