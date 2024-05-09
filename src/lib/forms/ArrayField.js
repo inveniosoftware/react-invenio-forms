@@ -74,6 +74,7 @@ export class ArrayField extends Component {
     } = props;
     const {
       addButtonLabel,
+      addButtonClassName,
       children,
       defaultNewValue,
       fieldPath,
@@ -81,6 +82,7 @@ export class ArrayField extends Component {
       labelIcon,
       helpText,
       requiredOptions,
+      showEmptyValue,
       ...uiProps
     } = this.props;
     const hasError = this.hasGroupErrors(errors) ? { error: {} } : {};
@@ -116,7 +118,7 @@ export class ArrayField extends Component {
           <Form.Button
             type="button"
             icon
-            className="align-self-end mt-15"
+            className={addButtonClassName}
             labelPosition="left"
             onClick={() => {
               arrayHelpers.push({
@@ -149,6 +151,7 @@ export class ArrayField extends Component {
 
 ArrayField.propTypes = {
   addButtonLabel: PropTypes.string,
+  addButtonClassName: PropTypes.string,
   children: PropTypes.func.isRequired,
   defaultNewValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   fieldPath: PropTypes.string.isRequired,
@@ -161,6 +164,7 @@ ArrayField.propTypes = {
 
 ArrayField.defaultProps = {
   addButtonLabel: "Add new row",
+  addButtonClassName: "align-self-end mt-15",
   helpText: "",
   label: "",
   labelIcon: "",
