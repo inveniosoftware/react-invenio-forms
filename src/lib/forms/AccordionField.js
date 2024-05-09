@@ -107,7 +107,7 @@ AccordionField.propTypes = {
 };
 
 AccordionField.defaultProps = {
-  active: false,
+  active: true,
   includesPaths: [],
   label: "",
   optimized: false,
