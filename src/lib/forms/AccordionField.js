@@ -52,7 +52,7 @@ export class AccordionField extends Component {
     ];
 
     const errorClass = hasError ? "error secondary" : "";
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(active ? 0 : -1);
 
     const handleTitleClick = (e, { index }) => {
       setActiveIndex(activeIndex === index ? -1 : index);
@@ -100,7 +100,7 @@ export class AccordionField extends Component {
 AccordionField.propTypes = {
   active: PropTypes.bool,
   includesPaths: PropTypes.array,
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   optimized: PropTypes.bool,
   children: PropTypes.node,
   ui: PropTypes.object,
