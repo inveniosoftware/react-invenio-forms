@@ -1,5 +1,9 @@
 # Changes
 
+Version 3.4.0 (released 2024-06-12)
+
+- ui: allow accordion to be folded as a default when not marked as active
+
 Version 3.3.0 (released 2024-04-09)
 
 - utils: added a reusable dropdown items serializer
