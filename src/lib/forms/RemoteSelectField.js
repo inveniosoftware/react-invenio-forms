@@ -103,13 +103,17 @@ export class RemoteSelectField extends Component {
   }, this.props.debounceTime);
 
   fetchSuggestions = async (searchQuery) => {
-    const { suggestionAPIUrl, suggestionAPIQueryParams, suggestionAPIHeaders } =
-      this.props;
+    const {
+      suggestionAPIUrl,
+      suggestionAPIQueryParams,
+      suggestionAPIHeaders,
+      searchQueryParamName,
+    } = this.props;
 
     try {
       const response = await axios.get(suggestionAPIUrl, {
         params: {
-          suggest: searchQuery,
+          [searchQueryParamName]: searchQuery,
           size: DEFAULT_SUGGESTION_SIZE,
           ...suggestionAPIQueryParams,
         },
@@ -172,6 +176,7 @@ export class RemoteSelectField extends Component {
       serializeAddedValue,
       suggestionAPIHeaders,
       debounceTime,
+      searchQueryParamName,
       noResultsMessage,
       loadingMessage,
       suggestionsErrorMessage,
@@ -191,6 +196,7 @@ export class RemoteSelectField extends Component {
       serializeSuggestions,
       serializeAddedValue,
       debounceTime,
+      searchQueryParamName,
       noResultsMessage,
       loadingMessage,
       suggestionsErrorMessage,
@@ -270,6 +276,7 @@ RemoteSelectField.propTypes = {
   loadingMessage: PropTypes.string,
   suggestionsErrorMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   noQueryMessage: PropTypes.string,
+  searchQueryParamName: PropTypes.string,
   preSearchChange: PropTypes.func, // Takes a string and returns a string
   onValueChange: PropTypes.func, // Takes the SUI hanf and updated selectedSuggestions
   search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
@@ -282,6 +289,7 @@ RemoteSelectField.defaultProps = {
   suggestionAPIQueryParams: {},
   suggestionAPIHeaders: {},
   serializeSuggestions: serializeSuggestions,
+  searchQueryParamName: "suggest",
   suggestionsErrorMessage: "Something went wrong...",
   noQueryMessage: "Search...",
   noResultsMessage: "No results found.",
