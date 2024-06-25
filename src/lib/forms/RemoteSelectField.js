@@ -103,13 +103,17 @@ export class RemoteSelectField extends Component {
   }, this.props.debounceTime);
 
   fetchSuggestions = async (searchQuery) => {
-    const { suggestionAPIUrl, suggestionAPIQueryParams, suggestionAPIHeaders } =
-      this.props;
+    const {
+      suggestionAPIUrl,
+      suggestionAPIQueryParams,
+      suggestionAPIHeaders,
+      searchParamKey,
+    } = this.props;
 
     try {
       const response = await axios.get(suggestionAPIUrl, {
         params: {
-          suggest: searchQuery,
+          [searchParamKey]: searchQuery,
           size: DEFAULT_SUGGESTION_SIZE,
           ...suggestionAPIQueryParams,
         },
@@ -259,6 +263,7 @@ RemoteSelectField.propTypes = {
   suggestionAPIUrl: PropTypes.string.isRequired,
   suggestionAPIQueryParams: PropTypes.object,
   suggestionAPIHeaders: PropTypes.object,
+  searchParamKey: PropTypes.string,
   serializeSuggestions: PropTypes.func,
   serializeAddedValue: PropTypes.func,
   initialSuggestions: PropTypes.oneOfType([
@@ -281,6 +286,7 @@ RemoteSelectField.defaultProps = {
   debounceTime: 500,
   suggestionAPIQueryParams: {},
   suggestionAPIHeaders: {},
+  searchParamKey: "suggest",
   serializeSuggestions: serializeSuggestions,
   suggestionsErrorMessage: "Something went wrong...",
   noQueryMessage: "Search...",
