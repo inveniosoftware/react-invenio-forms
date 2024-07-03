@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Forms
 // Copyright (C) 2022 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2024 KTH Royal Institute of Technology.
 //
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -19,8 +20,18 @@ import PropTypes from "prop-types";
 
 export class RichEditor extends Component {
   render() {
-    const { id, value, disabled, minHeight, onBlur, onChange, onFocus, editorConfig } =
-      this.props;
+    const {
+      id,
+      initialValue,
+      disabled,
+      minHeight,
+      onBlur,
+      onChange,
+      onFocus,
+      editorConfig,
+      inputValue,
+      onEditorChange,
+    } = this.props;
     const config = {
       branding: false,
       menubar: false,
@@ -39,23 +50,27 @@ export class RichEditor extends Component {
 
     return (
       <Editor
-        initialValue={value}
+        initialValue={initialValue}
+        value={inputValue}
         init={config}
         id={id}
         disabled={disabled}
-        onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
+        onChange={onChange}
+        onEditorChange={onEditorChange}
       />
     );
   }
 }
 
 RichEditor.propTypes = {
-  value: PropTypes.string,
+  initialValue: PropTypes.string,
+  inputValue: PropTypes.string,
   id: PropTypes.string,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
+  onEditorChange: PropTypes.func,
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
   minHeight: PropTypes.number,
@@ -64,10 +79,12 @@ RichEditor.propTypes = {
 
 RichEditor.defaultProps = {
   minHeight: 250,
-  value: "",
+  initialValue: "",
+  inputValue: "",
   id: undefined,
   disabled: undefined,
   onChange: undefined,
+  onEditorChange: undefined,
   onBlur: undefined,
   onFocus: undefined,
   editorConfig: undefined,
