@@ -1,5 +1,9 @@
 # Changes
 
+Version 3.5.1 (released 2024-07-28)
+
+- editor: fix jumping cursor to the top
+
 Version 3.5.0 (released 2024-06-28)
 
 - RemoteSelect: pass searchQueryParamName as a property
