@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2022 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2024 KTH Royal Institute of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -39,7 +40,8 @@ export class RichInputField extends Component {
           editor
         ) : (
           <RichEditor
-            value={value}
+            initialValue={initialValue}
+            inputValue={() => value} // () =>  To avoid re-rendering
             optimized
             editorConfig={editorConfig}
             onBlur={(event, editor) => {
