@@ -1,5 +1,9 @@
 # Changes
 
+Version 3.5.2 (released 2024-08-02)
+
+- editor: avoid losing content when the editor loses focus
+
 Version 3.5.1 (released 2024-07-28)
 
 - editor: fix jumping cursor to the top
