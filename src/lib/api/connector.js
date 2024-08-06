@@ -17,7 +17,7 @@ const baseAxiosConfiguration = {
   xsrfCookieName: "csrftoken",
   xsrfHeaderName: "X-CSRFToken",
   headers: {
-    "Accept": "application/json",
+    "Accept": "application/vnd.inveniordm.v1+json",
     "Content-Type": "application/json",
   },
 };
