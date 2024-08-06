@@ -36,6 +36,7 @@ export class SubjectAutocompleteDropdown extends Component {
       width,
       allowAdditions,
       noQueryMessage,
+      ...uiProps
     } = this.props;
     const labelContent = label ? (
       <FieldLabel htmlFor={fieldPath} icon={icon} label={label} />
@@ -52,6 +53,7 @@ export class SubjectAutocompleteDropdown extends Component {
       <Field name={fieldPath}>
         {({ form: { values } }) => (
           <RemoteSelectField
+            {...uiProps}
             clearable={clearable}
             fieldPath={fieldPath}
             initialSuggestions={getIn(values, fieldPath, [])}

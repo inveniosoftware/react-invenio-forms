@@ -76,8 +76,18 @@ export class RemoteSelectField extends Component {
   };
 
   onSearchChange = _debounce(async (e, { searchQuery }) => {
+    await this.executeSearch(searchQuery);
+    // eslint-disable-next-line react/destructuring-assignment
+  }, this.props.debounceTime);
+
+  executeSearch = async (searchQuery) => {
     const { preSearchChange, serializeSuggestions } = this.props;
     const query = preSearchChange(searchQuery);
+    // If there is no query, then display prevState suggestions
+    const { searchQuery: prevSearchQuery } = this.state;
+    if (prevSearchQuery === "") {
+      return;
+    }
     this.setState({ isFetching: true, searchQuery: query });
     try {
       const suggestions = await this.fetchSuggestions(query);
@@ -99,8 +109,7 @@ export class RemoteSelectField extends Component {
         isFetching: false,
       });
     }
-    // eslint-disable-next-line react/destructuring-assignment
-  }, this.props.debounceTime);
+  };
 
   fetchSuggestions = async (searchQuery) => {
     const {
@@ -155,16 +164,24 @@ export class RemoteSelectField extends Component {
   };
 
   onBlur = () => {
+    const { searchOnFocus } = this.props;
     this.setState((prevState) => ({
       open: false,
       error: false,
-      searchQuery: null,
-      suggestions: [...prevState.selectedSuggestions],
+      searchQuery: searchOnFocus ? prevState.searchQuery : null,
+      suggestions: searchOnFocus
+        ? prevState.suggestions
+        : prevState.selectedSuggestions,
     }));
   };
 
-  onFocus = () => {
+  onFocus = async () => {
     this.setState({ open: true });
+    const { searchOnFocus } = this.props;
+    if (searchOnFocus) {
+      const { searchQuery } = this.state;
+      await this.executeSearch(searchQuery || "");
+    }
   };
 
   getProps = () => {
@@ -282,6 +299,7 @@ RemoteSelectField.propTypes = {
   search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   multiple: PropTypes.bool,
   isFocused: PropTypes.bool,
+  searchOnFocus: PropTypes.bool,
 };
 
 RemoteSelectField.defaultProps = {
@@ -301,4 +319,5 @@ RemoteSelectField.defaultProps = {
   initialSuggestions: [],
   onValueChange: undefined,
   isFocused: false,
+  searchOnFocus: false,
 };
