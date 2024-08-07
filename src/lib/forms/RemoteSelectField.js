@@ -13,6 +13,7 @@ import queryString from "query-string";
 import React, { Component } from "react";
 import { Message } from "semantic-ui-react";
 import { SelectField } from "./SelectField";
+import { withCancel } from "../api";
 
 const DEFAULT_SUGGESTION_SIZE = 20;
 
@@ -37,6 +38,10 @@ export class RemoteSelectField extends Component {
       searchQuery: null,
       open: false,
     };
+  }
+
+  componentWillUnmount() {
+    this.cancellableAction && this.cancellableAction.cancel();
   }
 
   onSelectValue = (event, { options, value }, callbackFunc) => {
@@ -76,9 +81,10 @@ export class RemoteSelectField extends Component {
   };
 
   onSearchChange = _debounce(async (e, { searchQuery }) => {
+    this.cancellableAction && this.cancellableAction.cancel();
     await this.executeSearch(searchQuery);
     // eslint-disable-next-line react/destructuring-assignment
-  }, this.props.debounceTime);
+  }, this.props.debounceTime); // can't destructure as prop variable is used outside the inner function
 
   executeSearch = async (searchQuery) => {
     const { preSearchChange, serializeSuggestions } = this.props;
@@ -119,8 +125,8 @@ export class RemoteSelectField extends Component {
       searchQueryParamName,
     } = this.props;
 
-    try {
-      const response = await axios.get(suggestionAPIUrl, {
+    this.cancellableAction = withCancel(
+      axios.get(suggestionAPIUrl, {
         params: {
           [searchQueryParamName]: searchQuery,
           size: DEFAULT_SUGGESTION_SIZE,
@@ -132,7 +138,11 @@ export class RemoteSelectField extends Component {
         // https://github.com/axios/axios/issues/3316
         paramsSerializer: (params) =>
           queryString.stringify(params, { arrayFormat: "repeat" }),
-      });
+      })
+    );
+
+    try {
+      const response = await this.cancellableAction.promise;
       return response?.data?.hits?.hits;
     } catch (e) {
       console.error(e);
