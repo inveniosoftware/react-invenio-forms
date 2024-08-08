@@ -13,6 +13,7 @@ import queryString from "query-string";
 import React, { Component } from "react";
 import { Message } from "semantic-ui-react";
 import { SelectField } from "./SelectField";
+import { withCancel } from "../api";
 
 const DEFAULT_SUGGESTION_SIZE = 20;
 
@@ -37,6 +38,10 @@ export class RemoteSelectField extends Component {
       searchQuery: null,
       open: false,
     };
+  }
+
+  componentWillUnmount() {
+    this.cancellableAction && this.cancellableAction.cancel();
   }
 
   onSelectValue = (event, { options, value }, callbackFunc) => {
@@ -76,8 +81,19 @@ export class RemoteSelectField extends Component {
   };
 
   onSearchChange = _debounce(async (e, { searchQuery }) => {
+    this.cancellableAction && this.cancellableAction.cancel();
+    await this.executeSearch(searchQuery);
+    // eslint-disable-next-line react/destructuring-assignment
+  }, this.props.debounceTime); // can't destructure as prop variable is used outside the inner function
+
+  executeSearch = async (searchQuery) => {
     const { preSearchChange, serializeSuggestions } = this.props;
     const query = preSearchChange(searchQuery);
+    // If there is no query change, then display prevState suggestions
+    const { searchQuery: prevSearchQuery } = this.state;
+    if (prevSearchQuery === searchQuery) {
+      return;
+    }
     this.setState({ isFetching: true, searchQuery: query });
     try {
       const suggestions = await this.fetchSuggestions(query);
@@ -99,8 +115,7 @@ export class RemoteSelectField extends Component {
         isFetching: false,
       });
     }
-    // eslint-disable-next-line react/destructuring-assignment
-  }, this.props.debounceTime);
+  };
 
   fetchSuggestions = async (searchQuery) => {
     const {
@@ -110,8 +125,8 @@ export class RemoteSelectField extends Component {
       searchQueryParamName,
     } = this.props;
 
-    try {
-      const response = await axios.get(suggestionAPIUrl, {
+    this.cancellableAction = withCancel(
+      axios.get(suggestionAPIUrl, {
         params: {
           [searchQueryParamName]: searchQuery,
           size: DEFAULT_SUGGESTION_SIZE,
@@ -123,7 +138,11 @@ export class RemoteSelectField extends Component {
         // https://github.com/axios/axios/issues/3316
         paramsSerializer: (params) =>
           queryString.stringify(params, { arrayFormat: "repeat" }),
-      });
+      })
+    );
+
+    try {
+      const response = await this.cancellableAction.promise;
       return response?.data?.hits?.hits;
     } catch (e) {
       console.error(e);
@@ -155,16 +174,24 @@ export class RemoteSelectField extends Component {
   };
 
   onBlur = () => {
+    const { searchOnFocus } = this.props;
     this.setState((prevState) => ({
       open: false,
       error: false,
-      searchQuery: null,
-      suggestions: [...prevState.selectedSuggestions],
+      searchQuery: searchOnFocus ? prevState.searchQuery : null,
+      suggestions: searchOnFocus
+        ? prevState.suggestions
+        : prevState.selectedSuggestions,
     }));
   };
 
-  onFocus = () => {
+  onFocus = async () => {
     this.setState({ open: true });
+    const { searchOnFocus } = this.props;
+    if (searchOnFocus) {
+      const { searchQuery } = this.state;
+      await this.executeSearch(searchQuery || "");
+    }
   };
 
   getProps = () => {
@@ -282,6 +309,7 @@ RemoteSelectField.propTypes = {
   search: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   multiple: PropTypes.bool,
   isFocused: PropTypes.bool,
+  searchOnFocus: PropTypes.bool,
 };
 
 RemoteSelectField.defaultProps = {
@@ -301,4 +329,5 @@ RemoteSelectField.defaultProps = {
   initialSuggestions: [],
   onValueChange: undefined,
   isFocused: false,
+  searchOnFocus: false,
 };
