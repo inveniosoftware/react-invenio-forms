@@ -89,9 +89,9 @@ export class RemoteSelectField extends Component {
   executeSearch = async (searchQuery) => {
     const { preSearchChange, serializeSuggestions } = this.props;
     const query = preSearchChange(searchQuery);
-    // If there is no query, then display prevState suggestions
+    // If there is no query change, then display prevState suggestions
     const { searchQuery: prevSearchQuery } = this.state;
-    if (prevSearchQuery === "") {
+    if (prevSearchQuery === searchQuery) {
       return;
     }
     this.setState({ isFetching: true, searchQuery: query });
