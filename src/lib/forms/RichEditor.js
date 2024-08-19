@@ -45,6 +45,7 @@ export class RichEditor extends Component {
       autoresize_bottom_margin: 20,
       block_formats: "Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3",
       table_advtab: false,
+      convert_urls: false,
       ...editorConfig,
     };
 
