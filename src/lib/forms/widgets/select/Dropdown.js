@@ -24,6 +24,7 @@ export default class Dropdown extends Component {
       multiple,
       clearable,
       required,
+      value,
     } = this.props;
     return (
       <>
@@ -42,6 +43,7 @@ export default class Dropdown extends Component {
           required={required}
           optimized
           defaultValue={multiple ? [] : ""}
+          value={value}
         />
         {description && <label className="helptext">{description}</label>}
       </>

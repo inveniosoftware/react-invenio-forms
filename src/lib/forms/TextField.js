@@ -21,6 +21,7 @@ export class TextField extends Component {
       label,
       optimized,
       required,
+      value,
       ...uiProps
     } = this.props;
     const FormikField = optimized ? FastField : Field;
@@ -30,6 +31,7 @@ export class TextField extends Component {
           className="invenio-text-input-field"
           id={fieldPath}
           name={fieldPath}
+          value={value}
         >
           {({ field, meta }) => {
             return (
@@ -39,7 +41,7 @@ export class TextField extends Component {
                   error ||
                   meta.error ||
                   // We check if initialValue changed to display the initialError,
-                  // otherwise it would be displayed despite updating the fieldu
+                  // otherwise it would be displayed despite updating the field
                   (!meta.touched && meta.initialError)
                 }
                 disabled={disabled}
@@ -47,6 +49,7 @@ export class TextField extends Component {
                 label={label}
                 id={fieldPath}
                 required={required}
+                value={value}
                 {...uiProps}
               />
             );
