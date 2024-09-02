@@ -1,5 +1,12 @@
 # Changes
 
+Version 4.1.0 (released 2024-09-02)
+
+- editor: disable TinyMCE convert_urls to fix same domain URLs
+- forms: RemoteSelectField: Fix searching with same query
+- forms: RemoteSelectField: Make request cancellable
+- forms: RemoteSelectField: Display initial suggestions in dropdown
+
 Version 4.0.0 (released 2024-08-12)
 
 - customfields: allow hiding section name
