@@ -12,32 +12,34 @@ import { Header } from "semantic-ui-react";
 import { Trans } from "react-i18next";
 
 const makeIdEntry = (identifier) => {
-  let icon = null;
-  let link = null;
+  let icon, link;
 
-  if (identifier.scheme === "orcid") {
-    icon = "/static/images/orcid.svg";
-    link = "https://orcid.org/" + identifier.identifier;
-  } else if (identifier.scheme === "gnd") {
-    icon = "/static/images/gnd-icon.svg";
-    link = "https://d-nb.info/gnd/" + identifier.identifier;
-  } else if (identifier.scheme === "ror") {
-    return; // ROR doesn't recommend displaying ROR IDs
-  } else if (identifier.scheme === "isni" || identifier.scheme === "grid") {
-    return;
-  } else {
-    return (
-      <>
-        {identifier.scheme}: {identifier.identifier}
-      </>
-    );
+  switch (identifier.scheme) {
+    case "orcid":
+      icon = "/static/images/orcid.svg";
+      link = `https://orcid.org/${identifier.identifier}`;
+      break;
+    case "gnd":
+      icon = "/static/images/gnd-icon.svg";
+      link = `https://d-nb.info/gnd/${identifier.identifier}`;
+      break;
+    case "ror": // ROR doesn't recommend displaying ROR IDs
+    case "isni":
+    case "grid":
+      return; // Skip these schemes
+    default:
+      return (
+        <>
+          {identifier.scheme}: {identifier.identifier}
+        </>
+      );
   }
 
   return (
     <span key={identifier.identifier}>
       <a href={link} target="_blank" rel="noopener noreferrer">
         <Image src={icon} className="inline-id-icon mr-5" verticalAlign="middle" />
-        {identifier.scheme === "orcid" ? identifier.identifier : null}
+        {identifier.scheme === "orcid" && identifier.identifier}
       </a>
     </span>
   );
@@ -46,12 +48,12 @@ const makeIdEntry = (identifier) => {
 const makeSubheader = (creatibutor, isOrganization) => {
   if (isOrganization) {
     const locationPart = [creatibutor?.location_name, creatibutor?.country_name]
-      .filter(Boolean)
-      .join(", ");
+      ?.filter(Boolean)
+      ?.join(", ");
 
     const typesPart = creatibutor?.types
-      .map((type) => type.charAt(0).toUpperCase() + type.slice(1))
-      .join(", ");
+      ?.map((type) => type.charAt(0).toUpperCase() + type.slice(1))
+      ?.join(", ");
 
     return `${locationPart}${
       locationPart && typesPart ? " — " : ""
@@ -67,7 +69,7 @@ const makeSubheader = (creatibutor, isOrganization) => {
 export const AffiliationsSuggestions = (
   creatibutors,
   isOrganization,
-  showManualEntry,
+  showManualEntry
 ) => {
   const results = creatibutors.map((creatibutor) => {
     // ensure `affiliations` and `identifiers` are present
@@ -76,7 +78,7 @@ export const AffiliationsSuggestions = (
 
     const subheader = makeSubheader(creatibutor, isOrganization);
     let name = creatibutor.name;
-    if (creatibutor.acronym) name += " (" + creatibutor.acronym + ")";
+    if (creatibutor.acronym) name += ` (${creatibutor.acronym})`;
 
     const idString = [];
     creatibutor.identifiers?.forEach((i) => {
@@ -86,13 +88,13 @@ export const AffiliationsSuggestions = (
 
     return {
       text: creatibutor.name,
-      value: creatibutor.id,
+      value: creatibutor.name,
       extra: creatibutor,
-      key: creatibutor.id,
+      key: creatibutor.name,
       id: creatibutor.id,
       content: (
         <Header>
-          {name} {idString.length ? <>({idString})</> : null}
+          {name} {idString.length > 0 && <>({idString})</>}
           <Header.Subheader>{subheader}</Header.Subheader>
         </Header>
       ),
