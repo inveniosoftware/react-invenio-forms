@@ -9,7 +9,6 @@
 import React from "react";
 import { Image } from "../../../Image";
 import { Header } from "semantic-ui-react";
-import { Trans } from "react-i18next";
 
 const makeIdEntry = (identifier) => {
   let icon, link;
@@ -111,10 +110,8 @@ export const AffiliationsSuggestions = (
         <Header textAlign="center">
           <Header.Content>
             <p>
-              <Trans>
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
-                Couldn't find your person? You can <a>create a new entry</a>.
-              </Trans>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
+              Couldn't find your person? You can <a>create a new entry</a>.
             </p>
           </Header.Content>
         </Header>
