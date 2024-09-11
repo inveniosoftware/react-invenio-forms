@@ -43,6 +43,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   disabled: PropTypes.bool,
   type: PropTypes.string,
+  value: PropTypes.any,
 };
 
 Input.defaultProps = {
@@ -50,4 +51,5 @@ Input.defaultProps = {
   required: false,
   disabled: false,
   type: "input",
+  value: undefined,
 };
