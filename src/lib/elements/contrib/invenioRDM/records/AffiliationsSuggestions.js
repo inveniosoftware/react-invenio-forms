@@ -65,11 +65,7 @@ const makeSubheader = (creatibutor, isOrganization) => {
   }
 };
 
-export const AffiliationsSuggestions = (
-  creatibutors,
-  isOrganization,
-  showManualEntry
-) => {
+export const AffiliationsSuggestions = (creatibutors, isOrganization) => {
   const results = creatibutors.map((creatibutor) => {
     // ensure `affiliations` and `identifiers` are present
     creatibutor.affiliations = creatibutor.affiliations || [];
@@ -100,23 +96,5 @@ export const AffiliationsSuggestions = (
     };
   });
 
-  if (showManualEntry) {
-    results.push({
-      text: "Manual entry",
-      value: "Manual entry",
-      extra: "Manual entry",
-      key: "manual-entry",
-      content: (
-        <Header textAlign="center">
-          <Header.Content>
-            <p>
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
-              Couldn't find your person? You can <a>create a new entry</a>.
-            </p>
-          </Header.Content>
-        </Header>
-      ),
-    });
-  }
   return results;
 };
