@@ -54,9 +54,9 @@ const makeSubheader = (creatibutor, isOrganization) => {
       ?.map((type) => type.charAt(0).toUpperCase() + type.slice(1))
       ?.join(", ");
 
-    return `${locationPart}${
-      locationPart && typesPart ? " — " : ""
-    }${typesPart}`.trim();
+    return `${locationPart || ""}${locationPart && typesPart ? " — " : ""}${
+      typesPart || ""
+    }`.trim();
   } else {
     return (
       creatibutor?.affiliations?.map((affiliation) => affiliation.name)?.join(", ") ||
@@ -90,7 +90,7 @@ export const AffiliationsSuggestions = (creatibutors, isOrganization) => {
       content: (
         <Header>
           {name} {idString.length > 0 && <>({idString})</>}
-          <Header.Subheader>{subheader}</Header.Subheader>
+          {subheader.length > 0 && <Header.Subheader>{subheader}</Header.Subheader>}
         </Header>
       ),
     };
