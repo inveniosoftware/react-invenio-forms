@@ -43,7 +43,11 @@ export class SubjectAutocompleteDropdown extends Component {
     ) : (
       <>
         {/* Placeholder label for alignment purposes */}
-        <label htmlFor={fieldPath} className="mobile-hidden">
+        <label
+          htmlFor={fieldPath}
+          className="mobile-hidden"
+          aria-label="Placeholder label for alignment purposes"
+        >
           &nbsp;
         </label>
       </>
