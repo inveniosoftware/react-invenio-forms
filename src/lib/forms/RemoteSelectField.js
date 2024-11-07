@@ -102,7 +102,7 @@ export class RemoteSelectField extends Component {
       this.setState((prevState) => ({
         suggestions: _uniqBy(
           [...prevState.selectedSuggestions, ...serializedSuggestions],
-          "value"
+          "key"
         ),
         isFetching: false,
         error: false,

@@ -9,6 +9,7 @@
 import React from "react";
 import { Image } from "../../../Image";
 import { Header } from "semantic-ui-react";
+import Overridable from "react-overridable";
 
 const makeIdEntry = (identifier) => {
   let icon, link;
@@ -85,14 +86,23 @@ export const AffiliationsSuggestions = (creatibutors, isOrganization) => {
       text: creatibutor.name,
       value: creatibutor.name,
       extra: creatibutor,
-      key: creatibutor.name,
       name: creatibutor.name,
+      key: creatibutor.id,
       id: creatibutor.id,
       content: (
-        <Header>
-          {name} {idString.length > 0 && <>({idString})</>}
-          {subheader.length > 0 && <Header.Subheader>{subheader}</Header.Subheader>}
-        </Header>
+        <Overridable
+          id="ReactInvenioForms.AffiliationsSuggestions.content"
+          creatibutor={creatibutor}
+          isOrganization={isOrganization}
+          idString={idString}
+          makeSubheader={makeSubheader}
+          makeIdEntry={makeIdEntry}
+        >
+          <Header>
+            {name} {idString.length > 0 && <>({idString})</>}
+            {subheader.length > 0 && <Header.Subheader>{subheader}</Header.Subheader>}
+          </Header>
+        </Overridable>
       ),
     };
   });

@@ -36,6 +36,7 @@
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^2.1.0",
     "tinymce": "^6.7.2",
+    "react-overridable": "^0.0.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {
