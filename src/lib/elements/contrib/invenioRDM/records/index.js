@@ -6,4 +6,8 @@
  * // under the terms of the MIT License; see LICENSE file for more details.
  */
 
-export { AffiliationsSuggestions } from "./AffiliationsSuggestions";
+export {
+  AffiliationsSuggestions,
+  makeIdEntry,
+  makeSubheader,
+} from "./AffiliationsSuggestions";

@@ -11,7 +11,7 @@ import { Image } from "../../../Image";
 import { Header } from "semantic-ui-react";
 import Overridable from "react-overridable";
 
-const makeIdEntry = (identifier) => {
+export const makeIdEntry = (identifier) => {
   let icon, link;
 
   switch (identifier.scheme) {
@@ -45,7 +45,7 @@ const makeIdEntry = (identifier) => {
   );
 };
 
-const makeSubheader = (creatibutor, isOrganization) => {
+export const makeSubheader = (creatibutor, isOrganization) => {
   if (isOrganization) {
     const locationPart = [creatibutor?.location_name, creatibutor?.country_name]
       ?.filter(Boolean)
