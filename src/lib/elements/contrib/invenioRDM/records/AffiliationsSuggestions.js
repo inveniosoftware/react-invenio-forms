@@ -90,7 +90,7 @@ export const AffiliationsSuggestions = (creatibutors, isOrganization) => {
 
     return {
       text: creatibutor.name,
-      value: creatibutor.name,
+      value: creatibutor.id || creatibutor.name,
       name: creatibutor.name,
       extra: creatibutor,
       id: creatibutor.id,
