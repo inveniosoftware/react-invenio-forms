@@ -10,8 +10,8 @@ export class SubjectAutocompleteDropdown extends Component {
       const scheme = subject.scheme ? `(${subject.scheme}) ` : "";
       return {
         text: scheme + subject.subject,
-        value: subject.subject,
-        key: subject.subject,
+        value: subject.id ?? subject.subject,
+        key: subject.id,
         ...(subject.id ? { id: subject.id } : {}),
         subject: subject.subject,
       };
@@ -84,7 +84,7 @@ export class SubjectAutocompleteDropdown extends Component {
               );
             }}
             label={labelContent}
-            value={getIn(values, fieldPath, []).map((val) => val.subject)}
+            value={getIn(values, fieldPath, []).map((val) => val.id ?? val.subject)}
             allowAdditions={allowAdditions}
             width={width}
           />
