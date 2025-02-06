@@ -9,7 +9,6 @@ import React, { Component } from "react";
 import { RemoveField } from "./RemoveField";
 import { ListAndFilterCustomFields } from "./ListAndFilterCustomFields";
 import { importWidget } from "../loader";
-
 import { Button, Icon, Modal } from "semantic-ui-react";
 
 import PropTypes from "prop-types";
@@ -143,9 +142,8 @@ export class AddDiscoverableFieldsModal extends Component {
             <Button
               onClick={this.handleCancel}
               floated="left"
-              icon="cancel"
               labelPosition="left"
-              content="Cancel"
+              content="Close"
             />
             <Button
               icon
