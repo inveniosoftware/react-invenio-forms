@@ -100,7 +100,7 @@ export class DiscoverFieldsSection extends Component {
     ];
 
     return (
-      <AccordionField key="discover-fields" label="Domain specific fields" active>
+      <AccordionField key="discover-fields" label="Domain specific fields" active id="domain-specific-fields-section">
         {sections.map(({ fields, paths, ...sectionConfig }) => {
           const recordCustomFields = this.getFieldsWithValues(fields);
           if (_isEmpty(recordCustomFields)) {
