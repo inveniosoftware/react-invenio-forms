@@ -11,6 +11,7 @@ import { Field, FastField } from "formik";
 import { Accordion, Container, Icon } from "semantic-ui-react";
 import _omit from "lodash/omit";
 import _get from "lodash/get";
+import FormSectionFeedback from '../elements/FormSectionFeedback';  // Import the new error component
 
 export class AccordionField extends Component {
   hasError(errors, initialValues = undefined, values = undefined) {
@@ -31,8 +32,9 @@ export class AccordionField extends Component {
   renderAccordion = (props) => {
     const {
       form: { errors, status, initialErrors, initialValues, values },
-    } = props;
-
+    } = props;  
+    const { includesPaths } = this.props;
+  
     // eslint-disable-next-line no-unused-vars
     const { label, children, active, ...ui } = this.props;
     const uiProps = _omit({ ...ui }, ["optimized", "includesPaths"]);
@@ -51,13 +53,21 @@ export class AccordionField extends Component {
       },
     ];
 
+    // Filter errors to only include those in includesPaths
+    const filteredErrors = includesPaths.reduce((acc, path) => {
+      if (_get(errors, path)) {
+        acc[path] = _get(errors, path);
+      }
+      return acc;
+    }, {});
+  
     const errorClass = hasError ? "error secondary" : "";
     const [activeIndex, setActiveIndex] = useState(active ? 0 : -1);
-
+  
     const handleTitleClick = (e, { index }) => {
       setActiveIndex(activeIndex === index ? -1 : index);
     };
-
+  
     return (
       <Accordion
         inverted
@@ -80,6 +90,10 @@ export class AccordionField extends Component {
               {panel.title.content}
               <Icon name="angle down" />
             </Accordion.Title>
+  
+            {/* Use FormSectionFeedback to display filtered errors */}
+            <FormSectionFeedback errors={filteredErrors} />
+  
             <Accordion.Content active={activeIndex === index}>
               {panel.content.content}
             </Accordion.Content>
@@ -88,7 +102,7 @@ export class AccordionField extends Component {
       </Accordion>
     );
   };
-
+ 
   render() {
     const { optimized } = this.props;
 
