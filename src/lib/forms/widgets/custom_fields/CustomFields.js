@@ -85,12 +85,14 @@ export class CustomFields extends Component {
               displaySection = true,
               section: sectionName,
             } = section;
+            const sectionId = sectionName.toLowerCase().replace(/\s+/g, '-') + "-section";
             return displaySection ? (
               <AccordionField
                 key={`section-${sectionName}`}
                 includesPaths={paths}
                 label={sectionName}
                 active
+                id={sectionId}
               >
                 {fields}
               </AccordionField>
