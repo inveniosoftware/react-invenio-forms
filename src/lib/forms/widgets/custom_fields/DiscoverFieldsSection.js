@@ -98,9 +98,16 @@ export class DiscoverFieldsSection extends Component {
       ...Object.entries(tempFields).map(([key, value]) => value.key),
       ...recordFields,
     ];
+    const tempFieldsPaths = tempFields.map((item) => item.key);
 
     return (
-      <AccordionField key="discover-fields" label="Domain specific fields" active id="domain-specific-fields-section">
+      <AccordionField
+        key="discover-fields"
+        includesPaths={tempFieldsPaths}
+        label="Domain specific fields"
+        active
+        id="domain-specific-fields-section"
+      >
         {sections.map(({ fields, paths, ...sectionConfig }) => {
           const recordCustomFields = this.getFieldsWithValues(fields);
           if (_isEmpty(recordCustomFields)) {
