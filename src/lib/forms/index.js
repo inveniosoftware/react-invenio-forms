@@ -15,6 +15,7 @@ export { BaseForm } from "./BaseForm";
 export { BooleanField } from "./BooleanField";
 export { ErrorLabel } from "./ErrorLabel";
 export { FieldLabel } from "./FieldLabel";
+export { FeedbackLabel } from "./FeedbackLabel";
 export { GroupField } from "./GroupField";
 export { SelectField } from "./SelectField";
 export { RemoteSelectField } from "./RemoteSelectField";
