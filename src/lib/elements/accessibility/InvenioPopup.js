@@ -10,7 +10,7 @@ import { Popup } from "semantic-ui-react";
 
 export class InvenioPopup extends Component {
   render() {
-    const { popupId, size, trigger, content, position, inverted, ariaLabel } =
+    const { popupId, size, trigger, content, position, inverted, ariaLabel, hoverable } =
       this.props;
 
     return (
@@ -19,6 +19,7 @@ export class InvenioPopup extends Component {
         size={size}
         position={position}
         inverted={inverted}
+        hoverable={hoverable}
         on={["hover", "focus"]}
         trigger={React.cloneElement(trigger, {
           "role": "button",
@@ -41,6 +42,7 @@ InvenioPopup.propTypes = {
   content: PropTypes.string.isRequired,
   popupId: PropTypes.string.isRequired,
   inverted: PropTypes.bool,
+  hoverable: PropTypes.bool,
   position: PropTypes.string,
   size: PropTypes.string,
 };
