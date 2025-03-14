@@ -5,8 +5,8 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export function flattenAndCategorizeErrors(obj, prefix = "") {
-  let flattenedErrors = {};
-  let severityChecks = {};
+  let flattenedErrors = {}; // To store flattened errors
+  let severityChecks = {}; // To store severity-based errors
 
   for (let key in obj) {
     let newKey = prefix ? `${prefix}.${key}` : key;
@@ -18,9 +18,15 @@ export function flattenAndCategorizeErrors(obj, prefix = "") {
       } else if (Array.isArray(value)) {
         value.forEach((item, index) => {
           let arrayKey = `${newKey}[${index}]`;
-          let nested = flattenAndCategorizeErrors(item, arrayKey);
-          Object.assign(flattenedErrors, nested.flattenedErrors);
-          Object.assign(severityChecks, nested.severityChecks);
+
+          // Fix: If item is a string, store it directly instead of iterating over characters
+          if (typeof item === "string") {
+            flattenedErrors[arrayKey] = item;
+          } else {
+            let nested = flattenAndCategorizeErrors(item, arrayKey);
+            Object.assign(flattenedErrors, nested.flattenedErrors);
+            Object.assign(severityChecks, nested.severityChecks);
+          }
         });
       } else {
         let nested = flattenAndCategorizeErrors(value, newKey);

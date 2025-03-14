@@ -9,78 +9,69 @@ import PropTypes from "prop-types";
 import { Field, FastField } from "formik";
 import { Accordion, Container, Icon, Label } from "semantic-ui-react";
 import _omit from "lodash/omit";
-import _get from "lodash/get";
+import { flattenAndCategorizeErrors } from "../utils";
 
 export class AccordionField extends Component {
-  hasError = (errors, initialValues = undefined, values = undefined) => {
-    const { includesPaths } = this.props;
-    for (const errorPath in errors) {
-      for (const subPath in errors[errorPath]) {
-        const path = `${errorPath}.${subPath}`;
-        if (
-          _get(initialValues, path, "") === _get(values, path, "") &&
-          includesPaths.includes(path)
-        ) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
+  hasError(errors, includesPaths) {
+    return Object.keys(errors).some((errorPath) =>
+      includesPaths.some((path) => errorPath.startsWith(path))
+    );
+  }
 
-  flattenErrors = (errors) => {
-    let flattened = {};
+  getErrorSummary = (errors, includePaths, severityChecks) => {
+    const count = {};
 
-    const recurse = (obj, path = "") => {
-      if (Array.isArray(obj)) {
-        // For arrays, treat each item individually, appending the index to the path
-        obj.forEach((item, index) => {
-          recurse(item, `${path}[${index}]`);
-        });
-      } else if (typeof obj === "object" && obj !== null) {
-        // If it's an object, recursively traverse it
-        for (const key in obj) {
-          const newPath = path ? `${path}.${key}` : key;
-          recurse(obj[key], newPath);
-        }
-      } else {
-        // If it's a value, save the path and value
-        flattened[path] = obj;
-      }
-    };
-
-    recurse(errors);
-    return flattened;
-  };
-
-  countErrors = (errors, includePaths) => {
-    const flattenedErrors = this.flattenErrors(errors);
-    let count = 0;
-
-    // Count matching paths from includePaths
-    for (const path in flattenedErrors) {
+    // Count generic errors
+    for (const path in errors.flattenedErrors) {
       if (includePaths.some((includePath) => path.startsWith(includePath))) {
-        count++;
+        count["error"] = (count["error"] || 0) + 1;
       }
     }
 
-    return count;
+    // Count severity-based errors
+    for (const key in errors.severityChecks) {
+      const severity = errors.severityChecks[key]?.severity;
+      const path = key;
+
+      if (
+        severity &&
+        includePaths.some((includePath) => path.startsWith(includePath))
+      ) {
+        count[severity] = (count[severity] || 0) + 1;
+      }
+    }
+
+    // Format output to display labels
+    const formattedCount = {};
+    for (const [severity, num] of Object.entries(count)) {
+      const label =
+        severityChecks?.[severity]?.label ||
+        severity.charAt(0).toUpperCase() + severity.slice(1);
+      formattedCount[severity] = `${num} ${label}${num === 1 ? "" : "s"}`;
+    }
+
+    return formattedCount;
   };
 
   renderAccordion = (props) => {
     const {
-      form: { errors, status, initialErrors, initialValues, values },
+      form: { errors, initialErrors },
     } = props;
-    const { includesPaths, label, children, active } = this.props;
+    const { includesPaths, label, children, active, severityChecks } = this.props;
 
     const uiProps = _omit(this.props, ["optimized", "includesPaths"]);
-    const hasError =
-      this.hasError(errors, initialValues, values) || this.hasError(initialErrors);
+    const currentErrors = { ...initialErrors, ...errors };
+    const categorizedErrors = flattenAndCategorizeErrors(currentErrors);
 
-    const errorCount =
-      this.countErrors(errors, includesPaths) ||
-      this.countErrors(initialErrors, includesPaths);
-    const errorClass = hasError ? "error secondary" : "";
+    const errorClass = this.hasError(categorizedErrors.flattenedErrors, includesPaths)
+      ? "error secondary"
+      : "";
+    const errorSummary = this.getErrorSummary(
+      categorizedErrors,
+      includesPaths,
+      severityChecks
+    );
+
     const [activeIndex, setActiveIndex] = useState(active ? 0 : -1);
 
     const handleTitleClick = (e, { index }) => {
@@ -105,13 +96,19 @@ export class AccordionField extends Component {
           tabIndex={0}
         >
           {label}
-          {errorCount > 0 && (
-            <Label size="tiny" circular negative className="error-label">
-              {errorCount} {errorCount === 1 ? "error" : "errors"}
+          {Object.entries(errorSummary).map(([severity, text]) => (
+            <Label
+              key={severity}
+              size="tiny"
+              circular
+              className={`accordion-label ${severity}`}
+            >
+              {text}
             </Label>
-          )}
+          ))}
           <Icon name={activeIndex === 0 ? "angle down" : "angle right"} />
         </Accordion.Title>
+
         <Accordion.Content active={activeIndex === 0}>
           <Container>{children}</Container>
         </Accordion.Content>
@@ -133,6 +130,7 @@ AccordionField.propTypes = {
   optimized: PropTypes.bool,
   children: PropTypes.node,
   ui: PropTypes.object,
+  severityChecks: PropTypes.object,
 };
 
 AccordionField.defaultProps = {
@@ -142,4 +140,5 @@ AccordionField.defaultProps = {
   optimized: false,
   children: null,
   ui: null,
+  severityChecks: null,
 };

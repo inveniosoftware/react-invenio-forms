@@ -10,8 +10,16 @@ import { Popup } from "semantic-ui-react";
 
 export class InvenioPopup extends Component {
   render() {
-    const { popupId, size, trigger, content, position, inverted, ariaLabel, hoverable } =
-      this.props;
+    const {
+      popupId,
+      size,
+      trigger,
+      content,
+      position,
+      inverted,
+      ariaLabel,
+      hoverable,
+    } = this.props;
 
     return (
       <Popup
@@ -51,4 +59,5 @@ InvenioPopup.defaultProps = {
   inverted: false,
   position: "top left",
   size: "small",
+  hoverable: false,
 };
