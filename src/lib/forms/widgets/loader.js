@@ -9,10 +9,10 @@ import React from "react";
  */
 export async function importWidget(
   templateLoaders,
-  { ui_widget: UIWidget, fieldPath, record, props }
+  { ui_widget: UIWidget, fieldPath, record, props },
+  createElement = true
 ) {
   let component = undefined;
-
   // Try import widget from user's defined templateLoaders
   for (const loader of templateLoaders) {
     try {
@@ -33,13 +33,16 @@ export async function importWidget(
     console.error(`Failed to import default component ${UIWidget}.js`);
     throw Error("Component not found in any loader");
   }
-
-  return React.createElement(component, {
-    ...props,
-    record: record,
-    key: fieldPath,
-    fieldPath: fieldPath,
-  });
+  if (createElement) {
+    return React.createElement(component, {
+      ...props,
+      record: record,
+      key: fieldPath,
+      fieldPath: fieldPath,
+    });
+  } else {
+    return component;
+  }
 }
 
 /**

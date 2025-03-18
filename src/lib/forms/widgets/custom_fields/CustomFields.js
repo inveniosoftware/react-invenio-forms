@@ -7,9 +7,9 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { DiscoverFieldsSection } from "./DiscoverFieldsSection";
+import { default as DiscoverFieldsSection } from "./DiscoverFieldsSection";
 import { AccordionField } from "../../AccordionField";
-import { loadWidgetsFromConfig } from "../loader";
+import { importWidget, loadWidgetsFromConfig } from "../loader";
 import { Container } from "semantic-ui-react";
 
 export class CustomFields extends Component {
@@ -27,16 +27,18 @@ export class CustomFields extends Component {
     try {
       const { sectionsConfig, discoverFieldsConfig } =
         await this.loadCustomFieldsWidgets();
-      const sections = sectionsConfig.map((sectionCfg) => {
-        const paths = includesPaths(sectionCfg.fields, fieldPathPrefix);
-        return { ...sectionCfg, paths };
-      });
+      const sections = await Promise.all(
+        sectionsConfig.map(async (sectionCfg) => {
+          const paths = includesPaths(sectionCfg.fields, fieldPathPrefix);
+          const widget = await this.loadSectionWidget(sectionCfg);
+          return { ...sectionCfg, paths, widget };
+        })
+      ).then((values) => values);
 
       const discoverFieldsSections = discoverFieldsConfig.map((sectionCfg) => {
         const paths = includesPaths(sectionCfg.fields, fieldPathPrefix);
         return { ...sectionCfg, paths };
       });
-
       this.setState({
         sections: sections,
         discoverFieldsSections: discoverFieldsSections,
@@ -45,6 +47,26 @@ export class CustomFields extends Component {
       console.error("Couldn't load custom fields widgets.", error);
     }
   };
+
+  async loadSectionWidget(sectionCfg) {
+    const { templateLoaders, record, includesPaths, fieldPathPrefix } = this.props;
+    const paths = includesPaths(sectionCfg.fields, fieldPathPrefix);
+    if (sectionCfg.ui_widget) {
+      return await importWidget(
+        templateLoaders,
+        {
+          ...sectionCfg,
+          fieldPath: undefined,
+          record,
+          props: {
+            includesPaths: paths,
+            children: sectionCfg,
+          },
+        },
+        false
+      );
+    }
+  }
 
   async loadCustomFieldsWidgets() {
     const { config, fieldPathPrefix, templateLoaders, record } = this.props;
@@ -75,6 +97,7 @@ export class CustomFields extends Component {
   render() {
     const { sections, discoverFieldsSections } = this.state;
     const { templateLoaders, record } = this.props;
+
     return (
       <>
         {sections &&
@@ -84,18 +107,21 @@ export class CustomFields extends Component {
               paths,
               displaySection = true,
               section: sectionName,
+              widget,
               id: sectionId,
             } = section;
+            const active = section.active !== undefined ? section.active : true;
+            const Element = widget !== undefined ? widget : AccordionField;
             return displaySection ? (
-              <AccordionField
+              <Element
                 key={`section-${sectionName}`}
                 includesPaths={paths}
                 label={sectionName}
-                active
+                active={active}
                 id={sectionId}
               >
                 {fields}
-              </AccordionField>
+              </Element>
             ) : (
               <Container key="custom-fields-section">{fields}</Container>
             );
@@ -117,6 +143,7 @@ CustomFields.propTypes = {
     PropTypes.shape({
       section: PropTypes.string.isRequired,
       displaySection: PropTypes.bool,
+      ui_widget: PropTypes.string,
       fields: PropTypes.arrayOf(
         PropTypes.shape({
           field: PropTypes.string.isRequired,
