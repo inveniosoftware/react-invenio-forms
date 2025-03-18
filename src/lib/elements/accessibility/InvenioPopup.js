@@ -59,5 +59,5 @@ InvenioPopup.defaultProps = {
   inverted: false,
   position: "top left",
   size: "small",
-  hoverable: false,
+  hoverable: true,
 };

@@ -5,60 +5,58 @@ import { InvenioPopup } from "../elements/accessibility";
 import PropTypes from "prop-types";
 
 export class FeedbackLabel extends Component {
-  render() {
-    const { errorMessage } = this.props;
-    if (!errorMessage) return null;
+  constructor(props) {
+    super(props);
 
-    const { flattenedErrors, severityChecks } =
+    const { errorMessage } = props;
+    const { flattenedErrors = {}, severityChecks = {} } =
       flattenAndCategorizeErrors(errorMessage);
 
-    let errorText = "";
-    let severityLevel = "";
-    let severityMessage = "";
+    // Get the first error and severity data, defaulting to empty values if not present
+    const errorText = Object.values(flattenedErrors)[0] || "";
+    const severityData = Object.values(severityChecks)[0] || {};
 
-    if (flattenedErrors) {
-      const errorKey = Object.keys(flattenedErrors)[0];
-      errorText = flattenedErrors[errorKey];
+    // Destructure severityData, ensuring default values for missing keys
+    const severityLevel = severityData?.severity || "";
+    const severityMessage = severityData?.message || "";
+    const severityDescription = severityData?.description || "";
+
+    this.state = {
+      errorText,
+      severityInfo: { severityLevel, severityMessage, severityDescription },
+      prompt: !severityLevel && !!errorText,
+    };
+  }
+
+  render() {
+    const { errorText, severityInfo, prompt } = this.state;
+
+    // Return null if neither errorText nor severityMessage exists
+    if (!errorText && !severityInfo.severityMessage) {
+      return null;
     }
-
-    if (severityChecks) {
-      const severityKey = Object.keys(severityChecks)[0];
-      const severityData = severityChecks[severityKey];
-      if (severityData) {
-        severityLevel = severityData.severity;
-        severityMessage = severityData.message;
-      }
-    }
-
-    if (errorMessage.message && errorMessage.severity) {
-      severityLevel = errorMessage.severity;
-      severityMessage = errorMessage.message;
-    }
-
-    const prompt = !severityLevel && !!errorText;
-
+    const hasSeverity =
+      severityInfo.severityMessage && severityInfo.severityDescription;
     return (
-      <Label pointing="left" className={severityLevel} prompt={prompt}>
-        {severityMessage && (
+      <Label pointing="left" className={severityInfo.severityLevel} prompt={prompt}>
+        {/* Display severity message with a popup if it exists */}
+        {hasSeverity && (
           <InvenioPopup
             trigger={<Icon name="info circle" />}
-            content={
-              <a target="_blank" href="_">
-                {severityMessage}
-              </a>
-            }
+            content={severityInfo.severityDescription}
             position="top center"
             hoverable
           />
         )}
-        {errorText || severityMessage}
+        {/* Display either the error text or the severity message */}
+        {errorText || severityInfo.severityMessage}
       </Label>
     );
   }
 }
 
 FeedbackLabel.propTypes = {
-  errorMessage: PropTypes.array,
+  errorMessage: PropTypes.object,
 };
 
 FeedbackLabel.defaultProps = {

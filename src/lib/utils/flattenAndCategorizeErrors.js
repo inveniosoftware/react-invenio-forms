@@ -5,35 +5,48 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export function flattenAndCategorizeErrors(obj, prefix = "") {
-  let flattenedErrors = {}; // To store flattened errors
-  let severityChecks = {}; // To store severity-based errors
+  if (!obj || typeof obj !== "object") {
+    throw Error("Invalid input: expected an object");
+  }
 
-  for (let key in obj) {
-    let newKey = prefix ? `${prefix}.${key}` : key;
-    let value = obj[key];
+  const flattenedErrors = {};
+  const severityChecks = {};
 
-    if (value && typeof value === "object") {
-      if ("message" in value && "severity" in value) {
+  // Handle direct severity-based error objects
+  if (obj.message && obj.severity) {
+    severityChecks[prefix || "error"] = obj;
+    return { flattenedErrors, severityChecks };
+  }
+
+  for (const [key, value] of Object.entries(obj)) {
+    const newKey = prefix ? `${prefix}.${key}` : key;
+
+    if (typeof value === "object") {
+      if (value.message && value.severity) {
+        // Handle severity-based error format
         severityChecks[newKey] = value;
       } else if (Array.isArray(value)) {
+        // Handle arrays
         value.forEach((item, index) => {
-          let arrayKey = `${newKey}[${index}]`;
-
-          // Fix: If item is a string, store it directly instead of iterating over characters
-          if (typeof item === "string") {
-            flattenedErrors[arrayKey] = item;
+          const arrayKey = `${newKey}[${index}]`;
+          if (item && typeof item === "object") {
+            const { flattenedErrors: nestedErrors, severityChecks: nestedChecks } =
+              flattenAndCategorizeErrors(item, arrayKey);
+            Object.assign(flattenedErrors, nestedErrors);
+            Object.assign(severityChecks, nestedChecks);
           } else {
-            let nested = flattenAndCategorizeErrors(item, arrayKey);
-            Object.assign(flattenedErrors, nested.flattenedErrors);
-            Object.assign(severityChecks, nested.severityChecks);
+            flattenedErrors[arrayKey] = item;
           }
         });
       } else {
-        let nested = flattenAndCategorizeErrors(value, newKey);
-        Object.assign(flattenedErrors, nested.flattenedErrors);
-        Object.assign(severityChecks, nested.severityChecks);
+        // Handle nested objects
+        const { flattenedErrors: nestedErrors, severityChecks: nestedChecks } =
+          flattenAndCategorizeErrors(value, newKey);
+        Object.assign(flattenedErrors, nestedErrors);
+        Object.assign(severityChecks, nestedChecks);
       }
     } else {
+      // Handle primitive values
       flattenedErrors[newKey] = value;
     }
   }

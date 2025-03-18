@@ -12,12 +12,15 @@ import _omit from "lodash/omit";
 import { flattenAndCategorizeErrors } from "../utils";
 
 export class AccordionField extends Component {
+  // Checks if there are any errors that match the given paths.
+
   hasError(errors, includesPaths) {
     return Object.keys(errors).some((errorPath) =>
       includesPaths.some((path) => errorPath.startsWith(path))
     );
   }
 
+  // Generates a summary of errors categorized by severity.
   getErrorSummary = (errors, includePaths, severityChecks) => {
     const count = {};
 
@@ -42,6 +45,7 @@ export class AccordionField extends Component {
     }
 
     // Format output to display labels
+    // e.g., { error: "1 Error", warning: "2 Warnings" }
     const formattedCount = {};
     for (const [severity, num] of Object.entries(count)) {
       const label =
@@ -60,12 +64,17 @@ export class AccordionField extends Component {
     const { includesPaths, label, children, active, severityChecks } = this.props;
 
     const uiProps = _omit(this.props, ["optimized", "includesPaths"]);
-    const currentErrors = { ...initialErrors, ...errors };
-    const categorizedErrors = flattenAndCategorizeErrors(currentErrors);
 
+    // Merge initial and current errors for accurate validation
+    const persistentErrors = { ...initialErrors, ...errors };
+    const categorizedErrors = flattenAndCategorizeErrors(persistentErrors);
+
+    // Determine if the accordion should show an "error" state
     const errorClass = this.hasError(categorizedErrors.flattenedErrors, includesPaths)
-      ? "error secondary"
+      ? "error"
       : "";
+
+    // Generate summary of errors for display
     const errorSummary = this.getErrorSummary(
       categorizedErrors,
       includesPaths,
@@ -81,9 +90,10 @@ export class AccordionField extends Component {
     return (
       <Accordion
         inverted
-        className={`invenio-accordion-field ${errorClass}`}
+        className={`invenio-accordion-field ${errorClass} secondary`}
         {...uiProps}
       >
+        {/* Accordion Title with Error Summary */}
         <Accordion.Title
           active={activeIndex === 0}
           index={0}
@@ -96,6 +106,7 @@ export class AccordionField extends Component {
           tabIndex={0}
         >
           {label}
+          {/* Display error labels */}
           {Object.entries(errorSummary).map(([severity, text]) => (
             <Label
               key={severity}
@@ -106,9 +117,11 @@ export class AccordionField extends Component {
               {text}
             </Label>
           ))}
+          {/* Toggle Icon */}
           <Icon name={activeIndex === 0 ? "angle down" : "angle right"} />
         </Accordion.Title>
 
+        {/* Accordion Content */}
         <Accordion.Content active={activeIndex === 0}>
           <Container>{children}</Container>
         </Accordion.Content>
