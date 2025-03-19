@@ -5,14 +5,16 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export function flattenAndCategorizeErrors(obj, prefix = "") {
-  if (!obj || typeof obj !== "object") {
-    throw Error("Invalid input: expected an object");
-  }
-
   const flattenedErrors = {};
   const severityChecks = {};
 
-  // Handle direct severity-based error objects
+  // If obj is a string, treat it as a single error message i.e. old error format
+  if (typeof obj === "string") {
+    flattenedErrors[prefix || "error"] = obj;
+    return { flattenedErrors, severityChecks };
+  }
+
+  // Handle direct severity-based error objects i.e. new error format
   if (obj.message && obj.severity) {
     severityChecks[prefix || "error"] = obj;
     return { flattenedErrors, severityChecks };
