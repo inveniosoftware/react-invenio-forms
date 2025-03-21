@@ -1,13 +1,14 @@
 import _isEmpty from "lodash/isEmpty";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Overridable from "react-overridable";
 import { Divider } from "semantic-ui-react";
 import { AccordionField } from "../../AccordionField";
 import { FieldLabel } from "../../FieldLabel";
 import { AddDiscoverableFieldsModal } from "./AddDiscoverableFieldsModal";
 import isEmpty from "lodash/isEmpty";
 
-export class DiscoverFieldsSection extends Component {
+class DiscoverFieldsSection extends Component {
   constructor(props) {
     super(props);
     const { sections, record } = props; // sections = fields grouping, usually by domain
@@ -27,7 +28,12 @@ export class DiscoverFieldsSection extends Component {
     for (const section of sectionCfg) {
       for (const fieldCfg of section.fieldsConfig) {
         const { field, props, ui_widget, ...otherCfg } = fieldCfg;
-        cfg[field] = { ui_widget: ui_widget, section: section, ...props, ...otherCfg };
+        cfg[field] = {
+          ui_widget: ui_widget,
+          section: section,
+          ...props,
+          ...otherCfg,
+        };
       }
     }
 
@@ -92,7 +98,7 @@ export class DiscoverFieldsSection extends Component {
   };
 
   render() {
-    const { templateLoaders, record } = this.props;
+    const { templateLoaders, record, discoverSectionLabel } = this.props;
     const { sections, tempFields, recordFields } = this.state;
     const existingFields = [
       ...Object.entries(tempFields).map(([key, value]) => value.key),
@@ -104,7 +110,7 @@ export class DiscoverFieldsSection extends Component {
       <AccordionField
         key="discover-fields"
         includesPaths={tempFieldsPaths}
-        label="Domain specific fields"
+        label={discoverSectionLabel}
         active
         id="domain-specific-fields-section"
       >
@@ -144,4 +150,14 @@ DiscoverFieldsSection.propTypes = {
   templateLoaders: PropTypes.array.isRequired,
   sections: PropTypes.array.isRequired,
   record: PropTypes.object.isRequired,
+  discoverSectionLabel: PropTypes.string,
 };
+
+DiscoverFieldsSection.defaultProps = {
+  discoverSectionLabel: "Domain specific fields",
+};
+
+export default Overridable.component(
+  "ReactInvenioForms.DiscoverFieldsSection",
+  DiscoverFieldsSection
+);
