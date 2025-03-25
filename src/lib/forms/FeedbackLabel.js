@@ -43,7 +43,13 @@ export class FeedbackLabel extends Component {
         {hasSeverity && (
           <InvenioPopup
             trigger={<Icon name="info circle" />}
-            content={severityInfo.severityDescription}
+            // Rule descriptions can contain HTML to link to a page with more details about the rule.
+            // This field is sanitized in the backend with SanitizedHTML.
+            content={
+              <span
+                dangerouslySetInnerHTML={{ __html: severityInfo.severityDescription }}
+              />
+            }
             position="top center"
             hoverable
           />
