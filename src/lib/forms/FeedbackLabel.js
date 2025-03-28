@@ -24,12 +24,15 @@ export class FeedbackLabel extends Component {
     this.state = {
       errorText,
       severityInfo: { severityLevel, severityMessage, severityDescription },
-      prompt: !severityLevel && !!errorText,
     };
   }
 
   render() {
-    const { errorText, severityInfo, prompt } = this.state;
+    const { errorText, severityInfo } = this.state;
+
+    const hasError = errorText !== "" || severityInfo.severityLevel === "error";
+    const className = hasError ? "prompt" : severityInfo.severityLevel;
+    const icon = hasError ? "times circle" : "info circle";
 
     // Return null if neither errorText nor severityMessage exists
     if (!errorText && !severityInfo.severityMessage) {
@@ -38,11 +41,11 @@ export class FeedbackLabel extends Component {
     const hasSeverity =
       severityInfo.severityMessage && severityInfo.severityDescription;
     return (
-      <Label pointing="left" className={severityInfo.severityLevel} prompt={prompt}>
+      <Label pointing="left" className={className}>
         {/* Display severity message with a popup if it exists */}
         {hasSeverity && (
           <InvenioPopup
-            trigger={<Icon name="info circle" />}
+            trigger={<Icon name={icon} />}
             // Rule descriptions can contain HTML to link to a page with more details about the rule.
             // This field is sanitized in the backend with SanitizedHTML.
             content={
