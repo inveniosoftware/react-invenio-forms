@@ -5,10 +5,9 @@ import { InvenioPopup } from "../elements/accessibility";
 import PropTypes from "prop-types";
 
 export class FeedbackLabel extends Component {
-  constructor(props) {
-    super(props);
+  render() {
+    const { errorMessage, pointing } = this.props;
 
-    const { errorMessage } = props;
     const { flattenedErrors = {}, severityChecks = {} } =
       flattenAndCategorizeErrors(errorMessage);
 
@@ -20,16 +19,7 @@ export class FeedbackLabel extends Component {
     const severityLevel = severityData?.severity || "";
     const severityMessage = severityData?.message || "";
     const severityDescription = severityData?.description || "";
-
-    this.state = {
-      errorText,
-      severityInfo: { severityLevel, severityMessage, severityDescription },
-    };
-  }
-
-  render() {
-    const { errorText, severityInfo } = this.state;
-    const { pointing } = this.props;
+    const severityInfo = { severityLevel, severityMessage, severityDescription };
 
     const hasError = errorText !== "" || severityInfo.severityLevel === "error";
     const className = hasError ? "prompt" : severityInfo.severityLevel;
