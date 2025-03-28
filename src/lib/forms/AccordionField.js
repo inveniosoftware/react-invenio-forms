@@ -15,8 +15,18 @@ export class AccordionField extends Component {
   // Checks if there are any errors that match the given paths.
 
   hasError(errors, includesPaths) {
-    return Object.keys(errors).some((errorPath) =>
-      includesPaths.some((path) => errorPath.startsWith(path))
+    if (
+      Object.keys(errors.flattenedErrors).some((errorPath) =>
+        includesPaths.some((path) => errorPath.startsWith(path))
+      )
+    ) {
+      return true;
+    }
+
+    return Object.keys(errors.severityChecks).some(
+      (errorPath) =>
+        includesPaths.some((path) => errorPath.startsWith(path)) &&
+        errors.severityChecks[errorPath].severity === "error"
     );
   }
 
@@ -70,9 +80,7 @@ export class AccordionField extends Component {
     const categorizedErrors = flattenAndCategorizeErrors(persistentErrors);
 
     // Determine if the accordion should show an "error" state
-    const errorClass = this.hasError(categorizedErrors.flattenedErrors, includesPaths)
-      ? "error"
-      : "";
+    const errorClass = this.hasError(categorizedErrors, includesPaths) ? "error" : "";
 
     // Generate summary of errors for display
     const errorSummary = this.getErrorSummary(
