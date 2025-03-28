@@ -10,6 +10,7 @@ import { FastField, Field } from "formik";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Form } from "semantic-ui-react";
+import { FeedbackLabel } from "./FeedbackLabel";
 
 export class TextField extends Component {
   render() {
@@ -32,16 +33,30 @@ export class TextField extends Component {
           name={fieldPath}
         >
           {({ field, meta }) => {
+            const computedError =
+              error ||
+              meta.error ||
+              // We check if initialValue changed to display the initialError,
+              // otherwise it would be displayed despite updating the field
+              (!meta.touched && meta.initialError);
+
+            let formInputError = null;
+            if (typeof computedError === "string") {
+              formInputError = computedError;
+            } else if (
+              typeof computedError === "object" &&
+              computedError.message &&
+              computedError.severity
+            ) {
+              formInputError = (
+                <FeedbackLabel errorMessage={computedError} pointing="above" />
+              );
+            }
+
             return (
               <Form.Input
                 {...field}
-                error={
-                  error ||
-                  meta.error ||
-                  // We check if initialValue changed to display the initialError,
-                  // otherwise it would be displayed despite updating the fieldu
-                  (!meta.touched && meta.initialError)
-                }
+                error={formInputError}
                 disabled={disabled}
                 fluid
                 label={label}

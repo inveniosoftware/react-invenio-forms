@@ -29,6 +29,7 @@ export class FeedbackLabel extends Component {
 
   render() {
     const { errorText, severityInfo } = this.state;
+    const { pointing } = this.props;
 
     const hasError = errorText !== "" || severityInfo.severityLevel === "error";
     const className = hasError ? "prompt" : severityInfo.severityLevel;
@@ -41,7 +42,7 @@ export class FeedbackLabel extends Component {
     const hasSeverity =
       severityInfo.severityMessage && severityInfo.severityDescription;
     return (
-      <Label pointing="left" className={className}>
+      <Label pointing={pointing} className={className}>
         {/* Display severity message with a popup if it exists */}
         {hasSeverity && (
           <InvenioPopup
@@ -66,8 +67,10 @@ export class FeedbackLabel extends Component {
 
 FeedbackLabel.propTypes = {
   errorMessage: PropTypes.object,
+  pointing: PropTypes.oneOf(["left", "above"]),
 };
 
 FeedbackLabel.defaultProps = {
   errorMessage: undefined,
+  pointing: "left",
 };
