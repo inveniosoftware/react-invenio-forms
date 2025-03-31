@@ -23,10 +23,10 @@
     "format": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --write \"src/**/*.js\""
   },
   "peerDependencies": {
-    "@babel/runtime": "^7.9.0",
+    "@babel/runtime": "^7.26.10",
     "@semantic-ui-react/css-patch": "^1.0.0",
     "@tinymce/tinymce-react": "^4.3.0",
-    "axios": "^1.7.7",
+    "axios": "^1.8.2",
     "formik": "^2.1.0",
     "lodash": "^4.17.0",
     "luxon": "^1.23.0",
@@ -58,7 +58,7 @@
     "enzyme-adapter-react-16": "^1.15.0",
     "expect": "^26.0.0",
     "formik": "^2.1.0",
-    "json": "^9.0.0",
+    "json": "^10.0.0",
     "lodash": "^4.17.0",
     "luxon": "^1.23.0",
     "query-string": "^7.0.0",
