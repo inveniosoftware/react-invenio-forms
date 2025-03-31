@@ -30,24 +30,21 @@ export class ListAndFilterCustomFields extends Component {
   filter = () => {
     const { fieldsList } = this.props;
     const { searchPhrase, filter } = this.state;
+
     if (!searchPhrase && !filter) {
       this.resetFilter();
     }
+
     const filteredResults = Object.fromEntries(
+      // eslint-disable-next-line no-unused-vars
       Object.entries(fieldsList).filter(([key, val]) => {
-        if (filter && searchPhrase) {
-          return (
-            val.section.section === filter &&
-            val.label.toLowerCase().includes(searchPhrase.toLowerCase())
-          );
-        } else if (filter) {
-          return val.section.section === filter;
-        } else if (searchPhrase) {
-          return val.label.toLowerCase().includes(searchPhrase.toLowerCase());
-        }
-        return true; // Return all entries if no filters are applied
+        const matchesFilter = !filter || val.section.section === filter;
+        const matchesSearch =
+          !searchPhrase || val.label.toLowerCase().includes(searchPhrase.toLowerCase());
+        return matchesFilter && matchesSearch;
       })
     );
+
     this.setState({ filteredFieldsList: filteredResults });
   };
 
