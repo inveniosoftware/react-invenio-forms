@@ -45,6 +45,7 @@ export class ListAndFilterCustomFields extends Component {
         } else if (searchPhrase) {
           return val.label.toLowerCase().includes(searchPhrase.toLowerCase());
         }
+        return true; // Return all entries if no filters are applied
       })
     );
     this.setState({ filteredFieldsList: filteredResults });

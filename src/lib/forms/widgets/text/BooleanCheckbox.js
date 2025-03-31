@@ -22,6 +22,7 @@ export default function BooleanCheckbox({
   trueLabel,
   required,
 }) {
+  // eslint-disable-next-line no-unused-vars
   const [_, meta] = useField(fieldPath);
   return (
     <>
