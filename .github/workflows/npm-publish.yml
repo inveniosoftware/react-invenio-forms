@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2024 CERN.
+# Copyright (C) 2025 KTH Royal Institute of Technology.
+
 name: Publish
 
 on:
@@ -7,7 +12,7 @@ on:
 
 jobs:
   Publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout

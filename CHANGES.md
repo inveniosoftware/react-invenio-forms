@@ -2,6 +2,7 @@
 
 Version 3.5.3 (released 2025-05-02)
 
+- ci: update workflow to use Ubuntu 24.04
 - chore: relock deps and update babel-runtime and axios
 
 Version 3.5.2 (released 2024-08-02)
