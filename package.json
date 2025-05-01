@@ -1,6 +1,6 @@
 {
   "name": "react-invenio-forms",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "description": "Reusable React components for forms and other in Invenio",
   "main": "dist/cjs/index.js",
   "browser": "dist/cjs/index.js",
@@ -23,10 +23,10 @@
     "format": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --write \"src/**/*.js\""
   },
   "peerDependencies": {
-    "@babel/runtime": "^7.9.0",
+    "@babel/runtime": "^7.26.10",
     "@semantic-ui-react/css-patch": "^1.0.0",
     "@tinymce/tinymce-react": "^4.3.0",
-    "axios": "^0.21.0",
+    "axios": "^1.8.2",
     "formik": "^2.1.0",
     "lodash": "^4.17.0",
     "luxon": "^1.23.0",
@@ -51,7 +51,7 @@
     "@tinymce/tinymce-react": "^4.3.0",
     "ajv": "^8.0.0",
     "ajv-keywords": "^5.0.0",
-    "axios": "^0.21.0",
+    "axios": "^1.8.2",
     "coveralls": "^3.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.0",
