@@ -1,5 +1,9 @@
 # Changes
 
+Version 3.5.3 (released 2025-05-02)
+
+- chore: relock deps and update babel-runtime and axios
+
 Version 3.5.2 (released 2024-08-02)
 
 - editor: avoid losing content when the editor loses focus
