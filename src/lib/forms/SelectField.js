@@ -9,36 +9,39 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FastField, Field, getIn } from "formik";
 import { Form } from "semantic-ui-react";
-import isEmpty from "lodash/isEmpty";
+import { FeedbackLabel } from "../forms/FeedbackLabel";
 
 export class SelectField extends Component {
-  renderError = (errors, name, value, direction = "above") => {
-    const { options } = this.props;
-    let error = null;
-    if (!Array.isArray(value)) {
-      if (
-        !isEmpty(options) &&
-        !options.find((o) => o.value === value) &&
-        !isEmpty(value)
-      ) {
-        error = `The current value "${value}" is invalid, please select another value.`;
-      }
-    }
-
-    if (!error) {
-      error = errors[name];
-    }
-    return error
-      ? {
-          content: error,
-          pointing: direction,
-        }
-      : null;
+  renderError = (meta, initialValue, initialErrors, value, errors) => {
+    const { error, fieldPath } = this.props;
+    const computedError =
+      error ||
+      getIn(errors, fieldPath, null) ||
+      // We check if initialValue changed to display the initialError,
+      // otherwise it would be displayed despite updating the fieldu
+      (initialValue === value && getIn(initialErrors, fieldPath, null));
+    return (
+      computedError && (
+        <FeedbackLabel
+          errorMessage={computedError}
+          pointing="above"
+          fieldPath={fieldPath}
+        />
+      )
+    );
   };
 
   renderFormField = (formikProps) => {
     const {
-      form: { values, setFieldValue, handleBlur, errors, initialErrors, initialValues },
+      form: {
+        values,
+        setFieldValue,
+        handleBlur,
+        errors,
+        initialErrors,
+        initialValues,
+        meta,
+      },
       ...cmpProps
     } = formikProps;
     const {
@@ -60,13 +63,7 @@ export class SelectField extends Component {
         fluid
         className="invenio-select-field"
         selection
-        error={
-          error ||
-          getIn(errors, fieldPath, null) ||
-          // We check if initialValue changed to display the initialError,
-          // otherwise it would be displayed despite updating the fieldu
-          (initialValue === value && getIn(initialErrors, fieldPath, null))
-        }
+        error={this.renderError(meta, initialValue, initialErrors, value, errors)}
         label={{ children: label }}
         name={fieldPath}
         onBlur={handleBlur}
