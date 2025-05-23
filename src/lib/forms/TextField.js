@@ -49,7 +49,11 @@ export class TextField extends Component {
               computedError.severity
             ) {
               formInputError = (
-                <FeedbackLabel errorMessage={computedError} pointing="above" />
+                <FeedbackLabel
+                  errorMessage={computedError}
+                  pointing="above"
+                  fieldPath={fieldPath}
+                />
               );
             }
 

@@ -1,3 +1,4 @@
+import _get from "lodash/get";
 import React, { Component } from "react";
 import { Label, Icon } from "semantic-ui-react";
 import { flattenAndCategorizeErrors } from "../utils";
@@ -6,7 +7,7 @@ import PropTypes from "prop-types";
 
 export class FeedbackLabel extends Component {
   render() {
-    const { errorMessage, pointing } = this.props;
+    const { errorMessage, pointing, fieldPath } = this.props;
 
     const { flattenedErrors = {}, severityChecks = {} } =
       flattenAndCategorizeErrors(errorMessage);
@@ -36,6 +37,8 @@ export class FeedbackLabel extends Component {
         {/* Display severity message with a popup if it exists */}
         {hasSeverity && (
           <InvenioPopup
+            popupId={`form-feedback-error-${fieldPath}`}
+            ariaLabel="Form field feedback error"
             trigger={<Icon name={icon} />}
             // Rule descriptions can contain HTML to link to a page with more details about the rule.
             // This field is sanitized in the backend with SanitizedHTML.
@@ -58,9 +61,11 @@ export class FeedbackLabel extends Component {
 FeedbackLabel.propTypes = {
   errorMessage: PropTypes.object,
   pointing: PropTypes.oneOf(["left", "above"]),
+  fieldPath: PropTypes.string,
 };
 
 FeedbackLabel.defaultProps = {
   errorMessage: undefined,
   pointing: "left",
+  fieldPath: undefined,
 };
