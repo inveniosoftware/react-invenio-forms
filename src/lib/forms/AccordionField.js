@@ -1,99 +1,129 @@
 // This file is part of React-Invenio-Forms
-// Copyright (C) 2020 CERN.
+// Copyright (C) 2020-2025 CERN.
 // Copyright (C) 2020 Northwestern University.
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component, useState } from "react";
+import _get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, FastField } from "formik";
 import { Accordion, Container, Icon, Label } from "semantic-ui-react";
 import _omit from "lodash/omit";
-import { flattenAndCategorizeErrors } from "../utils";
 
-export class AccordionField extends Component {
-  // Checks if there are any errors that match the given paths.
+class AccordionError extends Component {
+  constructor(props) {
+    super(props);
 
-  hasError(errors, includesPaths) {
-    if (
-      Object.keys(errors.flattenedErrors).some((errorPath) =>
-        includesPaths.some((path) => errorPath.startsWith(path))
-      )
-    ) {
-      return true;
-    }
-
-    return Object.keys(errors.severityChecks).some(
-      (errorPath) =>
-        includesPaths.some((path) => errorPath.startsWith(path)) &&
-        errors.severityChecks[errorPath].severity === "error"
-    );
+    this.state = { errors: undefined };
   }
 
-  // Generates a summary of errors categorized by severity.
-  getErrorSummary = (errors, includePaths, severityChecks) => {
-    const count = {};
+  componentDidMount() {
+    const { formProps, hasError } = this.props;
+    const subfieldErrors = this.getSubfieldErrors(formProps);
+    const categorizedErrors = this.categorizeErrors(subfieldErrors);
+    hasError(categorizedErrors);
+    this.setState({ errors: categorizedErrors });
+  }
 
-    // Count generic errors
-    for (const path in errors.flattenedErrors) {
-      if (includePaths.some((includePath) => path.startsWith(includePath))) {
-        count["error"] = (count["error"] || 0) + 1;
-      }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const {
+      formProps: {
+        form: { errors, initialErrors },
+      },
+      formProps,
+      hasError,
+    } = this.props;
+    if (
+      prevProps.formProps.form.errors !== errors ||
+      prevProps.formProps.form.initialErrors !== initialErrors
+    ) {
+      const subfieldErrors = this.getSubfieldErrors(formProps);
+      const categorizedErrors = this.categorizeErrors(subfieldErrors);
+      hasError(categorizedErrors);
+      this.setState({ errors: categorizedErrors });
     }
+  }
 
-    // Count severity-based errors
-    for (const key in errors.severityChecks) {
-      const severity = errors.severityChecks[key]?.severity;
-      const path = key;
-
-      if (
-        severity &&
-        includePaths.some((includePath) => path.startsWith(includePath))
-      ) {
-        count[severity] = (count[severity] || 0) + 1;
-      }
-    }
-
-    // Format output to display labels
-    // e.g., { error: "1 Error", warning: "2 Warnings" }
-    const formattedCount = {};
-    for (const [severity, num] of Object.entries(count)) {
-      const label =
-        severityChecks?.[severity]?.label ||
-        severity.charAt(0).toUpperCase() + severity.slice(1);
-      formattedCount[severity] = `${num} ${label}${num === 1 ? "" : "s"}`;
-    }
-
-    return formattedCount;
-  };
-
-  renderAccordion = (props) => {
+  getSubfieldErrors = (props) => {
+    const { includesPaths } = this.props;
     const {
       form: { errors, initialErrors },
     } = props;
-    const { includesPaths, label, children, active, severityChecks } = this.props;
+    const subfieldErrors = [];
+    for (const fieldPath of includesPaths) {
+      const err = _get(errors, fieldPath) || _get(initialErrors, fieldPath);
+      if (err) {
+        subfieldErrors.push(err);
+      }
+    }
+    return subfieldErrors;
+  };
+  categorizeErrors = (errors) => {
+    const categories = { info: [], warning: [], error: [] };
+    for (const err in errors) {
+      if (!Object.prototype.hasOwnProperty.call(Object, err, "severity")) {
+        categories.error.push(err);
+      } else {
+        categories[`${err.severity}`].push(err);
+      }
+    }
+    return categories;
+  };
+  render() {
+    const { errors } = this.state;
+    if (errors === undefined) {
+      return null;
+    }
+    return Object.entries(errors).map(([severity, messages]) => (
+      <>
+        {!isEmpty(messages) && (
+          <Label
+            key={severity}
+            size="tiny"
+            circular
+            className={`accordion-label ${severity}`}
+          >
+            {messages.length} {severity}
+            {messages.length > 1 ? "s" : ""}
+          </Label>
+        )}
+      </>
+    ));
+  }
+}
 
+AccordionError.propTypes = {
+  formProps: PropTypes.array.isRequired,
+  includesPaths: PropTypes.array.isRequired,
+  hasError: PropTypes.func.isRequired,
+};
+
+export class AccordionField extends Component {
+  constructor(props) {
+    super(props);
+    const { active } = this.props;
+    this.state = { hasError: false, activeIndex: active ? 0 : -1 };
+  }
+
+  handleTitleClick = (e, { index }) => {
+    const { activeIndex } = this.state;
+    this.setState({ activeIndex: activeIndex === index ? -1 : index });
+  };
+
+  hasError = (categorizedErrors) => {
+    const hasError = categorizedErrors.error.length > 0;
+    this.setState({ hasError: hasError });
+  };
+
+  renderAccordion = (props) => {
+    const { label, children, includesPaths } = this.props;
+    const { hasError, activeIndex } = this.state;
     const uiProps = _omit(this.props, ["optimized", "includesPaths"]);
 
-    // Merge initial and current errors for accurate validation
-    const persistentErrors = { ...initialErrors, ...errors };
-    const categorizedErrors = flattenAndCategorizeErrors(persistentErrors);
-
     // Determine if the accordion should show an "error" state
-    const errorClass = this.hasError(categorizedErrors, includesPaths) ? "error" : "";
-
-    // Generate summary of errors for display
-    const errorSummary = this.getErrorSummary(
-      categorizedErrors,
-      includesPaths,
-      severityChecks
-    );
-
-    const [activeIndex, setActiveIndex] = useState(active ? 0 : -1);
-
-    const handleTitleClick = (e, { index }) => {
-      setActiveIndex(activeIndex === index ? -1 : index);
-    };
+    const errorClass = hasError ? "error" : "";
 
     return (
       <Accordion
@@ -105,31 +135,23 @@ export class AccordionField extends Component {
         <Accordion.Title
           active={activeIndex === 0}
           index={0}
-          onClick={handleTitleClick}
+          onClick={this.handleTitleClick}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
-              handleTitleClick(e, { index: 0 });
+              this.handleTitleClick(e, { index: 0 });
             }
           }}
           tabIndex={0}
         >
           {label}
-          {/* Display error labels */}
-          {Object.entries(errorSummary).map(([severity, text]) => (
-            <Label
-              key={severity}
-              size="tiny"
-              circular
-              className={`accordion-label ${severity}`}
-            >
-              {text}
-            </Label>
-          ))}
+          <AccordionError
+            hasError={this.hasError}
+            formProps={props}
+            includesPaths={includesPaths}
+          />
           {/* Toggle Icon */}
           <Icon name={activeIndex === 0 ? "angle down" : "angle right"} />
         </Accordion.Title>
-
-        {/* Accordion Content */}
         <Accordion.Content active={activeIndex === 0}>
           <Container>{children}</Container>
         </Accordion.Content>

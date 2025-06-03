@@ -1,71 +1,67 @@
 import _get from "lodash/get";
 import React, { Component } from "react";
 import { Label, Icon } from "semantic-ui-react";
-import { flattenAndCategorizeErrors } from "../utils";
 import { InvenioPopup } from "../elements/accessibility";
 import PropTypes from "prop-types";
+import { Field } from "formik";
 
 export class FeedbackLabel extends Component {
-  render() {
-    const { errorMessage, pointing, fieldPath } = this.props;
-
-    const { flattenedErrors = {}, severityChecks = {} } =
-      flattenAndCategorizeErrors(errorMessage);
-
-    // Get the first error and severity data, defaulting to empty values if not present
-    const errorText = Object.values(flattenedErrors)[0] || "";
-    const severityData = Object.values(severityChecks)[0] || {};
-
-    // Destructure severityData, ensuring default values for missing keys
-    const severityLevel = severityData?.severity || "";
-    const severityMessage = severityData?.message || "";
-    const severityDescription = severityData?.description || "";
-    const severityInfo = { severityLevel, severityMessage, severityDescription };
-
-    const hasError = errorText !== "" || severityInfo.severityLevel === "error";
-    const className = hasError ? "prompt" : severityInfo.severityLevel;
-    const icon = hasError ? "times circle" : "info circle";
-
-    // Return null if neither errorText nor severityMessage exists
-    if (!errorText && !severityInfo.severityMessage) {
-      return null;
+  renderErrors = ({ form: { errors, initialErrors } }) => {
+    const { fieldPath, pointing, injectedError } = this.props;
+    let error;
+    if (injectedError) {
+      error = injectedError;
+    } else {
+      error = _get(errors, fieldPath, "") || _get(initialErrors, fieldPath, "");
     }
-    const hasSeverity =
-      severityInfo.severityMessage && severityInfo.severityDescription;
+    const hasSeverity = Object.prototype.hasOwnProperty.call(error, "severity");
+    let errorMessage;
+    if (hasSeverity) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = error;
+    }
+    const isError = errorMessage || error.severity === "error";
+    const icon = isError ? "times circle" : "info circle";
     return (
-      <Label pointing={pointing} className={className}>
-        {/* Display severity message with a popup if it exists */}
+      <Label pointing={pointing} className={isError ? "prompt" : error.severity}>
         {hasSeverity && (
           <InvenioPopup
-            popupId={`form-feedback-error-${fieldPath}`}
+            popupId={`invenio-form-feedback-error-${fieldPath}`}
             ariaLabel="Form field feedback error"
             trigger={<Icon name={icon} />}
             // Rule descriptions can contain HTML to link to a page with more details about the rule.
             // This field is sanitized in the backend with SanitizedHTML.
-            content={
-              <span
-                dangerouslySetInnerHTML={{ __html: severityInfo.severityDescription }}
-              />
-            }
+            content={<span dangerouslySetInnerHTML={{ __html: error.description }} />}
             position="top center"
             hoverable
           />
         )}
         {/* Display either the error text or the severity message */}
-        {errorText || severityInfo.severityMessage}
+        {errorMessage}
       </Label>
+    );
+  };
+
+  render() {
+    const { fieldPath } = this.props;
+
+    return (
+      <Field className="invenio-error-label-field" name={fieldPath}>
+        {this.renderErrors}
+      </Field>
     );
   }
 }
 
 FeedbackLabel.propTypes = {
-  errorMessage: PropTypes.object,
+  injectedError: PropTypes.oneOf([PropTypes.object, PropTypes.string]),
   pointing: PropTypes.oneOf(["left", "above"]),
   fieldPath: PropTypes.string,
 };
 
 FeedbackLabel.defaultProps = {
-  errorMessage: undefined,
+  injectedError: undefined,
   pointing: "left",
   fieldPath: undefined,
 };

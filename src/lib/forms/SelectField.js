@@ -18,7 +18,7 @@ export class SelectField extends Component {
       error ||
       getIn(errors, fieldPath, null) ||
       // We check if initialValue changed to display the initialError,
-      // otherwise it would be displayed despite updating the fieldu
+      // otherwise it would be displayed despite updating the field
       (initialValue === value && getIn(initialErrors, fieldPath, null));
     return (
       computedError && (
