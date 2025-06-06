@@ -62,8 +62,8 @@ class AccordionError extends Component {
   };
   categorizeErrors = (errors) => {
     const categories = { info: [], warning: [], error: [] };
-    for (const err in errors) {
-      if (!Object.prototype.hasOwnProperty.call(Object, err, "severity")) {
+    for (const err of errors) {
+      if (!Object.prototype.hasOwnProperty.call(err, "severity")) {
         categories.error.push(err);
       } else {
         categories[`${err.severity}`].push(err);
