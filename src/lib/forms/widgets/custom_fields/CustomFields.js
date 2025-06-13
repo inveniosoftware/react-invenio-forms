@@ -96,7 +96,7 @@ export class CustomFields extends Component {
 
   render() {
     const { sections, discoverFieldsSections } = this.state;
-    const { templateLoaders, record } = this.props;
+    const { templateLoaders, record, severityChecks } = this.props;
 
     return (
       <>
@@ -116,6 +116,7 @@ export class CustomFields extends Component {
               <Element
                 key={`section-${sectionName}`}
                 includesPaths={paths}
+                severityChecks={severityChecks}
                 label={sectionName}
                 active={active}
                 id={sectionId}
@@ -156,9 +157,11 @@ CustomFields.propTypes = {
   templateLoaders: PropTypes.array.isRequired,
   fieldPathPrefix: PropTypes.string.isRequired,
   includesPaths: PropTypes.func,
+  severityChecks: PropTypes.object,
   record: PropTypes.object.isRequired,
 };
 
 CustomFields.defaultProps = {
   includesPaths: (fields) => fields.map((field) => field.key),
+  severityChecks: null,
 };
