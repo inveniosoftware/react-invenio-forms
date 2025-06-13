@@ -46,6 +46,27 @@ class AccordionError extends Component {
     }
   }
 
+  findErrorObjects(obj) {
+    const results = [];
+
+    function traverse(current) {
+      if (typeof current !== "object" || current === null) {
+        return;
+      }
+
+      if ("message" in current && "severity" in current) {
+        results.push(current);
+      }
+
+      Object.keys(current).forEach((key) => {
+        traverse(current[key]);
+      });
+    }
+
+    traverse(obj);
+    return results;
+  }
+
   getSubfieldErrors = (props) => {
     const { includesPaths } = this.props;
     const {
@@ -55,7 +76,12 @@ class AccordionError extends Component {
     for (const fieldPath of includesPaths) {
       const err = _get(errors, fieldPath) || _get(initialErrors, fieldPath);
       if (err) {
-        subfieldErrors.push(err);
+        if (typeof err == "object") {
+          const errs = this.findErrorObjects(err);
+          subfieldErrors.push(...errs);
+        } else {
+          subfieldErrors.push(err);
+        }
       }
     }
     return subfieldErrors;
@@ -71,26 +97,33 @@ class AccordionError extends Component {
     }
     return categories;
   };
+
+  severityLabel(severity, severityChecks) {
+    if (severityChecks == null) return severity;
+    const severityCheck = severityChecks[severity];
+    return severityCheck?.label ?? severity;
+  }
+
   render() {
     const { errors } = this.state;
+    const { severityChecks } = this.props;
     if (errors === undefined) {
       return null;
     }
-    return Object.entries(errors).map(([severity, messages]) => (
-      <>
-        {!isEmpty(messages) && (
+    return Object.entries(errors).map(
+      ([severity, messages]) =>
+        !isEmpty(messages) && (
           <Label
             key={severity}
             size="tiny"
             circular
             className={`accordion-label ${severity}`}
           >
-            {messages.length} {severity}
+            {messages.length} {this.severityLabel(severity, severityChecks)}
             {messages.length > 1 ? "s" : ""}
           </Label>
-        )}
-      </>
-    ));
+        )
+    );
   }
 }
 
@@ -98,6 +131,11 @@ AccordionError.propTypes = {
   formProps: PropTypes.array.isRequired,
   includesPaths: PropTypes.array.isRequired,
   hasError: PropTypes.func.isRequired,
+  severityChecks: PropTypes.object,
+};
+
+AccordionError.defaultProps = {
+  severityChecks: null,
 };
 
 export class AccordionField extends Component {
@@ -118,7 +156,7 @@ export class AccordionField extends Component {
   };
 
   renderAccordion = (props) => {
-    const { label, children, includesPaths } = this.props;
+    const { label, children, includesPaths, severityChecks } = this.props;
     const { hasError, activeIndex } = this.state;
     const uiProps = _omit(this.props, ["optimized", "includesPaths"]);
 
@@ -148,6 +186,7 @@ export class AccordionField extends Component {
             hasError={this.hasError}
             formProps={props}
             includesPaths={includesPaths}
+            severityChecks={severityChecks}
           />
           {/* Toggle Icon */}
           <Icon name={activeIndex === 0 ? "angle down" : "angle right"} />
