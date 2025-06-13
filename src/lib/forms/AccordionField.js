@@ -97,8 +97,16 @@ class AccordionError extends Component {
     }
     return categories;
   };
+
+  severityLabel(severity, severityChecks) {
+    if (severityChecks == null) return severity;
+    const severityCheck = severityChecks[severity];
+    return severityCheck?.label ?? severity;
+  }
+
   render() {
     const { errors } = this.state;
+    const { severityChecks } = this.props;
     if (errors === undefined) {
       return null;
     }
@@ -111,7 +119,7 @@ class AccordionError extends Component {
             circular
             className={`accordion-label ${severity}`}
           >
-            {messages.length} {severity}
+            {messages.length} {this.severityLabel(severity, severityChecks)}
             {messages.length > 1 ? "s" : ""}
           </Label>
         )
@@ -123,6 +131,11 @@ AccordionError.propTypes = {
   formProps: PropTypes.array.isRequired,
   includesPaths: PropTypes.array.isRequired,
   hasError: PropTypes.func.isRequired,
+  severityChecks: PropTypes.object,
+};
+
+AccordionError.defaultProps = {
+  severityChecks: null,
 };
 
 export class AccordionField extends Component {
@@ -143,7 +156,7 @@ export class AccordionField extends Component {
   };
 
   renderAccordion = (props) => {
-    const { label, children, includesPaths } = this.props;
+    const { label, children, includesPaths, severityChecks } = this.props;
     const { hasError, activeIndex } = this.state;
     const uiProps = _omit(this.props, ["optimized", "includesPaths"]);
 
@@ -173,6 +186,7 @@ export class AccordionField extends Component {
             hasError={this.hasError}
             formProps={props}
             includesPaths={includesPaths}
+            severityChecks={severityChecks}
           />
           {/* Toggle Icon */}
           <Icon name={activeIndex === 0 ? "angle down" : "angle right"} />
