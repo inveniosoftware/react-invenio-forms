@@ -46,6 +46,27 @@ class AccordionError extends Component {
     }
   }
 
+  findErrorObjects(obj) {
+    const results = [];
+
+    function traverse(current) {
+      if (typeof current !== "object" || current === null) {
+        return;
+      }
+
+      if ("message" in current && "severity" in current) {
+        results.push(current);
+      }
+
+      Object.keys(current).forEach((key) => {
+        traverse(current[key]);
+      });
+    }
+
+    traverse(obj);
+    return results;
+  }
+
   getSubfieldErrors = (props) => {
     const { includesPaths } = this.props;
     const {
@@ -55,7 +76,12 @@ class AccordionError extends Component {
     for (const fieldPath of includesPaths) {
       const err = _get(errors, fieldPath) || _get(initialErrors, fieldPath);
       if (err) {
-        subfieldErrors.push(err);
+        if (typeof err == "object") {
+          const errs = this.findErrorObjects(err);
+          subfieldErrors.push(...errs);
+        } else {
+          subfieldErrors.push(err);
+        }
       }
     }
     return subfieldErrors;
@@ -76,9 +102,9 @@ class AccordionError extends Component {
     if (errors === undefined) {
       return null;
     }
-    return Object.entries(errors).map(([severity, messages]) => (
-      <>
-        {!isEmpty(messages) && (
+    return Object.entries(errors).map(
+      ([severity, messages]) =>
+        !isEmpty(messages) && (
           <Label
             key={severity}
             size="tiny"
@@ -88,9 +114,8 @@ class AccordionError extends Component {
             {messages.length} {severity}
             {messages.length > 1 ? "s" : ""}
           </Label>
-        )}
-      </>
-    ));
+        )
+    );
   }
 }
 
