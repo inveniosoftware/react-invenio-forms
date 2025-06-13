@@ -1,3 +1,8 @@
+// This file is part of React-Invenio-Forms
+// Copyright (C) 2025 CERN.
+// React-Invenio-Forms is free software; you can redistribute it and/or modify it
+// under the terms of the MIT License; see LICENSE file for more details.
+
 import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import React, { Component } from "react";
@@ -102,7 +107,7 @@ export class FeedbackLabel extends Component {
 
 FeedbackLabel.propTypes = {
   injectedError: PropTypes.oneOf([PropTypes.object, PropTypes.string]),
-  pointing: PropTypes.oneOf(["left", "above"]),
+  pointing: PropTypes.oneOf(["left", "above", "below", "right"]),
   fieldPath: PropTypes.string,
   hasSubfields: PropTypes.bool,
 };
