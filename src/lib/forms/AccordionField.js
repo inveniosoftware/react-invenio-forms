@@ -188,8 +188,7 @@ export class AccordionField extends Component {
             includesPaths={includesPaths}
             severityChecks={severityChecks}
           />
-          {/* Toggle Icon */}
-          <Icon name={activeIndex === 0 ? "angle down" : "angle right"} />
+          <Icon name="caret right" />
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
           <Container>{children}</Container>
