@@ -44,7 +44,7 @@ export class RemoteSelectField extends Component {
     this.cancellableAction && this.cancellableAction.cancel();
   }
 
-  onSelectValue = (event, { options, value, ...otherData }, callbackFunc) => {
+  onSelectValue = async (event, { options, value, ...otherData }, callbackFunc) => {
     const { multiple } = this.props;
     const newSelectedSuggestions = options.filter((item) => {
       if (multiple) {
@@ -65,9 +65,10 @@ export class RemoteSelectField extends Component {
       },
       () => callbackFunc(newSelectedSuggestions)
     );
+    await this.executeSearch(""); // Reset search query to empty string after selection
   };
 
-  handleAddition = (e, { value }, callbackFunc) => {
+  handleAddition = async (e, { value }, callbackFunc) => {
     const { serializeAddedValue } = this.props;
     const { selectedSuggestions } = this.state;
     const selectedSuggestion = serializeAddedValue
@@ -83,9 +84,11 @@ export class RemoteSelectField extends Component {
           [...prevState.suggestions, ...newSelectedSuggestions],
           "value"
         ),
+        searchQuery: null,
       }),
       () => callbackFunc(newSelectedSuggestions)
     );
+    await this.executeSearch(""); // Reset search query to empty string after addition
   };
 
   onSearchChange = _debounce(async (e, { searchQuery }) => {
@@ -99,7 +102,7 @@ export class RemoteSelectField extends Component {
     const query = preSearchChange(searchQuery);
     // If there is no query change, then display prevState suggestions
     const { searchQuery: prevSearchQuery } = this.state;
-    if (prevSearchQuery === searchQuery) {
+    if (prevSearchQuery === query) {
       return;
     }
     this.setState({ isFetching: true, searchQuery: query });

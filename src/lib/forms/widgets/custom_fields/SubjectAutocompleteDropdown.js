@@ -7,9 +7,8 @@ import { FieldLabel } from "../../FieldLabel";
 export class SubjectAutocompleteDropdown extends Component {
   serializeSubjects = (subjects) =>
     subjects.map((subject) => {
-      const scheme = subject.scheme ? `(${subject.scheme}) ` : "";
       return {
-        text: scheme + subject.subject,
+        text: subject.subject,
         value: subject.id ?? subject.subject,
         key: subject.id,
         ...(subject.id ? { id: subject.id } : {}),
