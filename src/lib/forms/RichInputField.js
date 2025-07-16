@@ -15,7 +15,9 @@ import { Form } from "semantic-ui-react";
 
 export class RichInputField extends Component {
   renderFormField = (formikBag) => {
-    const { fieldPath, label, required, className, editor, editorConfig } = this.props;
+    const { fieldPath, label, required, className, editor, editorConfig, disabled } =
+      this.props;
+
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
     const error =
@@ -30,6 +32,7 @@ export class RichInputField extends Component {
         required={required}
         error={error}
         className={className}
+        disabled={disabled}
       >
         {React.isValidElement(label) ? (
           label
@@ -48,6 +51,7 @@ export class RichInputField extends Component {
               formikBag.form.setFieldValue(fieldPath, editor.getContent());
               formikBag.form.setFieldTouched(fieldPath, true);
             }}
+            disabled={disabled}
           />
         )}
         <ErrorLabel fieldPath={fieldPath} />
@@ -57,7 +61,6 @@ export class RichInputField extends Component {
 
   render() {
     const { optimized, fieldPath } = this.props;
-
     const FormikField = optimized ? FastField : Field;
 
     return (
@@ -74,6 +77,7 @@ RichInputField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   required: PropTypes.bool,
   editorConfig: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 RichInputField.defaultProps = {
@@ -83,4 +87,5 @@ RichInputField.defaultProps = {
   label: "",
   editor: undefined,
   editorConfig: undefined,
+  disabled: false,
 };

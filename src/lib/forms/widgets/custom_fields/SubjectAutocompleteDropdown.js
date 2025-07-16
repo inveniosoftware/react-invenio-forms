@@ -36,6 +36,7 @@ export class SubjectAutocompleteDropdown extends Component {
       width,
       allowAdditions,
       noQueryMessage,
+      disabled,
       ...uiProps
     } = this.props;
     const labelContent = label ? (
@@ -87,6 +88,7 @@ export class SubjectAutocompleteDropdown extends Component {
             value={getIn(values, fieldPath, []).map((val) => val.id ?? val.subject)}
             allowAdditions={allowAdditions}
             width={width}
+            disabled={disabled}
           />
         )}
       </Field>
@@ -106,6 +108,7 @@ SubjectAutocompleteDropdown.propTypes = {
   width: PropTypes.number,
   allowAdditions: PropTypes.bool,
   noQueryMessage: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 SubjectAutocompleteDropdown.defaultProps = {
@@ -119,4 +122,5 @@ SubjectAutocompleteDropdown.defaultProps = {
   width: undefined,
   noQueryMessage: "Search or create subjects...",
   allowAdditions: true,
+  disabled: false,
 };
