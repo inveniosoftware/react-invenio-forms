@@ -31,6 +31,8 @@ export class TextField extends Component {
           className="invenio-text-input-field"
           id={fieldPath}
           name={fieldPath}
+          required={required}
+          disabled={disabled}
         >
           {({ field, meta }) => {
             const computedError =
