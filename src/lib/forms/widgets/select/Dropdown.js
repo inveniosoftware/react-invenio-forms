@@ -6,7 +6,7 @@ import {
   createDynamicOverridableWidget,
   createShowHideComponent,
   fieldCommonProps,
-} from "../../common/fieldComponents";
+} from "../../../utils";
 
 class _DropdownComponent extends Component {
   serializeOptions = (options) =>

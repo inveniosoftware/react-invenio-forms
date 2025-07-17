@@ -33,7 +33,7 @@ export const createCommonDepositFieldComponent = (id, Child) => {
       throw new Error(`Cannot make field component ${id} both required and disabled`);
     }
 
-    if (props.hidden) return null;
+    if (hidden) return null;
     return <Child {...props} />;
   };
 

@@ -10,7 +10,7 @@ import {
   createDynamicOverridableWidget,
   createShowHideComponent,
   fieldCommonProps,
-} from "../../common/fieldComponents";
+} from "../../../utils";
 
 class _AutocompleteDropdownComponent extends Component {
   render() {
