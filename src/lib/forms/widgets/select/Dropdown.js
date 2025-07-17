@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { SelectField } from "../../SelectField";
 import {
-  createDynamicOverridableWidget,
+  createDynamicOverridableComponent,
   createShowHideComponent,
   fieldCommonProps,
 } from "../../../utils";
@@ -87,4 +87,4 @@ _DropdownComponent.defaultProps = {
 };
 
 export const DropdownComponent = createShowHideComponent(_DropdownComponent);
-export const Dropdown = createDynamicOverridableWidget(_DropdownComponent);
+export const Dropdown = createDynamicOverridableComponent(_DropdownComponent);

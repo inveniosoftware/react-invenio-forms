@@ -7,7 +7,7 @@ import { Field } from "formik";
 import { FieldLabel } from "../../FieldLabel";
 import { RemoteSelectField } from "../../RemoteSelectField";
 import {
-  createDynamicOverridableWidget,
+  createDynamicOverridableComponent,
   createShowHideComponent,
   fieldCommonProps,
 } from "../../../utils";
@@ -103,6 +103,6 @@ _AutocompleteDropdownComponent.defaultProps = {
 export const AutocompleteDropdownComponent = createShowHideComponent(
   _AutocompleteDropdownComponent
 );
-export const AutocompleteDropdown = createDynamicOverridableWidget(
+export const AutocompleteDropdown = createDynamicOverridableComponent(
   AutocompleteDropdownComponent
 );

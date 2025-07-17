@@ -2,7 +2,7 @@ export { humanReadableBytes } from "./humanReadableBytes";
 export { dropdownOptionsGenerator } from "./dropdownOptionsGenerator";
 export {
   createCommonDepositFieldComponent,
-  createDynamicOverridableWidget,
+  createDynamicOverridableComponent,
   createShowHideComponent,
   fieldCommonProps,
   mandatoryFieldCommonProps,

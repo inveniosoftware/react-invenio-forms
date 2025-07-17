@@ -27,22 +27,18 @@ export const fieldCommonProps = {
   required: PropTypes.bool,
 };
 
-export const createCommonDepositFieldComponent = (id, Child) => {
-  const Component = ({ hidden, ...props }) => {
+/**
+ * Creates a component that de-renders when the `hidden` prop is `true`.
+ * All props passed to the `ShowHideComponent` are forwarded to the child component except the `hidden` prop.
+ *
+ * @param Component - The child component
+ * @param {string=} id - An optional OverridableID for debugging purposes
+ */
+export const createShowHideComponent = (Component, id) => {
+  const ShowHideComponent = ({ hidden, ...props }) => {
     if (props.disabled && props.required) {
       throw new Error(`Cannot make field component ${id} both required and disabled`);
     }
-
-    if (hidden) return null;
-    return <Child {...props} />;
-  };
-
-  Component.propTypes = Child.propTypes;
-  return Overridable.component(id, Component);
-};
-
-export const createShowHideComponent = (Component) => {
-  const ShowHideComponent = ({ hidden, ...props }) => {
     if (hidden) return null;
     return <Component {...props} />;
   };
@@ -55,7 +51,26 @@ export const createShowHideComponent = (Component) => {
   return ShowHideComponent;
 };
 
-export const createDynamicOverridableWidget = (Widget) => {
+/**
+ * Creates an overridable component with show/hide functionality based on the `hidden` prop.
+ * All high-level fields in the deposit form are exported through this function, and this
+ * is the only version of the component that should be exported.
+ *
+ * @param {string} id - The Overridable ID to use
+ * @param Child - The unexported child component
+ */
+export const createCommonDepositFieldComponent = (id, Child) => {
+  const Component = createShowHideComponent(Child);
+  Component.propTypes = Child.propTypes;
+  return Overridable.component(id, Component);
+};
+
+/**
+ * Create a component whos Overridable ID is defined via a prop at runtime rather than pre-assigned.
+ * This is necessary for custom fields, where Python will inject the Overridable ID from the user's
+ * configuration, allowing features like `parametrize` to be applied also to custom fields.
+ */
+export const createDynamicOverridableComponent = (Widget) => {
   const Component = ({ id, ...props }) => {
     if (id === undefined) return <Widget {...props} />;
 
