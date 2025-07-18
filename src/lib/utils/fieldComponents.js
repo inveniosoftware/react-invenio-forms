@@ -6,6 +6,7 @@ import * as React from "react";
  * context variables.
  *
  * Currently, the following arguments are passed into the `propsFactory` function:
+ *   - `existingProps`: the props originally passed into the component before the override
  *   - `formValues`: an object of the values in the Formik form state
  *
  * The `propsFactory` function should return an object of the props to be used for overriding the
@@ -19,7 +20,7 @@ import * as React from "react";
 export function dynamicParametrize(Component, propsFactory) {
   const ParametrizedComponent = (props) => {
     const { values } = useFormikContext();
-    const extraProps = propsFactory({ formValues: values });
+    const extraProps = propsFactory({ existingProps: props, formValues: values });
 
     // Store the original component in an attribute
     if (Component.originalComponent) {
