@@ -20,6 +20,7 @@ export default class AutocompleteDropdown extends Component {
       multiple,
       autocompleteFrom,
       autocompleteFromAcceptHeader,
+      ...dropdownProps
     } = this.props;
     return (
       <>
@@ -54,6 +55,7 @@ export default class AutocompleteDropdown extends Component {
                       ];
                 }}
                 initialSuggestions={_get(values, `ui.${fieldPath}`, [])}
+                {...dropdownProps}
               />
             );
           }}

@@ -62,6 +62,7 @@ export class SelectField extends Component {
       <Form.Dropdown
         fluid
         className="invenio-select-field"
+        search
         selection
         error={this.renderError(meta, initialValue, initialErrors, value, errors)}
         label={{ children: label }}
