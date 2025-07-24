@@ -11,7 +11,7 @@ export class SubjectAutocompleteDropdown extends Component {
       return {
         text: scheme + subject.subject,
         value: subject.id ?? subject.subject,
-        key: subject.id,
+        key: subject.id ?? subject.subject,
         ...(subject.id ? { id: subject.id } : {}),
         subject: subject.subject,
       };
