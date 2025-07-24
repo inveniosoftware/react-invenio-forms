@@ -13,6 +13,7 @@ export default function MultiInput({
   label,
   icon,
   required,
+  ...uiProps
 }) {
   const [options, setOptions] = useState([]);
   const { values } = useFormikContext();
@@ -46,6 +47,8 @@ export default function MultiInput({
         onAddItem={({ data }) => {
           setOptions([{ text: data.value, value: data.value }, ...options]);
         }}
+        icon={null} // remove the dropdown caret icon to avoid confusion
+        {...uiProps}
       />
       {description && <label className="helptext">{description}</label>}
     </>
