@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import { FieldLabel } from "../../FieldLabel";
 import { TextField } from "../../TextField";
+import {
+  createShowHideComponent,
+  createDynamicOverridableComponent,
+  fieldCommonProps,
+} from "../../../utils/";
 
-export default class Input extends Component {
+class _InputComponent extends Component {
   render() {
     const {
       fieldPath,
@@ -15,16 +19,21 @@ export default class Input extends Component {
       description,
       disabled,
       type,
+      helpText: helpTextProp,
+      labelIcon: labelIconProp,
     } = this.props;
+
+    const helpText = helpTextProp ?? description;
+    const labelIcon = labelIconProp ?? icon;
 
     return (
       <TextField
         key={fieldPath}
         fieldPath={fieldPath}
         required={required}
-        helpText={description}
+        helpText={helpText}
         disabled={disabled}
-        label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
         placeholder={placeholder}
         type={type}
       />
@@ -32,20 +41,23 @@ export default class Input extends Component {
   }
 }
 
-Input.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+_InputComponent.propTypes = {
+  /**
+   * @deprecated Use `helpText` instead
+   */
   description: PropTypes.string.isRequired,
+  /**
+   * @deprecated Use `labelIcon` instead
+   */
   icon: PropTypes.string,
-  required: PropTypes.bool,
-  disabled: PropTypes.bool,
   type: PropTypes.string,
+  ...fieldCommonProps,
 };
 
-Input.defaultProps = {
+_InputComponent.defaultProps = {
   icon: undefined,
-  required: false,
-  disabled: false,
   type: "input",
 };
+
+export const InputComponent = createShowHideComponent(_InputComponent);
+export const Input = createDynamicOverridableComponent(InputComponent);

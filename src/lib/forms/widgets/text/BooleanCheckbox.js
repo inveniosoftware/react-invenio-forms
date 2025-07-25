@@ -12,8 +12,13 @@ import { FieldLabel } from "../../FieldLabel";
 import { RadioField } from "../../RadioField";
 
 import { useField } from "formik";
+import {
+  createDynamicOverridableComponent,
+  createShowHideComponent,
+  fieldCommonProps,
+} from "../../../utils";
 
-export default function BooleanCheckbox({
+function _BooleanCheckboxComponent({
   description,
   icon,
   falseLabel,
@@ -21,14 +26,19 @@ export default function BooleanCheckbox({
   label,
   trueLabel,
   required,
+  helpText: helpTextProp,
+  labelIcon: labelIconProp,
 }) {
+  const helpText = helpTextProp ?? description;
+  const labelIcon = labelIconProp ?? icon;
+
   // eslint-disable-next-line no-unused-vars
   const [_, meta] = useField(fieldPath);
   return (
     <>
       <Form.Group inline className="mb-0">
         <Form.Field required={required}>
-          <FieldLabel htmlFor={fieldPath} icon={icon} label={label} />
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         </Form.Field>
         <RadioField
           fieldPath={fieldPath}
@@ -52,22 +62,33 @@ export default function BooleanCheckbox({
           </Form.Field>
         )}
       </Form.Group>
-      {description && <label className="helptext">{description}</label>}
+      {helpText && <label className="helptext">{helpText}</label>}
     </>
   );
 }
 
-BooleanCheckbox.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+_BooleanCheckboxComponent.propTypes = {
   trueLabel: PropTypes.string.isRequired,
   falseLabel: PropTypes.string.isRequired,
+  /**
+   * @deprecated Use `helpText` instead
+   */
   description: PropTypes.string.isRequired,
+  /**
+   * @deprecated Use `labelIcon` instead
+   */
   icon: PropTypes.string,
-  required: PropTypes.bool,
+  ...fieldCommonProps,
 };
 
-BooleanCheckbox.defaultProps = {
+_BooleanCheckboxComponent.defaultProps = {
   icon: undefined,
   required: false,
 };
+
+export const BooleanCheckboxComponent = createShowHideComponent(
+  _BooleanCheckboxComponent
+);
+export const BooleanCheckbox = createDynamicOverridableComponent(
+  BooleanCheckboxComponent
+);

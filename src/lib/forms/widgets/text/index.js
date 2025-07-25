@@ -1,6 +1,6 @@
-export { default as RichInput } from "./RichInput";
-export { default as TextArea } from "./TextArea";
-export { default as Input } from "./Input";
-export { default as MultiInput } from "./MultiInput";
-export { default as NumberInput } from "./NumberInput";
-export { default as BooleanCheckbox } from "./BooleanCheckbox";
+export { RichInput, RichInputComponent } from "./RichInput";
+export { TextArea, TextAreaComponent } from "./TextArea";
+export { Input, InputComponent } from "./Input";
+export { MultiInput, MultiInputComponent } from "./MultiInput";
+export { NumberInput, NumberInputComponent } from "./NumberInput";
+export { BooleanCheckbox, BooleanCheckboxComponent } from "./BooleanCheckbox";
