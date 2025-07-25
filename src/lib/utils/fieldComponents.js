@@ -1,3 +1,9 @@
+// This file is part of React-Invenio-Forms
+// Copyright (C) 2025 CERN.
+//
+// React-Invenio-Forms is free software; you can redistribute it and/or modify it
+// under the terms of the MIT License; see LICENSE file for more details.
+
 import { useFormikContext } from "formik";
 import * as React from "react";
 
