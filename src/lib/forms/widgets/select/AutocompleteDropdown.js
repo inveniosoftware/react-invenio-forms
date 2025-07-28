@@ -27,6 +27,7 @@ class _AutocompleteDropdownComponent extends Component {
       autocompleteFromAcceptHeader,
       helpText: helpTextProp,
       labelIcon: labelIconProp,
+      disabled,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -49,6 +50,8 @@ class _AutocompleteDropdownComponent extends Component {
                 suggestionAPIHeaders={{
                   Accept: autocompleteFromAcceptHeader,
                 }}
+                disabled={disabled}
+                helpText={helpText}
                 serializeSuggestions={(suggestions) => {
                   return _isArray(suggestions)
                     ? suggestions.map((item) => ({
@@ -69,7 +72,6 @@ class _AutocompleteDropdownComponent extends Component {
             );
           }}
         </Field>
-        {helpText && <label className="helptext">{helpText}</label>}
       </>
     );
   }

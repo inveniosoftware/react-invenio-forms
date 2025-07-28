@@ -30,6 +30,7 @@ class _DropdownComponent extends Component {
       multiple,
       clearable,
       required,
+      disabled,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -43,6 +44,7 @@ class _DropdownComponent extends Component {
         search={search}
         aria-label={label}
         multiple={multiple}
+        disabled={disabled}
         placeholder={{
           role: "option",
           content: placeholder,
@@ -87,4 +89,4 @@ _DropdownComponent.defaultProps = {
 };
 
 export const DropdownComponent = createShowHideComponent(_DropdownComponent);
-export const Dropdown = createDynamicOverridableComponent(_DropdownComponent);
+export const Dropdown = createDynamicOverridableComponent(DropdownComponent);
