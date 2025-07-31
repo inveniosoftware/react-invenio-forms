@@ -1,5 +1,11 @@
 # Changes
 
+Version 4.10.1 (release 2025-07-31)
+
+- RemoteSelectField: Show default search results after selection/addition
+- fix(subjects-dropdown): add subject as key if id is missing
+- fix: rely on CSS for accordion icon rotation
+
 Version 4.10.0 (release 2025-06-18)
 
 - CustomFields: pass severityChecks
