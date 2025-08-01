@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useFormikContext, getIn } from "formik";
-
 import { FieldLabel } from "../../FieldLabel";
 import { SelectField } from "../../SelectField";
+import {
+  createDynamicOverridableComponent,
+  createShowHideComponent,
+  fieldCommonProps,
+} from "../../../utils";
 
-export default function MultiInput({
+function _MultiInputComponent({
   additionLabel,
   description,
   placeholder,
@@ -13,6 +17,9 @@ export default function MultiInput({
   label,
   icon,
   required,
+  disabled,
+  helpText: helpTextProp,
+  labelIcon: labelIconProp,
 }) {
   const [options, setOptions] = useState([]);
   const { values } = useFormikContext();
@@ -23,14 +30,18 @@ export default function MultiInput({
       value: item,
     }));
 
+  const helpText = helpTextProp ?? description;
+  const labelIcon = labelIconProp ?? icon;
+
   return (
     <>
       <SelectField
         fieldPath={fieldPath}
-        label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
         options={serializeValues(getIn(values, fieldPath, []))}
         placeholder={placeholder}
         required={required}
+        disabled={disabled}
         search
         multiple
         clearable
@@ -47,23 +58,28 @@ export default function MultiInput({
           setOptions([{ text: data.value, value: data.value }, ...options]);
         }}
       />
-      {description && <label className="helptext">{description}</label>}
+      {helpText && <label className="helptext">{helpText}</label>}
     </>
   );
 }
 
-MultiInput.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+_MultiInputComponent.propTypes = {
+  /**
+   * @deprecated Use `helpText` instead
+   */
   description: PropTypes.string.isRequired,
   additionLabel: PropTypes.string,
+  /**
+   * @deprecated Use `labelIcon` instead
+   */
   icon: PropTypes.string,
-  required: PropTypes.bool,
+  ...fieldCommonProps,
 };
 
-MultiInput.defaultProps = {
+_MultiInputComponent.defaultProps = {
   additionLabel: undefined,
   icon: undefined,
-  required: false,
 };
+
+export const MultiInputComponent = createShowHideComponent(_MultiInputComponent);
+export const MultiInput = createDynamicOverridableComponent(MultiInputComponent);
