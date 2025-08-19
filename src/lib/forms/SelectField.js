@@ -53,6 +53,8 @@ export class SelectField extends Component {
       onChange,
       onAddItem,
       multiple,
+      disabled,
+      required,
       ...uiProps
     } = cmpProps;
     const _defaultValue = multiple ? [] : "";
@@ -67,6 +69,8 @@ export class SelectField extends Component {
         error={this.renderError(meta, initialValue, initialErrors, value, errors)}
         label={{ children: label }}
         name={fieldPath}
+        disabled={disabled}
+        required={required}
         onBlur={handleBlur}
         onChange={(event, data) => {
           if (onChange) {
@@ -91,15 +95,18 @@ export class SelectField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath, ...uiProps } = this.props;
+    const { optimized, fieldPath, helpText, ...uiProps } = this.props;
     const FormikField = optimized ? FastField : Field;
     return (
-      <FormikField
-        name={fieldPath}
-        component={this.renderFormField}
-        fieldPath={fieldPath}
-        {...uiProps}
-      />
+      <>
+        <FormikField
+          name={fieldPath}
+          component={this.renderFormField}
+          fieldPath={fieldPath}
+          {...uiProps}
+        />
+        {helpText && <label className="helptext">{helpText}</label>}
+      </>
     );
   }
 }
@@ -114,6 +121,7 @@ SelectField.propTypes = {
   onChange: PropTypes.func,
   onAddItem: PropTypes.func,
   multiple: PropTypes.bool,
+  helpText: PropTypes.string,
 };
 
 SelectField.defaultProps = {
@@ -124,4 +132,5 @@ SelectField.defaultProps = {
   onChange: undefined,
   onAddItem: undefined,
   multiple: false,
+  helpText: undefined,
 };
