@@ -23,7 +23,7 @@ import * as React from "react";
  * @param Component - the React component to override the parameters, as in `parametrize` from react-overridable.
  * @param {function} propsFactory - function returning the props to override the component with
  */
-export function dynamicParametrize(Component, propsFactory) {
+export function parametrizeWithFormContext(Component, propsFactory) {
   const ParametrizedComponent = (props) => {
     const { values } = useFormikContext();
     const extraProps = propsFactory({ existingProps: props, formValues: values });
