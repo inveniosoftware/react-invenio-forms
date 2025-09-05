@@ -25,4 +25,5 @@ export { RadioField } from "./RadioField";
 export { RichInputField } from "./RichInputField";
 export { RichEditor } from "./RichEditor";
 export { ToggleField } from "./ToggleField";
+export { dynamicParametrize } from "./fieldComponents.js";
 export * from "./widgets";
