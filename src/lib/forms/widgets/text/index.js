@@ -1,6 +1,8 @@
-export { default as RichInput } from "./RichInput";
-export { default as TextArea } from "./TextArea";
-export { default as Input } from "./Input";
-export { default as MultiInput } from "./MultiInput";
-export { default as NumberInput } from "./NumberInput";
-export { default as BooleanCheckbox } from "./BooleanCheckbox";
+export { RichInput } from "./RichInput";
+export { TextArea } from "./TextArea";
+// InputComponent is exported too so other custom field implementations (e.g. in invenio-rdm-records) can
+// use the Input as a constituent part of a composite custom field
+export { Input, InputComponent } from "./Input";
+export { MultiInput } from "./MultiInput";
+export { NumberInput } from "./NumberInput";
+export { BooleanCheckbox } from "./BooleanCheckbox";

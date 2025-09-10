@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import { FieldLabel } from "../../FieldLabel";
 import { ArrayField } from "../../ArrayField";
+import {
+  fieldCommonProps,
+  showHideOverridableWithDynamicId,
+} from "../../fieldComponents";
 
-export default class Array extends Component {
+class ArrayComponent extends Component {
   render() {
     const {
       fieldPath,
@@ -17,16 +20,21 @@ export default class Array extends Component {
       addButtonLabel,
       defaultNewValue,
       className,
+      helpText: helpTextProp,
+      labelIcon: labelIconProp,
     } = this.props;
+
+    const helpText = helpTextProp ?? description;
+    const labelIcon = labelIconProp ?? icon;
 
     return (
       <ArrayField
         key={fieldPath}
         fieldPath={fieldPath}
         required={required}
-        helpText={description}
+        helpText={helpText}
         disabled={disabled}
-        label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
         addButtonLabel={addButtonLabel}
         defaultNewValue={defaultNewValue}
         className={className}
@@ -37,22 +45,25 @@ export default class Array extends Component {
   }
 }
 
-Array.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  icon: PropTypes.string,
-  required: PropTypes.bool,
-  disabled: PropTypes.bool,
+ArrayComponent.propTypes = {
   children: PropTypes.func.isRequired,
   addButtonLabel: PropTypes.string.isRequired,
   defaultNewValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   className: PropTypes.string,
+  /**
+   * @deprecated Use `labelIcon` instead
+   */
+  icon: PropTypes.string,
+  /**
+   * @deprecated Use `helpText` instead
+   */
+  description: PropTypes.string.isRequired,
+  ...fieldCommonProps,
 };
 
-Array.defaultProps = {
-  icon: undefined,
-  required: false,
-  disabled: false,
+ArrayComponent.defaultProps = {
   className: "",
+  icon: undefined,
 };
+
+export const Array = showHideOverridableWithDynamicId(ArrayComponent);

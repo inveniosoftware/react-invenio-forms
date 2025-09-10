@@ -15,9 +15,16 @@ import { Form } from "semantic-ui-react";
 
 export class RichInputField extends Component {
   renderFormField = (formikBag) => {
-    const { fieldPath, label, required, className, editor, editorConfig, disabled } =
-      this.props;
-
+    const {
+      fieldPath,
+      label,
+      required,
+      className,
+      editor,
+      editorConfig,
+      disabled,
+      optimized,
+    } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
     const error =
@@ -30,9 +37,9 @@ export class RichInputField extends Component {
       <Form.Field
         id={fieldPath}
         required={required}
+        disabled={disabled}
         error={error}
         className={className}
-        disabled={disabled}
       >
         {React.isValidElement(label) ? (
           label
@@ -45,7 +52,7 @@ export class RichInputField extends Component {
           <RichEditor
             initialValue={initialValue}
             inputValue={() => value} // () =>  To avoid re-rendering
-            optimized
+            optimized={optimized}
             editorConfig={editorConfig}
             onBlur={(event, editor) => {
               formikBag.form.setFieldValue(fieldPath, editor.getContent());
@@ -60,11 +67,14 @@ export class RichInputField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath } = this.props;
+    const { optimized, fieldPath, helpText } = this.props;
     const FormikField = optimized ? FastField : Field;
 
     return (
-      <FormikField id={fieldPath} name={fieldPath} component={this.renderFormField} />
+      <>
+        <FormikField id={fieldPath} name={fieldPath} component={this.renderFormField} />
+        {helpText && <label className="helptext">{helpText}</label>}
+      </>
     );
   }
 }
@@ -78,6 +88,7 @@ RichInputField.propTypes = {
   required: PropTypes.bool,
   editorConfig: PropTypes.object,
   disabled: PropTypes.bool,
+  helpText: PropTypes.string,
 };
 
 RichInputField.defaultProps = {
@@ -88,4 +99,5 @@ RichInputField.defaultProps = {
   editor: undefined,
   editorConfig: undefined,
   disabled: false,
+  helpText: undefined,
 };

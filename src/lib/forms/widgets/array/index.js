@@ -1,1 +1,1 @@
-export { default as Array } from "./Array";
+export { Array } from "./Array";

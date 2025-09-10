@@ -1,5 +1,6 @@
 import React from "react";
-import Input from "./Input";
+import { showHideOverridableWithDynamicId } from "../../fieldComponents";
+import { InputComponent } from "./Input";
 
-const NumberInput = (props) => <Input {...props} type="number" />;
-export default NumberInput;
+const NumberInputComponent = (props) => <InputComponent {...props} type="number" />;
+export const NumberInput = showHideOverridableWithDynamicId(NumberInputComponent);

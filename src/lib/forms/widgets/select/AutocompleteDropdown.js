@@ -6,8 +6,12 @@ import _isArray from "lodash/isArray";
 import { Field } from "formik";
 import { FieldLabel } from "../../FieldLabel";
 import { RemoteSelectField } from "../../RemoteSelectField";
+import {
+  fieldCommonProps,
+  showHideOverridableWithDynamicId,
+} from "../../fieldComponents";
 
-export default class AutocompleteDropdown extends Component {
+class AutocompleteDropdownComponent extends Component {
   render() {
     const {
       description,
@@ -20,11 +24,18 @@ export default class AutocompleteDropdown extends Component {
       multiple,
       autocompleteFrom,
       autocompleteFromAcceptHeader,
+      helpText: helpTextProp,
+      labelIcon: labelIconProp,
+      disabled,
       ...dropdownProps
     } = this.props;
+
+    const helpText = helpTextProp ?? description;
+    const labelIcon = labelIconProp ?? icon;
+
     return (
       <>
-        <FieldLabel htmlFor={fieldPath} icon={icon} label={label} />
+        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         <Field name={fieldPath}>
           {({ form: { values } }) => {
             return (
@@ -39,6 +50,8 @@ export default class AutocompleteDropdown extends Component {
                 suggestionAPIHeaders={{
                   Accept: autocompleteFromAcceptHeader,
                 }}
+                disabled={disabled}
+                helpText={helpText}
                 serializeSuggestions={(suggestions) => {
                   return _isArray(suggestions)
                     ? suggestions.map((item) => ({
@@ -60,29 +73,36 @@ export default class AutocompleteDropdown extends Component {
             );
           }}
         </Field>
-        {description && <label className="helptext">{description}</label>}
       </>
     );
   }
 }
 
-AutocompleteDropdown.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+AutocompleteDropdownComponent.propTypes = {
   placeholder: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
   autocompleteFrom: PropTypes.string.isRequired,
   autocompleteFromAcceptHeader: PropTypes.string,
-  icon: PropTypes.string,
   clearable: PropTypes.bool,
   multiple: PropTypes.bool,
-  required: PropTypes.bool,
+  /**
+   * @deprecated Use `helpText` instead
+   */
+  description: PropTypes.string,
+  /**
+   * @deprecated Use `labelIcon` instead
+   */
+  icon: PropTypes.string,
+  ...fieldCommonProps,
 };
 
-AutocompleteDropdown.defaultProps = {
-  icon: undefined,
+AutocompleteDropdownComponent.defaultProps = {
   autocompleteFromAcceptHeader: "application/vnd.inveniordm.v1+json",
   clearable: false,
   multiple: false,
-  required: false,
+  icon: undefined,
+  description: undefined,
 };
+
+export const AutocompleteDropdown = showHideOverridableWithDynamicId(
+  AutocompleteDropdownComponent
+);
