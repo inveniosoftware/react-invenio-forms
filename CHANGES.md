@@ -1,5 +1,10 @@
 # Changes
 
+Version 4.11.0 (release 2025-09-10)
+
+- forms: Implement overridable support for custom field widgets, based on a dynamic ID passed in as a prop
+- forms: More consistent props across custom field widgets to increase consistency with https://github.com/inveniosoftware/invenio-rdm-records/pull/2101
+
 Version 4.10.1 (release 2025-07-31)
 
 - RemoteSelectField: Show default search results after selection/addition
