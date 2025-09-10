@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.11.1 (release 2025-09-10)
+
+- fix(package.json): revert react-overridable upgrade
+
 Version 4.11.0 (release 2025-09-10)
 
 - forms: Implement overridable support for custom field widgets, based on a dynamic ID passed in as a prop
