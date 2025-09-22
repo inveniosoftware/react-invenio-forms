@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.11.2 (release 2025-09-22)
+
+- chore: bump major version of react-overridable
+
 Version 4.11.1 (release 2025-09-10)
 
 - fix(package.json): revert react-overridable upgrade
