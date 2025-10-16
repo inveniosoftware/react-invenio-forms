@@ -5,26 +5,32 @@ on:
     tags:
       - v*
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   Publish:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
-      - name: Install and Build
+      - name: Update npm
         run: |
-          npm install
+          npm install -g npm@latest
+
+      - name: Install and build
+        run: |
+          npm ci
           npm run build
 
-      - name: Publish on NPM
+      - name: Publish on npmjs
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
