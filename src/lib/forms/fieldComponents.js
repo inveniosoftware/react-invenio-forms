@@ -37,7 +37,9 @@ export const fieldCommonProps = {
 const showHideComponent = (Component, id) => {
   const ShowHideComponent = ({ hidden, ...props }) => {
     if (props.disabled && props.required) {
-      throw new Error(`Cannot make field component ${id} both required and disabled`);
+      console.warn(
+        `Field component ${id} is marked as required but also disabled, so it is omitted from HTML constraint validation.`
+      );
     }
     if (hidden) return null;
     return <Component {...props} />;
