@@ -1,5 +1,11 @@
 # Changes
 
+Version 4.12.0 (release 2025-10-23)
+
+- tinymce: enable code and image plugins
+- forms: warn that for fields that are both required and disabled, validation will
+  be skipped
+
 Version 4.11.2 (release 2025-09-22)
 
 - chore: bump major version of react-overridable
