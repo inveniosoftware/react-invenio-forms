@@ -34,6 +34,7 @@ export class RichEditor extends Component {
       editorConfig,
       inputValue,
       onEditorChange,
+      onInit,
     } = this.props;
     const config = {
       branding: false,
@@ -72,6 +73,7 @@ export class RichEditor extends Component {
         onFocus={onFocus}
         onChange={onChange}
         onEditorChange={onEditorChange}
+        onInit={onInit}
       />
     );
   }
@@ -86,6 +88,7 @@ RichEditor.propTypes = {
   onEditorChange: PropTypes.func,
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
+  onInit: PropTypes.func,
   minHeight: PropTypes.number,
   editorConfig: PropTypes.object,
 };
@@ -100,5 +103,6 @@ RichEditor.defaultProps = {
   onEditorChange: undefined,
   onBlur: undefined,
   onFocus: undefined,
+  onInit: undefined,
   editorConfig: undefined,
 };
