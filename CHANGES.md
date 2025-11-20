@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.13.0 (release 2025-11-20)
+
+- tinymce: forward onInit prop from RichEditor
+
 Version 4.12.0 (release 2025-10-23)
 
 - tinymce: enable code and image plugins
