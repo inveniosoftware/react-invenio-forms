@@ -90,9 +90,8 @@ export class ArrayField extends Component {
     const valuesToDisplay = this.getValues(values, fieldPath);
     return (
       <Form.Field {...uiProps} {...hasError}>
-        {helpText && <label className="helptext">{helpText}</label>}
-
         <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+        {helpText && <label className="helptext">{helpText}</label>}
 
         {valuesToDisplay.map((value, index, array) => {
           const arrayPath = fieldPath;
