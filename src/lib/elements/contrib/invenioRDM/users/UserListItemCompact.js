@@ -6,7 +6,7 @@ import { Item, Label } from "semantic-ui-react";
 export class UserListItemCompact extends Component {
   render() {
     const { id, user, linkToDetailView } = this.props;
-    const name = user.profile.full_name || user.username;
+    const name = user.profile?.full_name || user.username;
     return (
       <Item className="flex" key={id}>
         <Image src={user.links.avatar} avatar loadFallbackFirst />
@@ -27,7 +27,7 @@ export class UserListItemCompact extends Component {
             )}
           </Item.Header>
           <Item.Meta>
-            <div className="truncate-lines-1"> {user.profile.affiliations}</div>
+            <div className="truncate-lines-1"> {user.profile?.affiliations}</div>
           </Item.Meta>
         </Item.Content>
       </Item>
