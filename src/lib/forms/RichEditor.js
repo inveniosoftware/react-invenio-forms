@@ -54,11 +54,55 @@ export class RichEditor extends Component {
       ],
       contextmenu: false,
       toolbar:
-        "blocks | bold italic link codesample blockquote image table | bullist numlist | outdent indent | wordcount | undo redo | code",
+        "blocks | bold italic link codesample blockquote image table | bullist numlist | outdent indent | latex | wordcount | undo redo | code",
       autoresize_bottom_margin: 20,
       block_formats: "Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3",
       table_advtab: false,
       convert_urls: false,
+      extended_valid_elements: "invenio-math-block[contenteditable]",
+      custom_elements: "invenio-math-block",
+      setup: (editor) => {
+        editor.ui.registry.addButton("latex", {
+          icon: "math",
+          tooltip: "Insert LaTeX block",
+          onAction: (_) => {
+            editor.windowManager.open({
+              title: "Insert LaTeX block",
+              body: {
+                type: "panel",
+                items: [
+                  {
+                    type: "textarea",
+                    name: "latex",
+                    label: "LaTeX",
+                    maximized: true,
+                  },
+                ],
+              },
+              buttons: [
+                {
+                  type: "submit",
+                  name: "submit",
+                  text: "Save",
+                  buttonType: "primary",
+                },
+              ],
+              onSubmit: (dialogApi) => {
+                const { latex } = dialogApi.getData();
+                if (!latex) {
+                  dialogApi.close();
+                  return;
+                }
+
+                editor.insertContent(
+                  `<invenio-math-block contenteditable="false" latex="${latex}" />`
+                );
+                dialogApi.close();
+              },
+            });
+          },
+        });
+      },
       ...editorConfig,
     };
 
