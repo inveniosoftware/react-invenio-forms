@@ -27,9 +27,10 @@ import PropTypes from "prop-types";
 // TinyMCE overrides blockquotes with custom styles, so we need to use !important to override
 // the overrides in a consistent and reliable way.
 // https://github.com/tinymce/tinymce-dist/blob/8d7491f2ee341c201b68cc7c3701d54703edd474/skins/content/tinymce-5/content.css#L61-L70
-const editorContentStyle = `
+const editorContentStyle = (disabled) => `
 body {
   font-size: 14px;
+  ${disabled ? "opacity: 0.5; " : ""}
 }
 
 blockquote  {
@@ -64,7 +65,7 @@ export class RichEditor extends Component {
       menubar: false,
       statusbar: false,
       min_height: minHeight,
-      content_style: editorContentStyle,
+      content_style: editorContentStyle(disabled),
       plugins: [
         "autoresize",
         "code",
