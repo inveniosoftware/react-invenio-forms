@@ -21,6 +21,29 @@ import "tinymce/plugins/lists";
 import "tinymce/plugins/wordcount";
 import PropTypes from "prop-types";
 
+// Make content inside the editor look identical to how we will render it across the site.
+// TinyMCE runs within an iframe, so we cannot style it with page-wide CSS styles as normal.
+//
+// TinyMCE overrides blockquotes with custom styles, so we need to use !important to override
+// the overrides in a consistent and reliable way.
+// https://github.com/tinymce/tinymce-dist/blob/8d7491f2ee341c201b68cc7c3701d54703edd474/skins/content/tinymce-5/content.css#L61-L70
+const editorContentStyle = `
+body {
+  font-size: 14px;
+}
+
+blockquote  {
+  margin-left: 0.5rem !important;
+  padding-left: 1rem !important;
+  color: #757575;
+  border-left: 4px solid #C5C5C5 !important;
+}
+
+blockquote > blockquote {
+  margin-left: 0 !important;
+}
+`;
+
 export class RichEditor extends Component {
   render() {
     const {
@@ -41,7 +64,7 @@ export class RichEditor extends Component {
       menubar: false,
       statusbar: false,
       min_height: minHeight,
-      content_style: "body { font-size: 14px; }",
+      content_style: editorContentStyle,
       plugins: [
         "autoresize",
         "code",
