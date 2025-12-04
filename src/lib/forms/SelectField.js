@@ -12,6 +12,13 @@ import { Form } from "semantic-ui-react";
 import { FeedbackLabel } from "../forms/FeedbackLabel";
 
 export class SelectField extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      options: props.options || [],
+    };
+  }
+
   renderError = (meta, initialValue, initialErrors, value, errors) => {
     const { error, fieldPath } = this.props;
     const computedError =
@@ -30,6 +37,23 @@ export class SelectField extends Component {
       )
     );
   };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.options !== this.props.options) {
+      const nextOptions = this.props.options || [];
+      this.setState((prevState) => {
+        // Merge previous state options and new props options, de-duplicating by value
+        const existing = prevState.options || [];
+        const merged = [...existing];
+        nextOptions.forEach((opt) => {
+          if (!merged.some((o) => o.value === opt.value)) {
+            merged.push(opt);
+          }
+        });
+        return { options: merged };
+      });
+    }
+  }
 
   renderFormField = (formikProps) => {
     const {
@@ -55,11 +79,42 @@ export class SelectField extends Component {
       multiple,
       disabled,
       required,
+      allowAdditions,
       ...uiProps
     } = cmpProps;
     const _defaultValue = multiple ? [] : "";
-    const value = getIn(values, fieldPath, defaultValue || _defaultValue);
+    console.log("defaultValue:", defaultValue);
+    let value = getIn(values, fieldPath, defaultValue || _defaultValue);
+    // Fix: for multiple selects, normalize empty string to empty array
+    if (multiple && (value === "" || value === null || value === undefined)) {
+      value = [];
+    }
     const initialValue = getIn(initialValues, fieldPath, _defaultValue);
+    let dropdownOptions =
+      (this.state.options && this.state.options.length > 0
+        ? this.state.options
+        : options) || [];
+
+    // Ensure that all currently selected values are present in the options list
+    const ensureOptionPresent = (val) => {
+      if (val === undefined || val === null || val === "") return;
+      if (!dropdownOptions.some((opt) => opt.value === val)) {
+        dropdownOptions = [...dropdownOptions, { key: val, text: val, value: val }];
+      }
+    };
+
+    if (multiple) {
+      if (Array.isArray(value)) {
+        value.forEach((v) => ensureOptionPresent(v));
+      } else {
+        ensureOptionPresent(value);
+      }
+    } else {
+      ensureOptionPresent(value);
+    }
+    console.log("SelectField fieldPath:", fieldPath);
+    console.log("SelectField value:", value);
+    console.log("SelectField options:", dropdownOptions);
     return (
       <Form.Dropdown
         fluid
@@ -83,12 +138,36 @@ export class SelectField extends Component {
         onAddItem={(event, data) => {
           if (onAddItem) {
             onAddItem({ event, data, formikProps });
+          } else {
+            const newValue = data.value;
+            // Add the new option to the local options state (if not already present)
+            this.setState((prevState) => {
+              const prevOptions = prevState.options || [];
+              if (prevOptions.some((opt) => opt.value === newValue)) {
+                return null;
+              }
+              const newOption = { key: newValue, text: newValue, value: newValue };
+              return { options: [...prevOptions, newOption] };
+            });
+
+            // Update the Formik field value
+            if (multiple) {
+              const current = Array.isArray(value)
+                ? value
+                : value === undefined || value === null || value === ""
+                ? []
+                : [value];
+              setFieldValue(fieldPath, [...current, newValue]);
+            } else {
+              setFieldValue(fieldPath, newValue);
+            }
           }
         }}
-        options={options}
+        options={dropdownOptions}
         value={value}
         multiple={multiple}
         selectOnBlur={false}
+        allowAdditions={allowAdditions}
         {...uiProps}
       />
     );
@@ -120,6 +199,7 @@ SelectField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   onChange: PropTypes.func,
   onAddItem: PropTypes.func,
+  allowAdditions: PropTypes.bool,
   multiple: PropTypes.bool,
   helpText: PropTypes.string,
   required: PropTypes.bool,
@@ -137,4 +217,5 @@ SelectField.defaultProps = {
   helpText: undefined,
   required: false,
   disabled: false,
+  allowAdditions: false,
 };
