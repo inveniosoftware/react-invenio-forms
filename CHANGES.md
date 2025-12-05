@@ -1,5 +1,11 @@
 # Changes
 
+Version 4.14.0 (release 2025-12-05)
+
+- fix(UserListItemCompact): handle empty object cases
+- fix(RichEditor): Configure text style based on disabled prop
+- feat(tinymce): add style override for blockquotes
+
 Version 4.13.0 (release 2025-11-20)
 
 - tinymce: forward onInit prop from RichEditor
