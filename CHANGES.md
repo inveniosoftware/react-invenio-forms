@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.15.0 (release 2025-12-09)
+
+- feat(RichEditor): Add Preview button for LaTeX
+
 Version 4.14.0 (release 2025-12-05)
 
 - fix(UserListItemCompact): handle empty object cases
