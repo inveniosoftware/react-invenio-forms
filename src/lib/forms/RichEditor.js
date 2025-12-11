@@ -80,15 +80,15 @@ export class RichEditor extends Component {
       ],
       contextmenu: false,
       toolbar:
-        "custom_preview | blocks | bold italic link codesample blockquote image table | bullist numlist | outdent indent | wordcount | undo redo | code",
+        "blocks | bold italic link codesample blockquote image table | bullist numlist | outdent indent | wordcount | undo redo | code | custom_preview",
       autoresize_bottom_margin: 20,
       block_formats: "Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3",
       table_advtab: false,
       convert_urls: false,
       setup: (editor) => {
         editor.ui.registry.addButton("custom_preview", {
-          icon: "preview",
-          text: "Preview",
+          text: "√x",
+          tooltip: "Preview math equations",
           context: "any",
           onAction: () => {
             editor.execCommand("mcePreview");
