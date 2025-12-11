@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.15.1 (release 2025-12-11)
+
+- feat(RichEditor): change Preview button icon and text
+
 Version 4.15.0 (release 2025-12-09)
 
 - feat(RichEditor): Add Preview button for LaTeX
