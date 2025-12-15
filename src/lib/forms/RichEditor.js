@@ -47,6 +47,30 @@ blockquote > blockquote {
 `;
 
 export class RichEditor extends Component {
+  registerCustomPreviewButton = (editor) => {
+    const customPreviewTitle = "Preview math equations";
+    editor.ui.registry.addButton("custom_preview", {
+      text: "√x",
+      tooltip: customPreviewTitle,
+      context: "any",
+      onAction: () => {
+        editor.execCommand("mcePreview");
+        const dialog = document.querySelector(".tox-dialog");
+        if (dialog) {
+          // Change the title
+          const title = dialog.querySelector(".tox-dialog__title");
+          if (title) {
+            title.textContent = customPreviewTitle; // Your custom title
+          }
+          const iframe = dialog.querySelector("iframe");
+          // Handle iframe load to render MathJax by passing the iframe document body to MathJax.typesetPromise
+          iframe.onload = () => {
+            window.MathJax?.typesetPromise([iframe.contentDocument.body]);
+          };
+        }
+      },
+    });
+  };
   render() {
     const {
       id,
@@ -86,22 +110,7 @@ export class RichEditor extends Component {
       table_advtab: false,
       convert_urls: false,
       setup: (editor) => {
-        editor.ui.registry.addButton("custom_preview", {
-          text: "√x",
-          tooltip: "Preview math equations",
-          context: "any",
-          onAction: () => {
-            editor.execCommand("mcePreview");
-            const dialog = document.querySelector(".tox-dialog");
-            if (dialog) {
-              const iframe = dialog.querySelector("iframe");
-              // Handle iframe load to render MathJax by passing the iframe document body to MathJax.typesetPromise
-              iframe.onload = () => {
-                window.MathJax?.typesetPromise([iframe.contentDocument.body]);
-              };
-            }
-          },
-        });
+        this.registerCustomPreviewButton(editor);
       },
       ...editorConfig,
     };
