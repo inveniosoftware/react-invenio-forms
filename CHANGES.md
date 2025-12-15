@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.15.2 (release 2025-12-15)
+
+- feat(RichEditor): customize custom preview title
+
 Version 4.15.1 (release 2025-12-11)
 
 - feat(RichEditor): change Preview button icon and text
