@@ -11,11 +11,18 @@ import { Formik } from "formik";
 import { Form } from "semantic-ui-react";
 
 export class BaseForm extends Component {
+  handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // Prevent enter key from propagating events to other elements and from submitting the form
+      event.preventDefault();
+    }
+  }
+
   render() {
     const { formik, onSubmit, children } = this.props;
     return (
       <Formik onSubmit={onSubmit} {...formik}>
-        <Form>{children}</Form>
+        <Form onKeyDown={this.handleKeyDown}>{children}</Form>
       </Formik>
     );
   }
