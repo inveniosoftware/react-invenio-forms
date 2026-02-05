@@ -158,7 +158,13 @@ export class AccordionField extends Component {
   renderAccordion = (props) => {
     const { label, children, includesPaths, severityChecks } = this.props;
     const { hasError, activeIndex } = this.state;
-    const uiProps = _omit(this.props, ["optimized", "includesPaths"]);
+    // Omit props, so they don't get spread into Accordion https://react.semantic-ui.com/modules/accordion/#types-standard
+    const uiProps = _omit(this.props, [
+      "label",
+      "optimized",
+      "includesPaths",
+      "severityChecks",
+    ]);
 
     // Determine if the accordion should show an "error" state
     const errorClass = hasError ? "error" : "";
