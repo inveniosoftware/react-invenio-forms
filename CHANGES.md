@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.16.0 (release 2026-02-06)
+
+- feat(comment-file): RichEditor file support and FilesList component
+
 Version 4.15.2 (release 2025-12-15)
 
 - feat(RichEditor): customize custom preview title
