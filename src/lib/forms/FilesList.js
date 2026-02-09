@@ -8,6 +8,14 @@ import PropTypes from "prop-types";
 import { Label } from "semantic-ui-react";
 import { humanReadableBytes } from "../utils/humanReadableBytes";
 
+/**
+ * Component displaying a list of files.
+ *
+ * @param {object} props
+ * @param {array} props.files The list of files, each file is expected to provide the properties `file_id`, `original_filename`, `size`, `links.download_html`.
+ * @param {function} props.onFileDelete The function to call when deleting a file from the list.
+ * @returns {JSX.Element}
+ */
 export class FilesList extends Component {
   render() {
     const { files, onFileDelete } = this.props;

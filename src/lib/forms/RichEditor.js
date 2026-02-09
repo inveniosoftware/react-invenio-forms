@@ -21,7 +21,7 @@ import "tinymce/plugins/lists";
 import "tinymce/plugins/wordcount";
 import "tinymce/plugins/preview";
 import PropTypes from "prop-types";
-import { Button } from "semantic-ui-react";
+import { Button, Message } from "semantic-ui-react";
 import { FilesList } from "./FilesList";
 
 // Make content inside the editor look identical to how we will render it across the site.
@@ -48,12 +48,36 @@ blockquote > blockquote {
 }
 `;
 
+/**
+ * Component providing rich text editor support and optional files support.
+ *
+ * @param {object} props
+ * @param {array} props.files The list of files, each file is expected to provide the properties `file_id`, `key`, `original_filename`, `size`, `links.download_html`.
+ * @param {func} props.onFilesChange The function to call when the list of files changed.
+ * @param {func} props.onFileUpload The function to call when uploading a file.
+ * @param {func} props.onFileDelete The function to call when deleting a file from the list.
+ * @returns {JSX.Element}
+ */
 export class RichEditor extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      fileErrors: [],
+    };
+
     this.editorRef = React.createRef();
     this.editorDialogRef = React.createRef();
   }
+
+  addToFileErrors = (filename, error) => {
+    this.setState((prevState) => ({
+      fileErrors: [
+        ...prevState.fileErrors,
+        { filename: filename, message: error.response.data.message },
+      ],
+    }));
+  };
 
   onFileUploadEditor = async (filename, payload, options) => {
     const { onFileUpload, onFilesChange, files } = this.props;
@@ -80,10 +104,14 @@ export class RichEditor extends Component {
   onFileDeleteEditor = async (file) => {
     const { onFileDelete, onFilesChange, files } = this.props;
 
-    if (onFileDelete) {
-      await onFileDelete(file);
+    try {
+      if (onFileDelete) {
+        await onFileDelete(file);
+      }
+      onFilesChange(files.filter((fileFromList) => fileFromList.key !== file.key));
+    } catch (error) {
+      this.addToFileErrors(file.original_filename, error);
     }
-    onFilesChange(files.filter((fileFromList) => fileFromList.key !== file.key));
   };
 
   /**
@@ -93,13 +121,17 @@ export class RichEditor extends Component {
     const filename = blobInfo.filename();
     const payload = blobInfo.blob();
 
-    const json = await this.onFileUploadEditor(filename, payload, {
-      onUploadProgress: ({ loaded, total }) =>
-        progress(Math.round((loaded / total) * 100)),
-    });
-    progress(100);
-
-    return new URL(json.data.links.download_html).pathname;
+    try {
+      const json = await this.onFileUploadEditor(filename, payload, {
+        onUploadProgress: ({ loaded, total }) =>
+          progress(Math.round((loaded / total) * 100)),
+      });
+      progress(100);
+      return new URL(json.data.links.download_html).pathname;
+    } catch (error) {
+      this.addToFileErrors(filename, error);
+      throw error;
+    }
   };
 
   /**
@@ -107,10 +139,6 @@ export class RichEditor extends Component {
    * in the Link and Image popup dialogs.
    */
   filePickerCallback = (callback, value, meta) => {
-    const localRefOnFileUploadEditor = this.onFileUploadEditor;
-    const localRefEditorRef = this.editorRef;
-    const localRefEditorDialogRef = this.editorDialogRef;
-
     const input = document.createElement("input");
     input.setAttribute("type", "file");
 
@@ -149,26 +177,36 @@ export class RichEditor extends Component {
       }
 
       const reader = new FileReader();
-      reader.onload = async function () {
-        const json = await localRefOnFileUploadEditor(filename, reader.result);
+      reader.onload = async () => {
+        try {
+          const json = await this.onFileUploadEditor(filename, reader.result);
 
-        if (localRefEditorRef.current) {
-          localRefEditorRef.current.setProgressState(false);
-        }
-        if (localRefEditorDialogRef.current) {
-          localRefEditorDialogRef.current.unblock();
-        }
+          if (this.editorRef.current) {
+            this.editorRef.current.setProgressState(false);
+          }
+          if (this.editorDialogRef.current) {
+            this.editorDialogRef.current.unblock();
+          }
 
-        const locationRelative = new URL(json.data.links.download_html).pathname;
-        if (meta.filetype === "file") {
-          callback(locationRelative, { text: json.data.metadata.original_filename });
-        } else if (meta.filetype === "image") {
-          callback(locationRelative, {
-            alt: `Description of ${json.data.metadata.original_filename}`,
-          });
-        } else {
-          // This should not happen, since `file_picker_types` is set to only support `file` and `image`.
-          callback(locationRelative);
+          const locationRelative = new URL(json.data.links.download_html).pathname;
+          if (meta.filetype === "file") {
+            callback(locationRelative, { text: json.data.metadata.original_filename });
+          } else if (meta.filetype === "image") {
+            callback(locationRelative, {
+              alt: `Description of ${json.data.metadata.original_filename}`,
+            });
+          } else {
+            // This should not happen, since `file_picker_types` is set to only support `file` and `image`.
+            callback(locationRelative);
+          }
+        } catch (error) {
+          this.addToFileErrors(filename, error);
+          if (this.editorRef.current) {
+            this.editorRef.current.setProgressState(false);
+          }
+          if (this.editorDialogRef.current) {
+            this.editorDialogRef.current.unblock();
+          }
         }
       };
       reader.readAsArrayBuffer(file);
@@ -267,6 +305,7 @@ export class RichEditor extends Component {
       files,
       onInit,
     } = this.props;
+    const { fileErrors } = this.state;
     const attachFilesEnabled = files !== undefined;
     let config = {
       branding: false,
@@ -350,6 +389,20 @@ export class RichEditor extends Component {
         />
         {attachFilesEnabled && (
           <>
+            {fileErrors.length > 0 && (
+              <Message negative>
+                <ul>
+                  {fileErrors?.map((fileError, index) => (
+                    // We always add errors to the end of the list,
+                    // so the elements rendered at a specific index do not change.
+                    // eslint-disable-next-line react/no-array-index-key
+                    <li key={index}>
+                      {fileError.filename}: {fileError.message}
+                    </li>
+                  ))}
+                </ul>
+              </Message>
+            )}
             <FilesList files={files} onFileDelete={this.onFileDeleteEditor} />
             <div>
               <Button
