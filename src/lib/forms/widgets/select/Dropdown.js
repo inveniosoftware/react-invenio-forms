@@ -31,6 +31,7 @@ class DropdownComponent extends Component {
       required,
       disabled,
       optimized,
+      allowAdditions,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -54,6 +55,7 @@ class DropdownComponent extends Component {
         defaultValue={multiple ? [] : ""}
         helpText={helpText}
         optimized={optimized}
+        allowAdditions={allowAdditions}
       />
     );
   }
@@ -78,6 +80,7 @@ DropdownComponent.propTypes = {
    */
   icon: PropTypes.string,
   optimized: PropTypes.bool,
+  allowAdditions: PropTypes.bool,
   ...fieldCommonProps,
 };
 
@@ -88,6 +91,7 @@ DropdownComponent.defaultProps = {
   clearable: true,
   description: undefined,
   optimized: true,
+  allowAdditions: false,
 };
 
 export const Dropdown = showHideOverridableWithDynamicId(DropdownComponent);
