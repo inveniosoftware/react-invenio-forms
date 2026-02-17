@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.16.1 (release 2026-02-17)
+
+- feat(comment-file): RichEditor file error feedback
+
 Version 4.16.0 (release 2026-02-06)
 
 - feat(comment-file): RichEditor file support and FilesList component
