@@ -7,7 +7,6 @@
 
 import axios from "axios";
 import _debounce from "lodash/debounce";
-import _uniqBy from "lodash/uniqBy";
 import _isEqual from "lodash/isEqual";
 import PropTypes from "prop-types";
 import queryString from "query-string";
@@ -15,6 +14,7 @@ import React, { Component } from "react";
 import { Message } from "semantic-ui-react";
 import { SelectField } from "./SelectField";
 import { withCancel } from "../api";
+import { mergeOptions, createOption } from "../utils";
 
 const DEFAULT_SUGGESTION_SIZE = 20;
 
@@ -74,17 +74,14 @@ export class RemoteSelectField extends Component {
     const { selectedSuggestions } = this.state;
     const selectedSuggestion = serializeAddedValue
       ? serializeAddedValue(value)
-      : { text: value, value, key: value, name: value };
+      : { ...createOption(value), name: value };
 
     const newSelectedSuggestions = [...selectedSuggestions, selectedSuggestion];
 
     this.setState(
       (prevState) => ({
         selectedSuggestions: newSelectedSuggestions,
-        suggestions: _uniqBy(
-          [...prevState.suggestions, ...newSelectedSuggestions],
-          "value"
-        ),
+        suggestions: mergeOptions(prevState.suggestions, newSelectedSuggestions),
         searchQuery: null,
       }),
       () => callbackFunc(newSelectedSuggestions)
@@ -112,10 +109,7 @@ export class RemoteSelectField extends Component {
 
       const serializedSuggestions = serializeSuggestions(suggestions);
       this.setState((prevState) => ({
-        suggestions: _uniqBy(
-          [...prevState.selectedSuggestions, ...serializedSuggestions],
-          "key"
-        ),
+        suggestions: mergeOptions(prevState.selectedSuggestions, serializedSuggestions),
         isFetching: false,
         error: false,
         open: true,

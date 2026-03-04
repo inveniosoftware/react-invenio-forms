@@ -10,11 +10,13 @@ import PropTypes from "prop-types";
 import { FastField, Field, getIn } from "formik";
 import { Form } from "semantic-ui-react";
 import { FeedbackLabel } from "../forms/FeedbackLabel";
+import { mergeOptions, ensureSelectedValuesInOptions, createOption } from "../utils";
 
 export class SelectField extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Track dynamically added options (e.g., user-entered values via allowAdditions)
       options: props.options || [],
     };
   }
@@ -22,16 +24,10 @@ export class SelectField extends Component {
   componentDidUpdate(prevProps) {
     const { options } = this.props;
     if (prevProps.options !== options) {
-      const nextOptions = options || [];
+      // When props.options change, merge with existing state options
+      // This preserves user-added options while incorporating new prop options
       this.setState((prevState) => {
-        // Merge previous state options and new props options, de-duplicating by value
-        const existing = prevState.options || [];
-        const merged = [...existing];
-        nextOptions.forEach((opt) => {
-          if (!merged.some((o) => o.value === opt.value)) {
-            merged.push(opt);
-          }
-        });
+        const merged = mergeOptions(prevState.options || [], options || []);
         return { options: merged };
       });
     }
@@ -83,34 +79,24 @@ export class SelectField extends Component {
       allowAdditions,
       ...uiProps
     } = cmpProps;
+
     const _defaultValue = multiple ? [] : "";
     let value = getIn(values, fieldPath, defaultValue || _defaultValue);
-    // Fix: for multiple selects, normalize empty string to empty array
+
+    // Normalize empty values for multiple selects to empty array
     if (multiple && (value === "" || value === null || value === undefined)) {
       value = [];
     }
+
     const initialValue = getIn(initialValues, fieldPath, _defaultValue);
     const { options: stateOptions } = this.state;
+
+    // Use state options if available (includes user-added options), otherwise use props
     let dropdownOptions =
       (stateOptions && stateOptions.length > 0 ? stateOptions : options) || [];
 
-    // Ensure that all currently selected values are present in the options list
-    const ensureOptionPresent = (val) => {
-      if (val === undefined || val === null || val === "") return;
-      if (!dropdownOptions.some((opt) => opt.value === val)) {
-        dropdownOptions = [...dropdownOptions, { key: val, text: val, value: val }];
-      }
-    };
-
-    if (multiple) {
-      if (Array.isArray(value)) {
-        value.forEach((v) => ensureOptionPresent(v));
-      } else {
-        ensureOptionPresent(value);
-      }
-    } else {
-      ensureOptionPresent(value);
-    }
+    // Ensure selected values are present in options
+    dropdownOptions = ensureSelectedValuesInOptions(dropdownOptions, value, multiple);
     return (
       <Form.Dropdown
         fluid
@@ -133,27 +119,27 @@ export class SelectField extends Component {
         }}
         onAddItem={(event, data) => {
           if (onAddItem) {
+            // Allow custom onAddItem handler if provided
             onAddItem({ event, data, formikProps });
           } else {
+            // Default behavior: add new option to state and update form value
             const newValue = data.value;
-            // Add the new option to the local options state (if not already present)
+            const newOption = createOption(newValue);
+
+            // Add new option to state (deduplication handled by state update)
             this.setState((prevState) => {
               const prevOptions = prevState.options || [];
+              // Skip update if option already exists
               if (prevOptions.some((opt) => opt.value === newValue)) {
                 return null;
               }
-              const newOption = { key: newValue, text: newValue, value: newValue };
               return { options: [...prevOptions, newOption] };
             });
 
-            // Update the Formik field value
+            // Update form value with new selection
             if (multiple) {
-              const current = Array.isArray(value)
-                ? value
-                : value === undefined || value === null || value === ""
-                ? []
-                : [value];
-              setFieldValue(fieldPath, [...current, newValue]);
+              const currentArray = Array.isArray(value) ? value : [];
+              setFieldValue(fieldPath, [...currentArray, newValue]);
             } else {
               setFieldValue(fieldPath, newValue);
             }
