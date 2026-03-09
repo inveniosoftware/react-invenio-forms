@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.17.0 (release 2026-03-09)
+
+- dropdown: enable multiple selection 
+
 Version 4.16.1 (release 2026-02-17)
 
 - feat(comment-file): RichEditor file error feedback
