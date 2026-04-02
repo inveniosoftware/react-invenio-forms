@@ -120,7 +120,6 @@ class AccordionError extends Component {
             className={`accordion-label ${severity}`}
           >
             {messages.length} {this.severityLabel(severity, severityChecks)}
-            {messages.length > 1 ? "s" : ""}
           </Label>
         )
     );
