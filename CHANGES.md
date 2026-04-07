@@ -1,5 +1,10 @@
 # Changes
 
+Version 4.17.1 (release 2026-04-07)
+
+- ui: remove incorrect generic pluralization
+- fix: omit label and severitychecks from ui props
+
 Version 4.17.0 (release 2026-03-09)
 
 - dropdown: enable multiple selection 
