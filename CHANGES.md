@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.17.2 (release 2026-04-09)
+
+- fix: set data-label to label if not in uiprops
+
 Version 4.17.1 (release 2026-04-07)
 
 - ui: remove incorrect generic pluralization
