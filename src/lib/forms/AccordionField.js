@@ -165,6 +165,10 @@ export class AccordionField extends Component {
       "severityChecks",
     ]);
 
+    if (typeof label === "string" && !uiProps["data-label"]) {
+      uiProps["data-label"] = label;
+    }
+
     // Determine if the accordion should show an "error" state
     const errorClass = hasError ? "error" : "";
 
