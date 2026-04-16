@@ -50,7 +50,7 @@ export class RichInputField extends Component {
           editor
         ) : (
           <RichEditor
-            initialValue={initialValue}
+            initialValue={() => initialValue} // () =>  To avoid stale initialValue when remounting
             inputValue={() => value} // () =>  To avoid re-rendering
             optimized={optimized}
             editorConfig={editorConfig}
