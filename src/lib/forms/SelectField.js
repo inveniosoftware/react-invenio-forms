@@ -95,8 +95,15 @@ export class SelectField extends Component {
     let dropdownOptions =
       (stateOptions && stateOptions.length > 0 ? stateOptions : options) || [];
 
+    const dropdownValue = uiProps.value !== undefined ? uiProps.value : value;
+
     // Ensure selected values are present in options
-    dropdownOptions = ensureSelectedValuesInOptions(dropdownOptions, value, multiple);
+    dropdownOptions = ensureSelectedValuesInOptions(
+      dropdownOptions,
+      dropdownValue,
+      multiple
+    );
+
     return (
       <Form.Dropdown
         fluid
