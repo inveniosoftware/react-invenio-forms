@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.17.3 (release 2026-04-24)
+
+- fix: use value prop or fallback to formik in select field
+
 Version 4.17.2 (release 2026-04-09)
 
 - fix: set data-label to label if not in uiprops
