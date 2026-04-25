@@ -1,7 +1,7 @@
 // This file is part of React-Invenio-Forms
 // Copyright (C) 2022-2026 CERN.
 // Copyright (C) 2020 Northwestern University.
-// Copyright (C) 2024 KTH Royal Institute of Technology.
+// Copyright (C) 2024-2026 KTH Royal Institute of Technology.
 //
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -134,6 +134,22 @@ export class RichEditor extends Component {
     }
   };
 
+  insertUploadedFile = (location, info = {}) => {
+    if (!this.editorRef.current) {
+      return;
+    }
+    if (info.alt) {
+      this.editorRef.current.insertContent(`<img src="${location}" alt="${info.alt}">`);
+    } else {
+      const text = info.text || location;
+      this.editorRef.current.insertContent(`<a href="${location}">${text}</a>`);
+    }
+  };
+
+  getPickerFileType = (file) => {
+    return file?.type?.startsWith("image/") ? "image" : "file";
+  };
+
   /**
    * This function is called when a a user clicks on the upload icons
    * in the Link and Image popup dialogs.
@@ -162,6 +178,7 @@ export class RichEditor extends Component {
 
     input.onchange = (event) => {
       const file = event.target.files[0];
+      const selectedFileType = this.getPickerFileType(file);
       const filename = file.name;
 
       if (this.editorRef.current) {
@@ -189,9 +206,9 @@ export class RichEditor extends Component {
           }
 
           const locationRelative = new URL(json.data.links.download_html).pathname;
-          if (meta.filetype === "file") {
+          if (selectedFileType === "file") {
             callback(locationRelative, { text: json.data.metadata.original_filename });
-          } else if (meta.filetype === "image") {
+          } else if (selectedFileType === "image") {
             callback(locationRelative, {
               alt: `Description of ${json.data.metadata.original_filename}`,
             });
@@ -219,7 +236,7 @@ export class RichEditor extends Component {
    * or on the attach files button next to the files list.
    */
   onAttachFiles = () => {
-    this.filePickerCallback(() => {}, "", "file");
+    this.filePickerCallback(this.insertUploadedFile, "", { filetype: "file" });
   };
 
   mapToEditorLinkList = (files) => {
