@@ -5,7 +5,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { useFormikContext } from "formik";
-import React from "react";
+import { createElement } from "react";
 import PropTypes from "prop-types";
 import Overridable from "react-overridable";
 
@@ -118,7 +118,7 @@ export function parametrizeWithFormContext(Component, propsFactory) {
 
     // overrideProps override props if there is a name collision
     const { children, ...attrProps } = { ...props, ...extraProps };
-    return React.createElement(Component, attrProps, children);
+    return createElement(Component, attrProps, children);
   };
 
   const name = Component.displayName || Component.name;

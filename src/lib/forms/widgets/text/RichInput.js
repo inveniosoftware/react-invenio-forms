@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { RichInputField } from "../../RichInputField";
@@ -7,39 +6,37 @@ import {
   showHideOverridableWithDynamicId,
 } from "../../fieldComponents";
 
-class RichInputComponent extends Component {
-  render() {
-    const {
-      fieldPath,
-      required,
-      label,
-      icon,
-      description,
-      editorConfig,
-      disabled,
-      helpText: helpTextProp,
-      labelIcon: labelIconProp,
-      optimized,
-    } = this.props;
+function RichInputComponent(props) {
+  const {
+    fieldPath,
+    required,
+    label,
+    icon,
+    description,
+    editorConfig,
+    disabled,
+    helpText: helpTextProp,
+    labelIcon: labelIconProp,
+    optimized,
+  } = props;
 
-    const helpText = helpTextProp ?? description;
-    const labelIcon = labelIconProp ?? icon;
+  const helpText = helpTextProp ?? description;
+  const labelIcon = labelIconProp ?? icon;
 
-    return (
-      <>
-        <RichInputField
-          key={fieldPath}
-          fieldPath={fieldPath}
-          required={required}
-          disabled={disabled}
-          editorConfig={editorConfig}
-          label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
-          optimized={optimized}
-        />
-        {helpText && <label className="helptext">{helpText}</label>}
-      </>
-    );
-  }
+  return (
+    <>
+      <RichInputField
+        key={fieldPath}
+        fieldPath={fieldPath}
+        required={required}
+        disabled={disabled}
+        editorConfig={editorConfig}
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
+        optimized={optimized}
+      />
+      {helpText && <label className="helptext">{helpText}</label>}
+    </>
+  );
 }
 
 RichInputComponent.propTypes = {

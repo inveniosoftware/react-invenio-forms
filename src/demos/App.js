@@ -5,8 +5,6 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-
 import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { Header, Message, Container } from "semantic-ui-react";
@@ -31,11 +29,9 @@ CurrentRecord.defaultProps = {
   record: undefined,
 };
 
-class RecordPreviewer extends Component {
-  render() {
-    const { record } = this.props;
-    return <CurrentRecord record={record} />;
-  }
+function RecordPreviewer(props) {
+  const { record } = props;
+  return <CurrentRecord record={record} />;
 }
 
 RecordPreviewer.propTypes = {

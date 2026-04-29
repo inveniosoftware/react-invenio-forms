@@ -5,7 +5,7 @@
 
 import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Label, Icon } from "semantic-ui-react";
 import { InvenioPopup } from "../elements/accessibility";
 import PropTypes from "prop-types";
