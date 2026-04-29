@@ -25,11 +25,9 @@ CurrentRecord.propTypes = {
   record: PropTypes.object,
 };
 
-class RecordPreviewer extends Component {
-  render() {
-    const { record } = this.props;
-    return <CurrentRecord record={record} />;
-  }
+function RecordPreviewer(props) {
+  const { record } = props;
+  return <CurrentRecord record={record} />;
 }
 
 RecordPreviewer.propTypes = {

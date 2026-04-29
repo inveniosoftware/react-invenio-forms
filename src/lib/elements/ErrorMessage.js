@@ -5,7 +5,6 @@
 
 import { Message, Icon } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import { Component } from "react";
 import _isEmpty from "lodash/isEmpty";
 
 const FieldErrorList = ({ fieldErrors }) => {
@@ -47,28 +46,26 @@ FieldErrorList.propTypes = {
  *   - complex error messages: provide list or received errors.
  * Icon and other ui props are supported.
  */
-export class ErrorMessage extends Component {
-  render() {
-    const {
-      header,
-      errors,
-      content,
-      icon,
-      uiProps: messageUIProps = undefined,
-      ...uiProps
-    } = this.props;
+export function ErrorMessage(props) {
+  const {
+    header,
+    errors,
+    content,
+    icon,
+    uiProps: messageUIProps = undefined,
+    ...uiProps
+  } = props;
 
-    return (
-      <Message icon={Boolean(icon)} uiProps={messageUIProps} {...uiProps}>
-        {icon && <Icon name={icon} />}
-        <Message.Content role="alert">
-          {header && <Message.Header>{header}</Message.Header>}
-          {content}
-          {!_isEmpty(errors) && <FieldErrorList fieldErrors={errors} />}
-        </Message.Content>
-      </Message>
-    );
-  }
+  return (
+    <Message icon={Boolean(icon)} uiProps={messageUIProps} {...uiProps}>
+      {icon && <Icon name={icon} />}
+      <Message.Content role="alert">
+        {header && <Message.Header>{header}</Message.Header>}
+        {content}
+        {!_isEmpty(errors) && <FieldErrorList fieldErrors={errors} />}
+      </Message.Content>
+    </Message>
+  );
 }
 
 ErrorMessage.propTypes = {

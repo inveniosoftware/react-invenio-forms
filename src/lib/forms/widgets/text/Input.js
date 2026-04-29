@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { TextField } from "../../TextField";
@@ -12,37 +11,35 @@ import {
   showHideOverridableWithDynamicId,
 } from "../../fieldComponents";
 
-export class InputComponent extends Component {
-  render() {
-    const {
-      fieldPath,
-      required,
-      label,
-      icon,
-      placeholder,
-      description,
-      disabled,
-      type = "input",
-      helpText: helpTextProp,
-      labelIcon: labelIconProp,
-    } = this.props;
+export function InputComponent(props) {
+  const {
+    fieldPath,
+    required,
+    label,
+    icon,
+    placeholder,
+    description,
+    disabled,
+    type = "input",
+    helpText: helpTextProp,
+    labelIcon: labelIconProp,
+  } = props;
 
-    const helpText = helpTextProp ?? description;
-    const labelIcon = labelIconProp ?? icon;
+  const helpText = helpTextProp ?? description;
+  const labelIcon = labelIconProp ?? icon;
 
-    return (
-      <TextField
-        key={fieldPath}
-        fieldPath={fieldPath}
-        required={required}
-        helpText={helpText}
-        disabled={disabled}
-        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
-        placeholder={placeholder}
-        type={type}
-      />
-    );
-  }
+  return (
+    <TextField
+      key={fieldPath}
+      fieldPath={fieldPath}
+      required={required}
+      helpText={helpText}
+      disabled={disabled}
+      label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
+      placeholder={placeholder}
+      type={type}
+    />
+  );
 }
 
 InputComponent.propTypes = {

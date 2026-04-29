@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { ArrayField } from "../../ArrayField";
@@ -12,42 +11,40 @@ import {
   showHideOverridableWithDynamicId,
 } from "../../fieldComponents";
 
-class ArrayComponent extends Component {
-  render() {
-    const {
-      fieldPath,
-      required,
-      label,
-      icon,
-      description,
-      disabled,
-      children,
-      addButtonLabel,
-      defaultNewValue,
-      className = "",
-      helpText: helpTextProp,
-      labelIcon: labelIconProp,
-    } = this.props;
+function ArrayComponent(props) {
+  const {
+    fieldPath,
+    required,
+    label,
+    icon,
+    description,
+    disabled,
+    children,
+    addButtonLabel,
+    defaultNewValue,
+    className = "",
+    helpText: helpTextProp,
+    labelIcon: labelIconProp,
+  } = props;
 
-    const helpText = helpTextProp ?? description;
-    const labelIcon = labelIconProp ?? icon;
+  const helpText = helpTextProp ?? description;
+  const labelIcon = labelIconProp ?? icon;
 
-    return (
-      <ArrayField
-        key={fieldPath}
-        fieldPath={fieldPath}
-        required={required}
-        helpText={helpText}
-        disabled={disabled}
-        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
-        addButtonLabel={addButtonLabel}
-        defaultNewValue={defaultNewValue}
-        className={className}
-      >
-        {children}
-      </ArrayField>
-    );
-  }
+  return (
+    <ArrayField
+      key={fieldPath}
+      fieldPath={fieldPath}
+      required={required}
+      helpText={helpText}
+      disabled={disabled}
+      label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
+      addButtonLabel={addButtonLabel}
+      defaultNewValue={defaultNewValue}
+      className={className}
+    >
+      {children}
+    </ArrayField>
+  );
 }
 
 ArrayComponent.propTypes = {
