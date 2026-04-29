@@ -4,20 +4,17 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { Component } from "react";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
 import { Form } from "semantic-ui-react";
 
-export class BaseForm extends Component {
-  render() {
-    const { formik = undefined, onSubmit, children } = this.props;
-    return (
-      <Formik onSubmit={onSubmit} {...formik}>
-        <Form>{children}</Form>
-      </Formik>
-    );
-  }
+export function BaseForm(props) {
+  const { formik = undefined, onSubmit, children } = props;
+  return (
+    <Formik onSubmit={onSubmit} {...formik}>
+      <Form>{children}</Form>
+    </Formik>
+  );
 }
 
 BaseForm.propTypes = {
