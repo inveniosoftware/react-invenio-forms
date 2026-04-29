@@ -10,7 +10,7 @@ import _debounce from "lodash/debounce";
 import _isEqual from "lodash/isEqual";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Message } from "semantic-ui-react";
 import { SelectField } from "./SelectField";
 import { withCancel } from "../api";

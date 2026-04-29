@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { TextAreaField } from "../../TextAreaField";
@@ -7,37 +6,35 @@ import {
   showHideOverridableWithDynamicId,
 } from "../../fieldComponents";
 
-class TextAreaComponent extends Component {
-  render() {
-    const {
-      fieldPath,
-      required,
-      label,
-      icon,
-      description,
-      rows,
-      disabled,
-      helpText: helpTextProp,
-      labelIcon: labelIconProp,
-    } = this.props;
+function TextAreaComponent(props) {
+  const {
+    fieldPath,
+    required,
+    label,
+    icon,
+    description,
+    rows,
+    disabled,
+    helpText: helpTextProp,
+    labelIcon: labelIconProp,
+  } = props;
 
-    const helpText = helpTextProp ?? description;
-    const labelIcon = labelIconProp ?? icon;
+  const helpText = helpTextProp ?? description;
+  const labelIcon = labelIconProp ?? icon;
 
-    return (
-      <>
-        <TextAreaField
-          key={fieldPath}
-          fieldPath={fieldPath}
-          required={required}
-          disabled={disabled}
-          rows={rows}
-          label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
-        />
-        {helpText && <label className="helptext">{helpText}</label>}
-      </>
-    );
-  }
+  return (
+    <>
+      <TextAreaField
+        key={fieldPath}
+        fieldPath={fieldPath}
+        required={required}
+        disabled={disabled}
+        rows={rows}
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
+      />
+      {helpText && <label className="helptext">{helpText}</label>}
+    </>
+  );
 }
 
 TextAreaComponent.propTypes = {

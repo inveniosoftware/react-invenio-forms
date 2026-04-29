@@ -8,7 +8,7 @@
 
 import { FastField, Field, getIn } from "formik";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { isValidElement, Component } from "react";
 import { RichEditor } from "./RichEditor";
 import { ErrorLabel } from "./ErrorLabel";
 import { Form } from "semantic-ui-react";
@@ -41,7 +41,7 @@ export class RichInputField extends Component {
         error={error}
         className={className}
       >
-        {React.isValidElement(label) ? (
+        {isValidElement(label) ? (
           label
         ) : (
           <label htmlFor={fieldPath}>{label}</label>
