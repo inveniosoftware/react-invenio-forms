@@ -1,36 +1,36 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2024-2026 CERN.
+#
+# React-Invenio-Forms is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
 name: CI
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+      - "feature/*"
+      - "maint-**"
   pull_request:
-    branches: [master]
+    branches:
+      - master
+      - "maint-**"
+      - "feature/*"
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: "0 2 * * 5"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason"
+        required: false
+        default: "Manual trigger"
 
 jobs:
-  Tests:
-    runs-on: ubuntu-24.04
-
-    strategy:
-      matrix:
-        node-version: [18.x, 16.x]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install
-        run: npm ci
-
-      - name: Run linter
-        run: npm run lint
-
-      - name: Test
-        run: npm test
-
-      - name: Test build
-        run: npm run build
+  JS:
+    uses: inveniosoftware/workflows/.github/workflows/tests-js.yml@master
+    with:
+      js-working-directory: ./
+      node-version: '["22.x", "24.x", "26.x"]'
