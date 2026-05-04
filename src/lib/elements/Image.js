@@ -15,7 +15,11 @@ import axios from "axios";
  */
 export class Image extends Component {
   async componentDidMount() {
-    const { fallbackSrc, loadFallbackFirst, src } = this.props;
+    const {
+      fallbackSrc = "/static/images/square-placeholder.png",
+      loadFallbackFirst = false,
+      src,
+    } = this.props;
     if (loadFallbackFirst) {
       try {
         await axios.get(src);
@@ -51,8 +55,14 @@ export class Image extends Component {
   };
 
   render() {
-    const { alt, className, src, fallbackSrc, loadFallbackFirst, ...UIprops } =
-      this.props;
+    const {
+      alt = "No image found",
+      className = "",
+      src,
+      fallbackSrc = "/static/images/square-placeholder.png",
+      loadFallbackFirst = false,
+      ...UIprops
+    } = this.props;
     const loadingClass = !loadFallbackFirst
       ? `${className} placeholder`
       : `${className} fallback_image`;
@@ -88,11 +98,4 @@ Image.propTypes = {
   className: PropTypes.string,
   alt: PropTypes.string,
   loadFallbackFirst: PropTypes.bool,
-};
-
-Image.defaultProps = {
-  className: "",
-  alt: "No image found",
-  fallbackSrc: "/static/images/square-placeholder.png",
-  loadFallbackFirst: false,
 };

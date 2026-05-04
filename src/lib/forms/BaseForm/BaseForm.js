@@ -30,7 +30,3 @@ BaseForm.propTypes = {
     validate: PropTypes.func,
   }),
 };
-
-BaseForm.defaultProps = {
-  formik: undefined,
-};

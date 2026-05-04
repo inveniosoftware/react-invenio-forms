@@ -15,7 +15,7 @@ class TextAreaComponent extends Component {
       label,
       icon,
       description,
-      rows,
+      rows = 3,
       disabled,
       helpText: helpTextProp,
       labelIcon: labelIconProp,
@@ -51,11 +51,6 @@ TextAreaComponent.propTypes = {
    */
   description: PropTypes.string.isRequired,
   ...fieldCommonProps,
-};
-
-TextAreaComponent.defaultProps = {
-  icon: undefined,
-  rows: 3,
 };
 
 export const TextArea = showHideOverridableWithDynamicId(TextAreaComponent);

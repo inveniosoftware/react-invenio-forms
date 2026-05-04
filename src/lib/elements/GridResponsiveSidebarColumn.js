@@ -79,13 +79,3 @@ GridResponsiveSidebarColumn.propTypes = {
   widescreen: PropTypes.number,
   ariaLabel: PropTypes.string,
 };
-
-GridResponsiveSidebarColumn.defaultProps = {
-  width: undefined,
-  mobile: undefined,
-  tablet: undefined,
-  computer: undefined,
-  widescreen: undefined,
-  largeScreen: undefined,
-  ariaLabel: undefined,
-};

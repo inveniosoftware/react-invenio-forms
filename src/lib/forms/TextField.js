@@ -17,11 +17,11 @@ export class TextField extends Component {
     const {
       fieldPath,
       error,
-      helpText,
-      disabled,
+      helpText = "",
+      disabled = false,
       label,
-      optimized,
-      required,
+      optimized = false,
+      required = false,
       ...uiProps
     } = this.props;
     const FormikField = optimized ? FastField : Field;
@@ -87,12 +87,4 @@ TextField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   optimized: PropTypes.bool,
   required: PropTypes.bool,
-};
-
-TextField.defaultProps = {
-  error: undefined,
-  helpText: "",
-  disabled: false,
-  optimized: false,
-  required: false,
 };
