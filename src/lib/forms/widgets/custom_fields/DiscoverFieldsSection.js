@@ -98,7 +98,11 @@ class DiscoverFieldsSection extends Component {
   };
 
   render() {
-    const { templateLoaders, record, discoverSectionLabel } = this.props;
+    const {
+      templateLoaders,
+      record,
+      discoverSectionLabel = "Domain specific fields",
+    } = this.props;
     const { sections, tempFields, recordFields } = this.state;
     const existingFields = [
       ...Object.entries(tempFields).map(([key, value]) => value.key),
@@ -151,10 +155,6 @@ DiscoverFieldsSection.propTypes = {
   sections: PropTypes.array.isRequired,
   record: PropTypes.object.isRequired,
   discoverSectionLabel: PropTypes.string,
-};
-
-DiscoverFieldsSection.defaultProps = {
-  discoverSectionLabel: "Domain specific fields",
 };
 
 export default Overridable.component(

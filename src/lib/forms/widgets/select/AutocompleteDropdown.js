@@ -19,11 +19,11 @@ class AutocompleteDropdownComponent extends Component {
       required,
       label,
       icon,
-      clearable,
+      clearable = false,
       placeholder,
-      multiple,
+      multiple = false,
       autocompleteFrom,
-      autocompleteFromAcceptHeader,
+      autocompleteFromAcceptHeader = "application/vnd.inveniordm.v1+json",
       helpText: helpTextProp,
       labelIcon: labelIconProp,
       disabled,
@@ -93,14 +93,6 @@ AutocompleteDropdownComponent.propTypes = {
    */
   icon: PropTypes.string,
   ...fieldCommonProps,
-};
-
-AutocompleteDropdownComponent.defaultProps = {
-  autocompleteFromAcceptHeader: "application/vnd.inveniordm.v1+json",
-  clearable: false,
-  multiple: false,
-  icon: undefined,
-  description: undefined,
 };
 
 export const AutocompleteDropdown = showHideOverridableWithDynamicId(

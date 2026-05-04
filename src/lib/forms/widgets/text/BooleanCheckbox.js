@@ -27,7 +27,7 @@ function BooleanCheckboxComponent({
   required,
   helpText: helpTextProp,
   labelIcon: labelIconProp,
-  optimized,
+  optimized = true,
 }) {
   const helpText = helpTextProp ?? description;
   const labelIcon = labelIconProp ?? icon;
@@ -80,11 +80,6 @@ BooleanCheckboxComponent.propTypes = {
   icon: PropTypes.string,
   optimized: PropTypes.bool,
   ...fieldCommonProps,
-};
-
-BooleanCheckboxComponent.defaultProps = {
-  icon: undefined,
-  optimized: true,
 };
 
 export const BooleanCheckbox = showHideOverridableWithDynamicId(

@@ -12,7 +12,7 @@ export async function importWidget(
   { ui_widget: UIWidget, fieldPath, record, props },
   createElement = true
 ) {
-  let component = undefined;
+  let component;
   // Try import widget from user's defined templateLoaders
   for (const loader of templateLoaders) {
     try {

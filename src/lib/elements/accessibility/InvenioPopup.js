@@ -12,13 +12,13 @@ export class InvenioPopup extends Component {
   render() {
     const {
       popupId,
-      size,
+      size = "small",
       trigger,
       content,
-      position,
-      inverted,
+      position = "top left",
+      inverted = false,
       ariaLabel,
-      hoverable,
+      hoverable = true,
     } = this.props;
 
     return (
@@ -53,11 +53,4 @@ InvenioPopup.propTypes = {
   hoverable: PropTypes.bool,
   position: PropTypes.string,
   size: PropTypes.string,
-};
-
-InvenioPopup.defaultProps = {
-  inverted: false,
-  position: "top left",
-  size: "small",
-  hoverable: true,
 };

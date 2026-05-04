@@ -17,7 +17,7 @@ export class InputComponent extends Component {
       placeholder,
       description,
       disabled,
-      type,
+      type = "input",
       helpText: helpTextProp,
       labelIcon: labelIconProp,
     } = this.props;
@@ -51,12 +51,6 @@ InputComponent.propTypes = {
   icon: PropTypes.string,
   type: PropTypes.string,
   ...fieldCommonProps,
-};
-
-InputComponent.defaultProps = {
-  icon: undefined,
-  description: undefined,
-  type: "input",
 };
 
 export const Input = showHideOverridableWithDynamicId(InputComponent);

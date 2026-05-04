@@ -25,13 +25,13 @@ class DropdownComponent extends Component {
       icon,
       labelIcon: labelIconProp,
       options,
-      search,
-      multiple,
-      clearable,
+      search = false,
+      multiple = false,
+      clearable = true,
       required,
       disabled,
-      optimized,
-      allowAdditions,
+      optimized = true,
+      allowAdditions = false,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -82,16 +82,6 @@ DropdownComponent.propTypes = {
   optimized: PropTypes.bool,
   allowAdditions: PropTypes.bool,
   ...fieldCommonProps,
-};
-
-DropdownComponent.defaultProps = {
-  icon: undefined,
-  search: false,
-  multiple: false,
-  clearable: true,
-  description: undefined,
-  optimized: true,
-  allowAdditions: false,
 };
 
 export const Dropdown = showHideOverridableWithDynamicId(DropdownComponent);
