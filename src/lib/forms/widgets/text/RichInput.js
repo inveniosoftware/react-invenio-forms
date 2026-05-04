@@ -12,6 +12,8 @@ import {
   showHideOverridableWithDynamicId,
 } from "../../fieldComponents";
 
+const DEFAULT_EDITOR_CONFIG = {};
+
 class RichInputComponent extends Component {
   render() {
     const {
@@ -20,11 +22,11 @@ class RichInputComponent extends Component {
       label,
       icon,
       description,
-      editorConfig,
+      editorConfig = DEFAULT_EDITOR_CONFIG,
       disabled,
       helpText: helpTextProp,
       labelIcon: labelIconProp,
-      optimized,
+      optimized = true,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -59,12 +61,6 @@ RichInputComponent.propTypes = {
   description: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
   ...fieldCommonProps,
-};
-
-RichInputComponent.defaultProps = {
-  icon: undefined,
-  editorConfig: {},
-  optimized: true,
 };
 
 export const RichInput = showHideOverridableWithDynamicId(RichInputComponent);

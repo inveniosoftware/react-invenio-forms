@@ -30,7 +30,7 @@ export class TextAreaField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath, ...props } = this.props;
+    const { optimized = false, fieldPath, ...props } = this.props;
 
     const FormikField = optimized ? FastField : Field;
 
@@ -49,8 +49,4 @@ export class TextAreaField extends Component {
 TextAreaField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
-};
-
-TextAreaField.defaultProps = {
-  optimized: false,
 };

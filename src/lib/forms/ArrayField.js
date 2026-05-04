@@ -13,6 +13,8 @@ import _filter from "lodash/filter";
 import _matches from "lodash/matches";
 import { FieldLabel } from "./FieldLabel";
 
+const DEFAULT_REQUIRED_OPTIONS = [];
+
 export class ArrayField extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +42,11 @@ export class ArrayField extends Component {
    * @returns An array of values to display
    */
   getValues = (values, fieldPath) => {
-    const { requiredOptions, defaultNewValue, showEmptyValue } = this.props;
+    const {
+      requiredOptions = DEFAULT_REQUIRED_OPTIONS,
+      defaultNewValue,
+      showEmptyValue = false,
+    } = this.props;
     const { hasBeenShown } = this.state;
     const existingValues = getIn(values, fieldPath, []);
 
@@ -72,14 +78,14 @@ export class ArrayField extends Component {
       ...arrayHelpers
     } = props;
     const {
-      addButtonLabel,
-      addButtonClassName,
+      addButtonLabel = "Add new row",
+      addButtonClassName = "align-self-end mt-15",
       children,
       defaultNewValue,
       fieldPath,
-      label,
-      labelIcon,
-      helpText,
+      label = "",
+      labelIcon = "",
+      helpText = "",
       requiredOptions,
       showEmptyValue,
       ...uiProps
@@ -158,14 +164,4 @@ ArrayField.propTypes = {
   labelIcon: PropTypes.string,
   requiredOptions: PropTypes.array,
   showEmptyValue: PropTypes.bool,
-};
-
-ArrayField.defaultProps = {
-  addButtonLabel: "Add new row",
-  addButtonClassName: "align-self-end mt-15",
-  helpText: "",
-  label: "",
-  labelIcon: "",
-  requiredOptions: [],
-  showEmptyValue: false,
 };

@@ -23,7 +23,7 @@ export class SubjectAutocompleteDropdown extends Component {
     });
 
   prepareSuggest = (searchQuery) => {
-    const { limitTo } = this.props;
+    const { limitTo = "" } = this.props;
     return limitTo === "" || limitTo === "all"
       ? searchQuery
       : `${limitTo}:${searchQuery}`;
@@ -32,16 +32,16 @@ export class SubjectAutocompleteDropdown extends Component {
   render() {
     const {
       fieldPath,
-      required,
-      multiple,
-      placeholder,
-      clearable,
-      label,
+      required = false,
+      multiple = true,
+      placeholder = "Search for a subject by name",
+      clearable = true,
+      label = "",
       icon,
       width,
-      allowAdditions,
-      noQueryMessage,
-      disabled,
+      allowAdditions = true,
+      noQueryMessage = "Search or create subjects...",
+      disabled = false,
       ...uiProps
     } = this.props;
     const labelContent = label ? (
@@ -114,18 +114,4 @@ SubjectAutocompleteDropdown.propTypes = {
   allowAdditions: PropTypes.bool,
   noQueryMessage: PropTypes.string,
   disabled: PropTypes.bool,
-};
-
-SubjectAutocompleteDropdown.defaultProps = {
-  required: false,
-  limitTo: "",
-  label: "",
-  icon: undefined,
-  multiple: true,
-  clearable: true,
-  placeholder: "Search for a subject by name",
-  width: undefined,
-  noQueryMessage: "Search or create subjects...",
-  allowAdditions: true,
-  disabled: false,
 };

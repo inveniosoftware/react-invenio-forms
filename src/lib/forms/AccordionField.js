@@ -12,6 +12,8 @@ import { Field, FastField } from "formik";
 import { Accordion, Container, Icon, Label } from "semantic-ui-react";
 import _omit from "lodash/omit";
 
+const DEFAULT_INCLUDES_PATHS = [];
+
 class AccordionError extends Component {
   constructor(props) {
     super(props);
@@ -106,7 +108,7 @@ class AccordionError extends Component {
 
   render() {
     const { errors } = this.state;
-    const { severityChecks } = this.props;
+    const { severityChecks = null } = this.props;
     if (errors === undefined) {
       return null;
     }
@@ -133,14 +135,10 @@ AccordionError.propTypes = {
   severityChecks: PropTypes.object,
 };
 
-AccordionError.defaultProps = {
-  severityChecks: null,
-};
-
 export class AccordionField extends Component {
   constructor(props) {
     super(props);
-    const { active } = this.props;
+    const { active = true } = this.props;
     this.state = { hasError: false, activeIndex: active ? 0 : -1 };
   }
 
@@ -155,7 +153,12 @@ export class AccordionField extends Component {
   };
 
   renderAccordion = (props) => {
-    const { label, children, includesPaths, severityChecks } = this.props;
+    const {
+      label = "",
+      children = null,
+      includesPaths = DEFAULT_INCLUDES_PATHS,
+      severityChecks = null,
+    } = this.props;
     const { hasError, activeIndex } = this.state;
     // Omit props, so they don't get spread into Accordion https://react.semantic-ui.com/modules/accordion/#types-standard
     const uiProps = _omit(this.props, [
@@ -207,7 +210,7 @@ export class AccordionField extends Component {
   };
 
   render() {
-    const { optimized } = this.props;
+    const { optimized = false } = this.props;
     const FormikField = optimized ? FastField : Field;
     return <FormikField name="" component={this.renderAccordion} />;
   }
@@ -219,16 +222,5 @@ AccordionField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   optimized: PropTypes.bool,
   children: PropTypes.node,
-  ui: PropTypes.object,
   severityChecks: PropTypes.object,
-};
-
-AccordionField.defaultProps = {
-  active: true,
-  includesPaths: [],
-  label: "",
-  optimized: false,
-  children: null,
-  ui: null,
-  severityChecks: null,
 };

@@ -16,13 +16,13 @@ export class RichInputField extends Component {
   renderFormField = (formikBag) => {
     const {
       fieldPath,
-      label,
-      required,
-      className,
+      label = "",
+      required = false,
+      className = "invenio-rich-input-field",
       editor,
       editorConfig,
-      disabled,
-      optimized,
+      disabled = false,
+      optimized = false,
     } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
@@ -66,7 +66,7 @@ export class RichInputField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath, helpText } = this.props;
+    const { optimized = false, fieldPath, helpText } = this.props;
     const FormikField = optimized ? FastField : Field;
 
     return (
@@ -88,15 +88,4 @@ RichInputField.propTypes = {
   editorConfig: PropTypes.object,
   disabled: PropTypes.bool,
   helpText: PropTypes.string,
-};
-
-RichInputField.defaultProps = {
-  className: "invenio-rich-input-field",
-  optimized: false,
-  required: false,
-  label: "",
-  editor: undefined,
-  editorConfig: undefined,
-  disabled: false,
-  helpText: undefined,
 };
