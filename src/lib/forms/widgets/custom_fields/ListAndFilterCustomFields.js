@@ -159,7 +159,3 @@ ListAndFilterCustomFields.propTypes = {
   handleSelectField: PropTypes.func.isRequired,
   sections: PropTypes.array,
 };
-
-ListAndFilterCustomFields.defaultProps = {
-  sections: undefined,
-};

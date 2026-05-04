@@ -40,7 +40,3 @@ UserListItemCompact.propTypes = {
   id: PropTypes.string.isRequired,
   linkToDetailView: PropTypes.string,
 };
-
-UserListItemCompact.defaultProps = {
-  linkToDetailView: undefined,
-};

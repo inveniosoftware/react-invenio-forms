@@ -30,7 +30,7 @@ export class FeedbackLabel extends Component {
   };
 
   computeErrors = (errors, initialErrors) => {
-    const { fieldPath, injectedError, hasSubfields } = this.props;
+    const { fieldPath, injectedError, hasSubfields = false } = this.props;
     let error;
 
     if (injectedError) {
@@ -64,7 +64,7 @@ export class FeedbackLabel extends Component {
   };
 
   renderErrors = ({ form: { errors, initialErrors } }) => {
-    const { fieldPath, pointing } = this.props;
+    const { fieldPath, pointing = "left" } = this.props;
     const { error, errMessage, hasSeverity } = this.computeErrors(
       errors,
       initialErrors
@@ -110,11 +110,4 @@ FeedbackLabel.propTypes = {
   pointing: PropTypes.oneOf(["left", "above", "below", "right"]),
   fieldPath: PropTypes.string,
   hasSubfields: PropTypes.bool,
-};
-
-FeedbackLabel.defaultProps = {
-  injectedError: undefined,
-  pointing: "left",
-  fieldPath: undefined,
-  hasSubfields: false,
 };

@@ -73,16 +73,16 @@ export class ArrayField extends Component {
       ...arrayHelpers
     } = props;
     const {
-      addButtonLabel,
-      addButtonClassName,
+      addButtonLabel = "Add new row",
+      addButtonClassName = "align-self-end mt-15",
       children,
       defaultNewValue,
       fieldPath,
-      label,
-      labelIcon,
-      helpText,
-      requiredOptions,
-      showEmptyValue,
+      label = "",
+      labelIcon = "",
+      helpText = "",
+      requiredOptions = [],
+      showEmptyValue = false,
       ...uiProps
     } = this.props;
     const hasError = this.hasGroupErrors(errors) ? { error: {} } : {};
@@ -159,14 +159,4 @@ ArrayField.propTypes = {
   labelIcon: PropTypes.string,
   requiredOptions: PropTypes.array,
   showEmptyValue: PropTypes.bool,
-};
-
-ArrayField.defaultProps = {
-  addButtonLabel: "Add new row",
-  addButtonClassName: "align-self-end mt-15",
-  helpText: "",
-  label: "",
-  labelIcon: "",
-  requiredOptions: [],
-  showEmptyValue: false,
 };

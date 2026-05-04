@@ -183,9 +183,3 @@ AddDiscoverableFieldsModal.propTypes = {
   sections: PropTypes.array,
   existingFields: PropTypes.array.isRequired,
 };
-
-AddDiscoverableFieldsModal.defaultProps = {
-  icon: undefined,
-  label: undefined,
-  sections: undefined,
-};
