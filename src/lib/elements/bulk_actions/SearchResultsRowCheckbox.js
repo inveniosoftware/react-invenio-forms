@@ -1,5 +1,5 @@
 import { BulkActionsContext } from "./context";
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "semantic-ui-react";
 import _hasIn from "lodash/hasIn";

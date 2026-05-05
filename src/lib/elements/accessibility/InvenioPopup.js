@@ -4,44 +4,42 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
+import { cloneElement } from "react";
 import PropTypes from "prop-types";
 import { Popup } from "semantic-ui-react";
 
-export class InvenioPopup extends Component {
-  render() {
-    const {
-      popupId,
-      size,
-      trigger,
-      content,
-      position,
-      inverted,
-      ariaLabel,
-      hoverable,
-    } = this.props;
+export function InvenioPopup(props) {
+  const {
+    popupId,
+    size,
+    trigger,
+    content,
+    position,
+    inverted,
+    ariaLabel,
+    hoverable,
+  } = props;
 
-    return (
-      <Popup
-        id={popupId}
-        size={size}
-        position={position}
-        inverted={inverted}
-        hoverable={hoverable}
-        on={["hover", "focus"]}
-        trigger={React.cloneElement(trigger, {
-          "role": "button",
-          "tabIndex": 0,
-          "aria-label": ariaLabel,
-        })}
-        content={
-          <p role="tooltip" aria-live="polite">
-            {content}
-          </p>
-        }
-      />
-    );
-  }
+  return (
+    <Popup
+      id={popupId}
+      size={size}
+      position={position}
+      inverted={inverted}
+      hoverable={hoverable}
+      on={["hover", "focus"]}
+      trigger={cloneElement(trigger, {
+        "role": "button",
+        "tabIndex": 0,
+        "aria-label": ariaLabel,
+      })}
+      content={
+        <p role="tooltip" aria-live="polite">
+          {content}
+        </p>
+      }
+    />
+  );
 }
 
 InvenioPopup.propTypes = {

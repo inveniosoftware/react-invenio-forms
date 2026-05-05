@@ -1,4 +1,3 @@
-import React from "react";
 import { showHideOverridableWithDynamicId } from "../../fieldComponents";
 import { InputComponent } from "./Input";
 

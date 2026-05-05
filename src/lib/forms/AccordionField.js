@@ -6,7 +6,7 @@
 
 import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, FastField } from "formik";
 import { Accordion, Container, Icon, Label } from "semantic-ui-react";

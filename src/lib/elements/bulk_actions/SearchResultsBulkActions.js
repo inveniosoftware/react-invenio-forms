@@ -6,7 +6,7 @@
  * under the terms of the MIT License; see LICENSE file for more details.
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Dropdown } from "semantic-ui-react";
 import { BulkActionsContext } from "./context";

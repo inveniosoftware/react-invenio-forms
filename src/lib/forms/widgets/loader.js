@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 /** Import function to load widget either from a specific path or local widgets
  *
