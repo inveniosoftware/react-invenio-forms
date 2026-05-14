@@ -6,30 +6,29 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from "react";
-import { Editor } from "@tinymce/tinymce-react";
-import "tinymce/tinymce";
-import "tinymce/models/dom/model";
-import "tinymce/themes/silver";
-import "tinymce/icons/default";
-import "tinymce/plugins/table";
-import "tinymce/plugins/autoresize";
-import "tinymce/plugins/code";
-import "tinymce/plugins/codesample";
-import "tinymce/plugins/image";
-import "tinymce/plugins/link";
-import "tinymce/plugins/lists";
-import "tinymce/plugins/wordcount";
-import "tinymce/plugins/preview";
+import { Editor } from "@hugerte/hugerte-react";
+import "hugerte/hugerte";
+import "hugerte/models/dom/model";
+import "hugerte/themes/silver";
+import "hugerte/icons/default";
+import "hugerte/plugins/table";
+import "hugerte/plugins/autoresize";
+import "hugerte/plugins/code";
+import "hugerte/plugins/codesample";
+import "hugerte/plugins/image";
+import "hugerte/plugins/link";
+import "hugerte/plugins/lists";
+import "hugerte/plugins/wordcount";
+import "hugerte/plugins/preview";
 import PropTypes from "prop-types";
 import { Button, Message } from "semantic-ui-react";
 import { FilesList } from "./FilesList";
 
 // Make content inside the editor look identical to how we will render it across the site.
-// TinyMCE runs within an iframe, so we cannot style it with page-wide CSS styles as normal.
+// HugeRTE runs within an iframe, so we cannot style it with page-wide CSS styles as normal.
 //
-// TinyMCE overrides blockquotes with custom styles, so we need to use !important to override
+// HugeRTE overrides blockquotes with custom styles, so we need to use !important to override
 // the overrides in a consistent and reliable way.
-// https://github.com/tinymce/tinymce-dist/blob/8d7491f2ee341c201b68cc7c3701d54703edd474/skins/content/tinymce-5/content.css#L61-L70
 const editorContentStyle = (disabled) => `
 body {
   font-size: 14px;
