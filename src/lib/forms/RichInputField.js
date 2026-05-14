@@ -51,7 +51,7 @@ export class RichInputField extends Component {
         ) : (
           <RichEditor
             initialValue={initialValue}
-            inputValue={() => value} // () =>  To avoid re-rendering
+            inputValue={value}
             optimized={optimized}
             editorConfig={editorConfig}
             onBlur={(event, editor) => {
