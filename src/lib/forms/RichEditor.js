@@ -331,6 +331,7 @@ export class RichEditor extends Component {
       block_formats: "Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3",
       table_advtab: false,
       convert_urls: false,
+      base_url: "/static/dist/js/",
       setup: (editor) => {
         this.registerCustomPreviewButton(editor);
         if (attachFilesEnabled) {
