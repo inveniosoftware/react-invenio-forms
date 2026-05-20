@@ -27,6 +27,58 @@ import { FilesList } from "./FilesList";
 // Make content inside the editor look identical to how we will render it across the site.
 // HugeRTE runs within an iframe, so we cannot style it with page-wide CSS styles as normal.
 //
+// Maps Invenio locale codes to TinyMCE 6 language pack codes.
+// Source: tinymce-i18n/langs6, verified against invenio-i18n/translations.
+const localeMap = {
+  bg: "bg_BG",
+  fr: "fr_FR",
+  hu: "hu_HU",
+  ka: "ka_GE",
+  ko: "ko_KR",
+  no: "nb_NO",
+  pt: "pt_BR",
+  sv: "sv_SE",
+  zh_CN: "zh-Hans",
+  zh_TW: "zh-Hant",
+};
+
+const mapInvenioLocale = (locale) => {
+  return localeMap[locale] || locale;
+};
+
+const localeImports = {
+  ar: () => import("./locales/ar"),
+  bg_BG: () => import("./locales/bg_BG"),
+  ca: () => import("./locales/ca"),
+  cs: () => import("./locales/cs"),
+  da: () => import("./locales/da"),
+  de: () => import("./locales/de"),
+  el: () => import("./locales/el"),
+  es: () => import("./locales/es"),
+  et: () => import("./locales/et"),
+  fa: () => import("./locales/fa"),
+  fi: () => import("./locales/fi"),
+  fr_FR: () => import("./locales/fr_FR"),
+  hr: () => import("./locales/hr"),
+  hu_HU: () => import("./locales/hu_HU"),
+  it: () => import("./locales/it"),
+  ja: () => import("./locales/ja"),
+  ka_GE: () => import("./locales/ka_GE"),
+  ko_KR: () => import("./locales/ko_KR"),
+  lt: () => import("./locales/lt"),
+  nb_NO: () => import("./locales/nb_NO"),
+  pl: () => import("./locales/pl"),
+  pt_BR: () => import("./locales/pt_BR"),
+  ro: () => import("./locales/ro"),
+  ru: () => import("./locales/ru"),
+  sk: () => import("./locales/sk"),
+  sv_SE: () => import("./locales/sv_SE"),
+  tr: () => import("./locales/tr"),
+  uk: () => import("./locales/uk"),
+  "zh-Hans": () => import("./locales/zh-Hans"),
+  "zh-Hant": () => import("./locales/zh-Hant"),
+};
+
 // HugeRTE overrides blockquotes with custom styles, so we need to use !important to override
 // the overrides in a consistent and reliable way.
 const editorContentStyle = (disabled) => `
@@ -61,12 +113,66 @@ export class RichEditor extends Component {
   constructor(props) {
     super(props);
 
+    const htmlLang =
+      typeof document !== "undefined" ? document.documentElement?.getAttribute("lang") : undefined;
+    const effectiveLocale = props.locale || htmlLang;
+    const mapped = mapInvenioLocale(effectiveLocale);
     this.state = {
       fileErrors: [],
+      detectedLocale: htmlLang || undefined,
+      localeLoaded: !mapped || mapped === "en",
     };
 
     this.editorRef = React.createRef();
     this.editorDialogRef = React.createRef();
+  }
+
+  loadLocale = (locale) => {
+    const mapped = mapInvenioLocale(locale);
+    if (!mapped || mapped === "en") {
+      this.setState({ localeLoaded: true });
+      return;
+    }
+    const importFn = localeImports[mapped];
+    if (!importFn) {
+      this.setState({ localeLoaded: true });
+      return;
+    }
+    this.setState({ localeLoaded: false });
+    importFn()
+      .then(() => this.setState({ localeLoaded: true }))
+      .catch(() => this.setState({ localeLoaded: true }));
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const prevLocale = mapInvenioLocale(prevProps.locale || prevState.detectedLocale);
+    const nextLocale = mapInvenioLocale(this.props.locale || this.state.detectedLocale);
+    if (prevLocale !== nextLocale) {
+      this.loadLocale(this.props.locale || this.state.detectedLocale);
+    }
+  }
+
+  componentDidMount() {
+    if (typeof document === "undefined") return;
+    const htmlEl = document.documentElement;
+    this._langObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === "lang") {
+          const newLang = htmlEl.getAttribute("lang");
+          if (newLang !== this.state.detectedLocale) {
+            this.setState({ detectedLocale: newLang || undefined });
+          }
+        }
+      }
+    });
+    this._langObserver.observe(htmlEl, { attributes: true });
+    this.loadLocale(this.props.locale || this.state.detectedLocale);
+  }
+
+  componentWillUnmount() {
+    if (this._langObserver) {
+      this._langObserver.disconnect();
+    }
   }
 
   addToFileErrors = (filename, error) => {
@@ -303,8 +409,11 @@ export class RichEditor extends Component {
       onEditorChange,
       files,
       onInit,
+      locale,
     } = this.props;
-    const { fileErrors } = this.state;
+    const { fileErrors, detectedLocale, localeLoaded } = this.state;
+    const effectiveLocale = locale || detectedLocale;
+    const mappedLocale = mapInvenioLocale(effectiveLocale);
     const attachFilesEnabled = files !== undefined;
     let config = {
       branding: false,
@@ -332,6 +441,7 @@ export class RichEditor extends Component {
       table_advtab: false,
       convert_urls: false,
       base_url: "/static/dist/js/",
+      language: mappedLocale,
       setup: (editor) => {
         this.registerCustomPreviewButton(editor);
         if (attachFilesEnabled) {
@@ -373,6 +483,7 @@ export class RichEditor extends Component {
     return (
       <>
         <Editor
+          key={id ? `${id}:${effectiveLocale}:${localeLoaded}` : `${effectiveLocale}:${localeLoaded}`}
           initialValue={initialValue}
           value={inputValue}
           init={config}
@@ -438,6 +549,7 @@ RichEditor.propTypes = {
   onFilesChange: PropTypes.func,
   onFileUpload: PropTypes.func,
   onFileDelete: PropTypes.func,
+  locale: PropTypes.string,
 };
 
 RichEditor.defaultProps = {
@@ -456,4 +568,5 @@ RichEditor.defaultProps = {
   onFilesChange: undefined,
   onFileUpload: undefined,
   onFileDelete: undefined,
+  locale: undefined,
 };
