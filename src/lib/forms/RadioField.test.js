@@ -28,7 +28,7 @@ it("renders without crashing", () => {
           />
         </Form>
       )}
-    </Formik>,
+    </Formik>
   );
   root.unmount();
 });

@@ -9,16 +9,8 @@ import PropTypes from "prop-types";
 import { Popup } from "semantic-ui-react";
 
 export function InvenioPopup(props) {
-  const {
-    popupId,
-    size,
-    trigger,
-    content,
-    position,
-    inverted,
-    ariaLabel,
-    hoverable,
-  } = props;
+  const { popupId, size, trigger, content, position, inverted, ariaLabel, hoverable } =
+    props;
 
   return (
     <Popup

@@ -41,11 +41,7 @@ export class RichInputField extends Component {
         error={error}
         className={className}
       >
-        {isValidElement(label) ? (
-          label
-        ) : (
-          <label htmlFor={fieldPath}>{label}</label>
-        )}
+        {isValidElement(label) ? label : <label htmlFor={fieldPath}>{label}</label>}
         {editor ? (
           editor
         ) : (
