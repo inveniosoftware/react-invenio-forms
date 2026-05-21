@@ -1,5 +1,18 @@
 # Changes
 
+Version 5.0.0 (released 2026-05-20)
+
+- dependencies: upgrade React deps to v18
+- feat: apply React 18 code transforms
+- dependencies: remove unused deps
+- fix: update eslint to react18 and fix lint errors
+- deps: replace tinymce with hugerte MIT fork
+- editor: migrate RichEditor from TinyMCE to HugeRTE
+- fix: pass string directly to RichEditor inputValue prop
+- editor: add dynamic locale loading for HugeRTE
+- components: remove defaultProps from components
+- ci: migrate to shared workflows
+
 Version 4.17.3 (release 2026-04-24)
 
 - fix: use value prop or fallback to formik in select field

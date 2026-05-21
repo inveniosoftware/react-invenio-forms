@@ -1,10 +1,10 @@
-import React from "react";
+import { createRef, Component } from "react";
 import PropTypes from "prop-types";
 import { Grid, Sidebar, Button, Segment } from "semantic-ui-react";
 
-export class GridResponsiveSidebarColumn extends React.Component {
+export class GridResponsiveSidebarColumn extends Component {
   render() {
-    const closeSidebarBtnRef = React.createRef();
+    const closeSidebarBtnRef = createRef();
     const {
       mobile,
       tablet,

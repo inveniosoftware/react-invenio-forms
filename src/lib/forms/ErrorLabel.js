@@ -8,7 +8,7 @@
 import { Field } from "formik";
 import _get from "lodash/get";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Label } from "semantic-ui-react";
 
 export class ErrorLabel extends Component {

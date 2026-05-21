@@ -5,12 +5,12 @@
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, getIn, FastField } from "formik";
 import { Form } from "semantic-ui-react";
 
-export class GroupField extends React.Component {
+export class GroupField extends Component {
   hasGroupErrors = (errors) => {
     const { fieldPath } = this.props;
     for (const field in errors) {

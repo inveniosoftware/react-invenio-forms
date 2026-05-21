@@ -5,7 +5,7 @@
 //
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
-import React, { Component } from "react";
+import { createRef, Component } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "tinymce/tinymce";
 import "tinymce/models/dom/model";
@@ -66,8 +66,8 @@ export class RichEditor extends Component {
       fileErrors: [],
     };
 
-    this.editorRef = React.createRef();
-    this.editorDialogRef = React.createRef();
+    this.editorRef = createRef();
+    this.editorDialogRef = createRef();
   }
 
   addToFileErrors = (filename, error) => {

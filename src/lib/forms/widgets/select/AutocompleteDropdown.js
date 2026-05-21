@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import _get from "lodash/get";
@@ -11,71 +10,69 @@ import {
   showHideOverridableWithDynamicId,
 } from "../../fieldComponents";
 
-class AutocompleteDropdownComponent extends Component {
-  render() {
-    const {
-      description,
-      fieldPath,
-      required,
-      label,
-      icon,
-      clearable,
-      placeholder,
-      multiple,
-      autocompleteFrom,
-      autocompleteFromAcceptHeader,
-      helpText: helpTextProp,
-      labelIcon: labelIconProp,
-      disabled,
-      ...dropdownProps
-    } = this.props;
+function AutocompleteDropdownComponent(props) {
+  const {
+    description,
+    fieldPath,
+    required,
+    label,
+    icon,
+    clearable,
+    placeholder,
+    multiple,
+    autocompleteFrom,
+    autocompleteFromAcceptHeader,
+    helpText: helpTextProp,
+    labelIcon: labelIconProp,
+    disabled,
+    ...dropdownProps
+  } = props;
 
-    const helpText = helpTextProp ?? description;
-    const labelIcon = labelIconProp ?? icon;
+  const helpText = helpTextProp ?? description;
+  const labelIcon = labelIconProp ?? icon;
 
-    return (
-      <>
-        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-        <Field name={fieldPath}>
-          {({ form: { values } }) => {
-            return (
-              <RemoteSelectField
-                clearable={clearable}
-                required={required}
-                fieldPath={fieldPath}
-                multiple={multiple}
-                noQueryMessage={placeholder}
-                placeholder={placeholder}
-                suggestionAPIUrl={autocompleteFrom}
-                suggestionAPIHeaders={{
-                  Accept: autocompleteFromAcceptHeader,
-                }}
-                disabled={disabled}
-                helpText={helpText}
-                serializeSuggestions={(suggestions) => {
-                  return _isArray(suggestions)
-                    ? suggestions.map((item) => ({
-                        text: item.title_l10n,
-                        value: item.id,
-                        key: item.id,
-                      }))
-                    : [
-                        {
-                          text: suggestions.title_l10n,
-                          value: suggestions.id,
-                          key: suggestions.id,
-                        },
-                      ];
-                }}
-                initialSuggestions={_get(values, `ui.${fieldPath}`, [])}
-                {...dropdownProps}
-              />
-            );
-          }}
-        </Field>
-      </>
-    );
-  }
+  return (
+    <>
+      <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+      <Field name={fieldPath}>
+        {({ form: { values } }) => {
+          return (
+            <RemoteSelectField
+              clearable={clearable}
+              required={required}
+              fieldPath={fieldPath}
+              multiple={multiple}
+              noQueryMessage={placeholder}
+              placeholder={placeholder}
+              suggestionAPIUrl={autocompleteFrom}
+              suggestionAPIHeaders={{
+                Accept: autocompleteFromAcceptHeader,
+              }}
+              disabled={disabled}
+              helpText={helpText}
+              serializeSuggestions={(suggestions) => {
+                return _isArray(suggestions)
+                  ? suggestions.map((item) => ({
+                      text: item.title_l10n,
+                      value: item.id,
+                      key: item.id,
+                    }))
+                  : [
+                      {
+                        text: suggestions.title_l10n,
+                        value: suggestions.id,
+                        key: suggestions.id,
+                      },
+                    ];
+              }}
+              initialSuggestions={_get(values, `ui.${fieldPath}`, [])}
+              {...dropdownProps}
+            />
+          );
+        }}
+      </Field>
+    </>
+  );
 }
 
 AutocompleteDropdownComponent.propTypes = {

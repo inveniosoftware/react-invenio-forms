@@ -1,4 +1,4 @@
-import React from "react";
+import { createElement } from "react";
 
 /** Import function to load widget either from a specific path or local widgets
  *
@@ -34,7 +34,7 @@ export async function importWidget(
     throw Error("Component not found in any loader");
   }
   if (createElement) {
-    return React.createElement(component, {
+    return createElement(component, {
       ...props,
       record: record,
       key: fieldPath,

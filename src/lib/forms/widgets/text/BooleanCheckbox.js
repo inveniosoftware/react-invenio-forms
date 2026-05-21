@@ -6,7 +6,6 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import PropTypes from "prop-types";
-import React from "react";
 import { Form, Label } from "semantic-ui-react";
 import { FieldLabel } from "../../FieldLabel";
 import { RadioField } from "../../RadioField";
