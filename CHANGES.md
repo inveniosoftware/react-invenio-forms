@@ -1,5 +1,16 @@
 # Changes
 
+Version 5.0.0 (release 2026-11-09)
+
+- chore: update Node.js version to 24 in npm publish workflow
+- ci: migrate to shared workflows
+- fix: update eslint config to react18 preset
+- dependencies: remove unused deps
+- components: convert render-only classes to function components
+- feat: move away from reactdom.render
+- feat: upgrade to react 18
+- feat: switch from tinymce to hugerte
+
 Version 5.0.0-alpha.1 (release 2026-09-03)
 
 - feat: move away from reactdom.render
