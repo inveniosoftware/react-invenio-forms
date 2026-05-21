@@ -1,6 +1,6 @@
 {
   "name": "react-invenio-forms",
-  "version": "4.17.3",
+  "version": "5.0.0",
   "description": "Reusable React components for forms and other in Invenio",
   "main": "dist/cjs/index.js",
   "browser": "dist/cjs/index.js",
@@ -53,8 +53,6 @@
     "ajv": "^8.0.0",
     "ajv-keywords": "^5.0.0",
     "axios": "^1.7.7",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.0",
     "expect": "^26.0.0",
     "formik": "^2.1.0",
     "json": "^10.0.0",
