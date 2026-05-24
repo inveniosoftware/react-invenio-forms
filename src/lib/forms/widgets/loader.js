@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022-2025 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from "react";
 
 /** Import function to load widget either from a specific path or local widgets

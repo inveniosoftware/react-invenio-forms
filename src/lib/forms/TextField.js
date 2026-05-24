@@ -1,10 +1,9 @@
-// This file is part of React-Invenio-Forms
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
-// Copyright (C) 2021 Graz University of Technology
-//
-// React-Invenio-Forms is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2020-2021 CERN.
+ * SPDX-FileCopyrightText: 2020-2021 Northwestern University.
+ * SPDX-FileCopyrightText: 2021 Graz University of Technology
+ * SPDX-License-Identifier: MIT
+ */
 
 import { FastField, Field } from "formik";
 import PropTypes from "prop-types";

@@ -1,10 +1,9 @@
-// This file is part of React-Invenio-Forms
-// Copyright (C) 2022-2026 CERN.
-// Copyright (C) 2020 Northwestern University.
-// Copyright (C) 2024 KTH Royal Institute of Technology.
-//
-// React-Invenio-Forms is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2022-2026 CERN.
+ * SPDX-FileCopyrightText: 2020 Northwestern University.
+ * SPDX-FileCopyrightText: 2024 KTH Royal Institute of Technology.
+ * SPDX-License-Identifier: MIT
+ */
 import React, { Component } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "tinymce/tinymce";

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022-2025 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 export { RichInput } from "./RichInput";
 export { TextArea } from "./TextArea";
 // InputComponent is exported too so other custom field implementations (e.g. in invenio-rdm-records) can

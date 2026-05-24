@@ -1,10 +1,9 @@
-// This file is part of React-Invenio-Forms
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
-// Copyright (C) 2022 TU Wien.
-//
-// React-Invenio-Forms is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2020 CERN.
+ * SPDX-FileCopyrightText: 2020 Northwestern University.
+ * SPDX-FileCopyrightText: 2022 TU Wien.
+ * SPDX-License-Identifier: MIT
+ */
 
 import _isNumber from "lodash/isNumber";
 

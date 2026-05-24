@@ -1,10 +1,9 @@
-// This file is part of React-Invenio-Deposit
-// Copyright (C) 2022 CERN.
-// Copyright (C) 2020 Northwestern University.
-// Copyright (C) 2024 KTH Royal Institute of Technology.
-//
-// React-Invenio-Deposit is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2022 CERN.
+ * SPDX-FileCopyrightText: 2020 Northwestern University.
+ * SPDX-FileCopyrightText: 2024 KTH Royal Institute of Technology.
+ * SPDX-License-Identifier: MIT
+ */
 
 import { FastField, Field, getIn } from "formik";
 import PropTypes from "prop-types";

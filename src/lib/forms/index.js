@@ -1,9 +1,8 @@
-// This file is part of React-Invenio-Forms
-// Copyright (C) 2020-2022 CERN.
-// Copyright (C) 2020-2022 Northwestern University.
-//
-// React-Invenio-Forms is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2020-2022 CERN.
+ * SPDX-FileCopyrightText: 2020-2022 Northwestern University.
+ * SPDX-License-Identifier: MIT
+ */
 
 /**
  * This folder contains reusable components that can be used a form.

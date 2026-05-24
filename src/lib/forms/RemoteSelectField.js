@@ -1,9 +1,8 @@
-// This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
-//
-// React-Invenio-Deposit is free software; you can redistribute it and/or modify it
-// under the terms of the MIT License; see LICENSE file for more details.
+/*
+ * SPDX-FileCopyrightText: 2020 CERN.
+ * SPDX-FileCopyrightText: 2020-2021 Northwestern University.
+ * SPDX-License-Identifier: MIT
+ */
 
 import axios from "axios";
 import _debounce from "lodash/debounce";

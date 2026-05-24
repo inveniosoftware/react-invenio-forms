@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022-2023 CERN.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 import { Grid, Sidebar, Button, Segment } from "semantic-ui-react";
