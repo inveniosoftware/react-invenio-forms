@@ -16,8 +16,8 @@ export class SelectField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // Track dynamically added options (e.g., user-entered values via allowAdditions)
       options: props.options || [],
+      addedOptions: [],
     };
   }
 
@@ -27,7 +27,7 @@ export class SelectField extends Component {
       this.setState((prevState) => {
         if (allowAdditions) {
           return {
-            options: mergeOptions(options || [], prevState.options || []),
+            options: mergeOptions(options || [], prevState.addedOptions || []),
           };
         }
 
@@ -140,12 +140,17 @@ export class SelectField extends Component {
 
             // Add new option to state (deduplication handled by state update)
             this.setState((prevState) => {
-              const prevOptions = prevState.options || [];
+              const prevOptions = prevState.addedOptions || [];
               // Skip update if option already exists
               if (prevOptions.some((opt) => opt.value === newValue)) {
                 return null;
               }
-              return { options: [...prevOptions, newOption] };
+              const addedOptions = [...prevOptions, newOption];
+
+              return {
+                addedOptions,
+                options: mergeOptions(this.props.options || [], addedOptions),
+              };
             });
 
             // Update form value with new selection
