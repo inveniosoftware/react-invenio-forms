@@ -19,7 +19,7 @@ function MultiInputComponent({
   disabled,
   helpText: helpTextProp,
   labelIcon: labelIconProp,
-  optimized,
+  optimized = true,
   ...uiProps
 }) {
   const [options, setOptions] = useState([]);
@@ -78,12 +78,6 @@ MultiInputComponent.propTypes = {
   icon: PropTypes.string,
   optimized: PropTypes.bool,
   ...fieldCommonProps,
-};
-
-MultiInputComponent.defaultProps = {
-  additionLabel: undefined,
-  icon: undefined,
-  optimized: true,
 };
 
 export const MultiInput = showHideOverridableWithDynamicId(MultiInputComponent);

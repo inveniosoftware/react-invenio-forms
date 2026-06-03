@@ -49,8 +49,3 @@ FilesList.propTypes = {
   files: PropTypes.array,
   onFileDelete: PropTypes.func,
 };
-
-FilesList.defaultProps = {
-  files: undefined,
-  onFileDelete: undefined,
-};

@@ -22,7 +22,7 @@ export class BooleanField extends Component {
   }
 
   renderFormField = (props) => {
-    const { fieldPath, label, ...uiProps } = this.props;
+    const { fieldPath, label = "", ...uiProps } = this.props;
     const {
       form: { values, handleBlur, errors, initialErrors, initialValues, setFieldValue },
     } = props;
@@ -47,7 +47,7 @@ export class BooleanField extends Component {
     );
   };
   render() {
-    const { optimized, fieldPath } = this.props;
+    const { optimized = false, fieldPath } = this.props;
     const FormikField = optimized ? FastField : Field;
     return (
       <FormikField
@@ -63,9 +63,4 @@ BooleanField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   optimized: PropTypes.bool,
-};
-
-BooleanField.defaultProps = {
-  label: "",
-  optimized: false,
 };

@@ -15,11 +15,11 @@ class RichInputComponent extends Component {
       label,
       icon,
       description,
-      editorConfig,
+      editorConfig = {},
       disabled,
       helpText: helpTextProp,
       labelIcon: labelIconProp,
-      optimized,
+      optimized = true,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -54,12 +54,6 @@ RichInputComponent.propTypes = {
   description: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
   ...fieldCommonProps,
-};
-
-RichInputComponent.defaultProps = {
-  icon: undefined,
-  editorConfig: {},
-  optimized: true,
 };
 
 export const RichInput = showHideOverridableWithDynamicId(RichInputComponent);

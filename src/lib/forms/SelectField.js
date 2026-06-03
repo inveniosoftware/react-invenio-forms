@@ -71,17 +71,17 @@ export class SelectField extends Component {
       ...cmpProps
     } = formikProps;
     const {
-      defaultValue,
+      defaultValue = "",
       error,
       fieldPath,
-      label,
+      label = "",
       options,
       onChange,
       onAddItem,
-      multiple,
-      disabled,
-      required,
-      allowAdditions,
+      multiple = false,
+      disabled = false,
+      required = false,
+      allowAdditions = false,
       ...uiProps
     } = cmpProps;
 
@@ -173,7 +173,7 @@ export class SelectField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath, helpText, ...uiProps } = this.props;
+    const { optimized = false, fieldPath, helpText, ...uiProps } = this.props;
     const FormikField = optimized ? FastField : Field;
     return (
       <>
@@ -203,18 +203,4 @@ SelectField.propTypes = {
   helpText: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
-};
-
-SelectField.defaultProps = {
-  defaultValue: "",
-  optimized: false,
-  error: undefined,
-  label: "",
-  onChange: undefined,
-  onAddItem: undefined,
-  multiple: false,
-  helpText: undefined,
-  required: false,
-  disabled: false,
-  allowAdditions: false,
 };

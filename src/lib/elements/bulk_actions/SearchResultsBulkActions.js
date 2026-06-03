@@ -15,7 +15,7 @@ import _pickBy from "lodash/pickBy";
 export default class SearchResultsBulkActions extends Component {
   constructor(props) {
     super(props);
-    const { allSelected } = this.props;
+    const { allSelected = false } = this.props;
     this.state = { allSelectedChecked: allSelected };
   }
 
@@ -85,8 +85,4 @@ SearchResultsBulkActions.propTypes = {
   bulkDropdownOptions: PropTypes.array.isRequired,
   allSelected: PropTypes.bool,
   optionSelectionCallback: PropTypes.func.isRequired,
-};
-
-SearchResultsBulkActions.defaultProps = {
-  allSelected: false,
 };

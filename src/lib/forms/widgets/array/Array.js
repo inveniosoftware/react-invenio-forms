@@ -19,7 +19,7 @@ class ArrayComponent extends Component {
       children,
       addButtonLabel,
       defaultNewValue,
-      className,
+      className = "",
       helpText: helpTextProp,
       labelIcon: labelIconProp,
     } = this.props;
@@ -59,11 +59,6 @@ ArrayComponent.propTypes = {
    */
   description: PropTypes.string.isRequired,
   ...fieldCommonProps,
-};
-
-ArrayComponent.defaultProps = {
-  className: "",
-  icon: undefined,
 };
 
 export const Array = showHideOverridableWithDynamicId(ArrayComponent);
