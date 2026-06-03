@@ -34,6 +34,7 @@ export class RemoteSelectField extends Component {
     this.state = {
       isFetching: false,
       suggestions: initialSuggestions,
+      addedSuggestions: [],
       selectedSuggestions: initialSuggestions,
       error: false,
       searchQuery: null,
@@ -81,7 +82,10 @@ export class RemoteSelectField extends Component {
     this.setState(
       (prevState) => ({
         selectedSuggestions: newSelectedSuggestions,
-        suggestions: mergeOptions(prevState.suggestions, newSelectedSuggestions),
+        addedSuggestions: mergeOptions(prevState.addedSuggestions, [
+          selectedSuggestion,
+        ]),
+        suggestions: mergeOptions(prevState.suggestions, [selectedSuggestion]),
         searchQuery: null,
       }),
       () => callbackFunc(newSelectedSuggestions)
@@ -109,7 +113,10 @@ export class RemoteSelectField extends Component {
 
       const serializedSuggestions = serializeSuggestions(suggestions);
       this.setState((prevState) => ({
-        suggestions: mergeOptions(prevState.selectedSuggestions, serializedSuggestions),
+        suggestions: mergeOptions(
+          mergeOptions(prevState.selectedSuggestions, prevState.addedSuggestions),
+          serializedSuggestions
+        ),
         isFetching: false,
         error: false,
         open: true,
