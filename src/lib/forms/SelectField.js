@@ -22,13 +22,18 @@ export class SelectField extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { options } = this.props;
+    const { options, allowAdditions } = this.props;
     if (prevProps.options !== options) {
-      // When props.options change, merge with existing state options
-      // This preserves user-added options while incorporating new prop options
       this.setState((prevState) => {
-        const merged = mergeOptions(prevState.options || [], options || []);
-        return { options: merged };
+        if (allowAdditions) {
+          return {
+            options: mergeOptions(options || [], prevState.options || []),
+          };
+        }
+
+        return {
+          options: options || [],
+        };
       });
     }
   }
