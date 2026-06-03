@@ -1,5 +1,10 @@
 # Changes
 
+Version 4.17.4 (release 2026-06-03)
+
+- fix: preserve manually added suggestions across remote searches
+- fix: replace stale remote select options when additions are disabled
+
 Version 4.17.3 (release 2026-04-24)
 
 - fix: use value prop or fallback to formik in select field
