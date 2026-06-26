@@ -23,6 +23,7 @@ export class RichInputField extends Component {
       editorConfig,
       disabled,
       optimized,
+      locale,
     } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
@@ -50,9 +51,10 @@ export class RichInputField extends Component {
         ) : (
           <RichEditor
             initialValue={initialValue}
-            inputValue={() => value} // () =>  To avoid re-rendering
+            inputValue={value}
             optimized={optimized}
             editorConfig={editorConfig}
+            locale={locale}
             onBlur={(event, editor) => {
               formikBag.form.setFieldValue(fieldPath, editor.getContent());
               formikBag.form.setFieldTouched(fieldPath, true);
@@ -88,6 +90,7 @@ RichInputField.propTypes = {
   editorConfig: PropTypes.object,
   disabled: PropTypes.bool,
   helpText: PropTypes.string,
+  locale: PropTypes.string,
 };
 
 RichInputField.defaultProps = {
@@ -99,4 +102,5 @@ RichInputField.defaultProps = {
   editorConfig: undefined,
   disabled: false,
   helpText: undefined,
+  locale: undefined,
 };

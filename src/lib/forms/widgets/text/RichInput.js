@@ -25,6 +25,7 @@ class RichInputComponent extends Component {
       helpText: helpTextProp,
       labelIcon: labelIconProp,
       optimized,
+      locale,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -38,6 +39,7 @@ class RichInputComponent extends Component {
           required={required}
           disabled={disabled}
           editorConfig={editorConfig}
+          locale={locale}
           label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
           optimized={optimized}
         />
@@ -58,6 +60,7 @@ RichInputComponent.propTypes = {
    */
   description: PropTypes.string.isRequired,
   optimized: PropTypes.bool,
+  locale: PropTypes.string,
   ...fieldCommonProps,
 };
 
@@ -65,6 +68,7 @@ RichInputComponent.defaultProps = {
   icon: undefined,
   editorConfig: {},
   optimized: true,
+  locale: undefined,
 };
 
 export const RichInput = showHideOverridableWithDynamicId(RichInputComponent);

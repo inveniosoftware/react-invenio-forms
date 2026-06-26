@@ -8,3 +8,4 @@
 /docs/website/build
 npm-debug.log*
 .history
+src/lib/forms/locales
