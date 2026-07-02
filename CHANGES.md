@@ -1,5 +1,13 @@
 # Changes
 
+Version 4.17.5 (release 2026-07-02)
+
+- fix(ci): add Node.js 24.x to test matrix
+- fix(pnpm): add prop-types as dependency
+- fix(forms): render severity feedback
+- chore(licenses): update license headers to use SPDX
+- forms: disabled advanced cell properties in editor table
+
 Version 4.17.4 (release 2026-06-03)
 
 - fix: preserve manually added suggestions across remote searches
