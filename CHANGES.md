@@ -1,5 +1,9 @@
 # Changes
 
+Version 4.17.6 (release 2026-07-07)
+
+- fix: file preview not showing for S3 instances
+
 Version 4.17.5 (release 2026-07-02)
 
 - fix(ci): add Node.js 24.x to test matrix
