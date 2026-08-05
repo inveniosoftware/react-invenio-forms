@@ -48,7 +48,6 @@ const showHideComponent = (Component, id) => {
     Component.displayName || Component.name
   })`;
   ShowHideComponent.propTypes = { ...Component.propTypes };
-  ShowHideComponent.defaultProps = { ...Component.defaultProps };
   return ShowHideComponent;
 };
 
@@ -84,7 +83,6 @@ export const showHideOverridableWithDynamicId = (Widget) => {
   };
 
   Component.propTypes = { ...Widget.propTypes, id: PropTypes.string };
-  Component.defaultProps = { ...Widget.defaultProps, id: undefined };
   Component.displayName = `DynamicOverridable(${Widget.displayName || Widget.name})`;
   return Component;
 };

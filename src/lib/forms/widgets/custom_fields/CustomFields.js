@@ -22,7 +22,10 @@ export class CustomFields extends Component {
   }
 
   populateConfig = async () => {
-    const { includesPaths, fieldPathPrefix } = this.props;
+    const {
+      includesPaths = (fields) => fields.map((field) => field.key),
+      fieldPathPrefix,
+    } = this.props;
     try {
       const { sectionsConfig, discoverFieldsConfig } =
         await this.loadCustomFieldsWidgets();
@@ -95,7 +98,7 @@ export class CustomFields extends Component {
 
   render() {
     const { sections, discoverFieldsSections } = this.state;
-    const { templateLoaders, record, severityChecks } = this.props;
+    const { templateLoaders, record, severityChecks = null } = this.props;
 
     return (
       <>
@@ -158,9 +161,4 @@ CustomFields.propTypes = {
   includesPaths: PropTypes.func,
   severityChecks: PropTypes.object,
   record: PropTypes.object.isRequired,
-};
-
-CustomFields.defaultProps = {
-  includesPaths: (fields) => fields.map((field) => field.key),
-  severityChecks: null,
 };

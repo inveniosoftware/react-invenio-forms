@@ -26,10 +26,6 @@ CurrentRecord.propTypes = {
   record: PropTypes.object,
 };
 
-CurrentRecord.defaultProps = {
-  record: undefined,
-};
-
 class RecordPreviewer extends Component {
   render() {
     const { record } = this.props;
@@ -39,10 +35,6 @@ class RecordPreviewer extends Component {
 
 RecordPreviewer.propTypes = {
   record: PropTypes.object,
-};
-
-RecordPreviewer.defaultProps = {
-  record: undefined,
 };
 
 class App extends Component {

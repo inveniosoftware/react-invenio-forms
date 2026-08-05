@@ -30,7 +30,14 @@ export class GroupField extends React.Component {
   };
 
   renderFormField = (props) => {
-    const { action, basic, border, children, fieldPath, ...uiProps } = props;
+    const {
+      action,
+      basic = false,
+      border = false,
+      children,
+      fieldPath = "",
+      ...uiProps
+    } = props;
     const errors = getIn(props, "form.errors");
     const classNames = ["form-group"];
     if (border) {
@@ -53,7 +60,7 @@ export class GroupField extends React.Component {
   };
 
   render() {
-    const { optimized, fieldPath, ...uiProps } = this.props;
+    const { optimized = false, fieldPath = "", ...uiProps } = this.props;
 
     const FormikField = optimized ? FastField : Field;
     return (
@@ -75,13 +82,4 @@ GroupField.propTypes = {
   action: PropTypes.any,
   basic: PropTypes.bool,
   children: PropTypes.any,
-};
-
-GroupField.defaultProps = {
-  border: false,
-  fieldPath: "",
-  optimized: false,
-  action: undefined,
-  basic: false,
-  children: undefined,
 };

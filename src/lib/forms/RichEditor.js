@@ -309,14 +309,14 @@ export class RichEditor extends Component {
 
     const {
       id,
-      initialValue,
+      initialValue = "",
       disabled,
-      minHeight,
+      minHeight = 250,
       onBlur,
       onChange,
       onFocus,
       editorConfig,
-      inputValue,
+      inputValue = "",
       onEditorChange,
       files,
       onInit,
@@ -455,22 +455,4 @@ RichEditor.propTypes = {
   onFilesChange: PropTypes.func,
   onFileUpload: PropTypes.func,
   onFileDelete: PropTypes.func,
-};
-
-RichEditor.defaultProps = {
-  minHeight: 250,
-  initialValue: "",
-  inputValue: "",
-  id: undefined,
-  disabled: undefined,
-  onChange: undefined,
-  onEditorChange: undefined,
-  onBlur: undefined,
-  onFocus: undefined,
-  onInit: undefined,
-  editorConfig: undefined,
-  files: undefined,
-  onFilesChange: undefined,
-  onFileUpload: undefined,
-  onFileDelete: undefined,
 };

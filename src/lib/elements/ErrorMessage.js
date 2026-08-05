@@ -85,11 +85,3 @@ ErrorMessage.propTypes = {
   content: PropTypes.string,
   icon: PropTypes.string,
 };
-
-ErrorMessage.defaultProps = {
-  errors: undefined,
-  header: undefined,
-  uiProps: undefined,
-  icon: undefined,
-  content: undefined,
-};
