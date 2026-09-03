@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./demos/App";
 import "semantic-ui-css/semantic.min.css";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+createRoot(document.getElementById("root")).render(<App />);

@@ -5,3 +5,5 @@
  */
 
 import "@testing-library/jest-dom/extend-expect";
+
+window.IS_REACT_ACT_ENVIRONMENT = true;
