@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { FastField, Field, getIn } from "formik";
 import { Form } from "semantic-ui-react";
@@ -21,7 +21,7 @@ export class BooleanField extends Component {
   }
 
   renderFormField = (props) => {
-    const { fieldPath, label, ...uiProps } = this.props;
+    const { fieldPath, label = "", optimized = false, ...uiProps } = this.props;
     const {
       form: { values, handleBlur, errors, initialErrors, initialValues, setFieldValue },
     } = props;
@@ -40,13 +40,14 @@ export class BooleanField extends Component {
           onBlur={handleBlur}
           checked={value}
           error={this.renderError(fieldErrors, fieldPath)}
+          optimized={optimized}
           {...uiProps}
         />
       </Form.Group>
     );
   };
   render() {
-    const { optimized, fieldPath } = this.props;
+    const { optimized = false, fieldPath } = this.props;
     const FormikField = optimized ? FastField : Field;
     return (
       <FormikField
@@ -62,9 +63,4 @@ BooleanField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   optimized: PropTypes.bool,
-};
-
-BooleanField.defaultProps = {
-  label: "",
-  optimized: false,
 };

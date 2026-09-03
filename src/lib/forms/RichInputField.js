@@ -7,7 +7,7 @@
 
 import { FastField, Field, getIn } from "formik";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component, isValidElement } from "react";
 import { RichEditor } from "./RichEditor";
 import { ErrorLabel } from "./ErrorLabel";
 import { Form } from "semantic-ui-react";
@@ -16,16 +16,19 @@ export class RichInputField extends Component {
   renderFormField = (formikBag) => {
     const {
       fieldPath,
-      label,
-      required,
-      className,
-      editor,
-      editorConfig,
-      disabled,
-      optimized,
+      label = "",
+      required = false,
+      className = "invenio-rich-input-field",
+      editor = undefined,
+      editorConfig = undefined,
+      disabled = false,
+      optimized = false,
     } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
+    const setEditorValue = (editor, shouldValidate = false) => {
+      formikBag.form.setFieldValue(fieldPath, editor.getContent(), shouldValidate);
+    };
     const error =
       getIn(formikBag.form.errors, fieldPath, false) ||
       // We check if initialValue changed to display the initialError,
@@ -40,11 +43,7 @@ export class RichInputField extends Component {
         error={error}
         className={className}
       >
-        {React.isValidElement(label) ? (
-          label
-        ) : (
-          <label htmlFor={fieldPath}>{label}</label>
-        )}
+        {isValidElement(label) ? label : <label htmlFor={fieldPath}>{label}</label>}
         {editor ? (
           editor
         ) : (
@@ -53,8 +52,11 @@ export class RichInputField extends Component {
             inputValue={() => value} // () =>  To avoid re-rendering
             optimized={optimized}
             editorConfig={editorConfig}
+            onChange={(event, editor) => {
+              setEditorValue(editor);
+            }}
             onBlur={(event, editor) => {
-              formikBag.form.setFieldValue(fieldPath, editor.getContent());
+              setEditorValue(editor, true);
               formikBag.form.setFieldTouched(fieldPath, true);
             }}
             disabled={disabled}
@@ -66,7 +68,7 @@ export class RichInputField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath, helpText } = this.props;
+    const { optimized = false, fieldPath, helpText = undefined } = this.props;
     const FormikField = optimized ? FastField : Field;
 
     return (
@@ -88,15 +90,4 @@ RichInputField.propTypes = {
   editorConfig: PropTypes.object,
   disabled: PropTypes.bool,
   helpText: PropTypes.string,
-};
-
-RichInputField.defaultProps = {
-  className: "invenio-rich-input-field",
-  optimized: false,
-  required: false,
-  label: "",
-  editor: undefined,
-  editorConfig: undefined,
-  disabled: false,
-  helpText: undefined,
 };

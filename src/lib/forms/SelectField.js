@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { FastField, Field, getIn } from "formik";
 import { Form } from "semantic-ui-react";
@@ -70,17 +70,17 @@ export class SelectField extends Component {
       ...cmpProps
     } = formikProps;
     const {
-      defaultValue,
+      defaultValue = "",
       error,
       fieldPath,
-      label,
+      label = "",
       options,
       onChange,
       onAddItem,
-      multiple,
-      disabled,
-      required,
-      allowAdditions,
+      multiple = false,
+      disabled = false,
+      required = false,
+      allowAdditions = false,
       ...uiProps
     } = cmpProps;
 
@@ -136,6 +136,7 @@ export class SelectField extends Component {
             // Default behavior: add new option to state and update form value
             const newValue = data.value;
             const newOption = createOption(newValue);
+            const { options = [] } = this.props;
 
             // Add new option to state (deduplication handled by state update)
             this.setState((prevState) => {
@@ -148,7 +149,7 @@ export class SelectField extends Component {
 
               return {
                 addedOptions,
-                options: mergeOptions(this.props.options || [], addedOptions),
+                options: mergeOptions(options, addedOptions),
               };
             });
 
@@ -172,7 +173,7 @@ export class SelectField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath, helpText, ...uiProps } = this.props;
+    const { optimized = false, fieldPath, helpText, ...uiProps } = this.props;
     const FormikField = optimized ? FastField : Field;
     return (
       <>
@@ -202,18 +203,4 @@ SelectField.propTypes = {
   helpText: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
-};
-
-SelectField.defaultProps = {
-  defaultValue: "",
-  optimized: false,
-  error: undefined,
-  label: "",
-  onChange: undefined,
-  onAddItem: undefined,
-  multiple: false,
-  helpText: undefined,
-  required: false,
-  disabled: false,
-  allowAdditions: false,
 };

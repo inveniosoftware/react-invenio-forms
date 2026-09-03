@@ -4,7 +4,7 @@
  */
 
 import { useFormikContext } from "formik";
-import React from "react";
+import { createElement } from "react";
 import PropTypes from "prop-types";
 import Overridable from "react-overridable";
 
@@ -48,7 +48,6 @@ const showHideComponent = (Component, id) => {
     Component.displayName || Component.name
   })`;
   ShowHideComponent.propTypes = { ...Component.propTypes };
-  ShowHideComponent.defaultProps = { ...Component.defaultProps };
   return ShowHideComponent;
 };
 
@@ -73,7 +72,7 @@ export const showHideOverridable = (id, Child) => {
  */
 export const showHideOverridableWithDynamicId = (Widget) => {
   const ShowHideWidget = showHideComponent(Widget);
-  const Component = ({ id, ...props }) => {
+  const Component = ({ id = undefined, ...props }) => {
     if (id === undefined) return <ShowHideWidget {...props} />;
 
     return (
@@ -84,7 +83,6 @@ export const showHideOverridableWithDynamicId = (Widget) => {
   };
 
   Component.propTypes = { ...Widget.propTypes, id: PropTypes.string };
-  Component.defaultProps = { ...Widget.defaultProps, id: undefined };
   Component.displayName = `DynamicOverridable(${Widget.displayName || Widget.name})`;
   return Component;
 };
@@ -117,7 +115,7 @@ export function parametrizeWithFormContext(Component, propsFactory) {
 
     // overrideProps override props if there is a name collision
     const { children, ...attrProps } = { ...props, ...extraProps };
-    return React.createElement(Component, attrProps, children);
+    return createElement(Component, attrProps, children);
   };
 
   const name = Component.displayName || Component.name;

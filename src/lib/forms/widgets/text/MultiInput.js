@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { useFormikContext, getIn } from "formik";
 import { FieldLabel } from "../../FieldLabel";
@@ -14,17 +14,17 @@ import {
 } from "../../fieldComponents";
 
 function MultiInputComponent({
-  additionLabel,
+  additionLabel = undefined,
   description,
   placeholder,
   fieldPath,
   label,
-  icon,
+  icon = undefined,
   required,
   disabled,
   helpText: helpTextProp,
   labelIcon: labelIconProp,
-  optimized,
+  optimized = true,
   ...uiProps
 }) {
   const [options, setOptions] = useState([]);
@@ -75,7 +75,7 @@ MultiInputComponent.propTypes = {
   /**
    * @deprecated Use `helpText` instead
    */
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   additionLabel: PropTypes.string,
   /**
    * @deprecated Use `labelIcon` instead
@@ -83,12 +83,6 @@ MultiInputComponent.propTypes = {
   icon: PropTypes.string,
   optimized: PropTypes.bool,
   ...fieldCommonProps,
-};
-
-MultiInputComponent.defaultProps = {
-  additionLabel: undefined,
-  icon: undefined,
-  optimized: true,
 };
 
 export const MultiInput = showHideOverridableWithDynamicId(MultiInputComponent);

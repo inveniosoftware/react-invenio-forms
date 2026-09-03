@@ -4,9 +4,11 @@
  */
 
 import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { Image as SUIImage, Ref } from "semantic-ui-react";
+import { Component, createRef } from "react";
+import { Image as SUIImage } from "semantic-ui-react";
 import axios from "axios";
+
+const FALLBACK_SRC = "/static/images/square-placeholder.png";
 
 /**
  * Primary UI Image component providing a fallback url if src one is not
@@ -14,7 +16,7 @@ import axios from "axios";
  */
 export class Image extends Component {
   async componentDidMount() {
-    const { fallbackSrc, loadFallbackFirst, src } = this.props;
+    const { fallbackSrc = FALLBACK_SRC, loadFallbackFirst = false, src } = this.props;
     if (loadFallbackFirst) {
       try {
         await axios.get(src);
@@ -26,7 +28,7 @@ export class Image extends Component {
       }
     }
   }
-  myRef = React.createRef();
+  myRef = createRef();
 
   setSrc = (currentTarget, src, isFallback = false) => {
     if (isFallback) {
@@ -50,33 +52,38 @@ export class Image extends Component {
   };
 
   render() {
-    const { alt, className, src, fallbackSrc, loadFallbackFirst, ...UIprops } =
-      this.props;
+    const {
+      alt = "No image found",
+      className = "",
+      src,
+      fallbackSrc = FALLBACK_SRC,
+      loadFallbackFirst = false,
+      ...UIprops
+    } = this.props;
     const loadingClass = !loadFallbackFirst
       ? `${className} placeholder`
       : `${className} fallback_image`;
     const url = loadFallbackFirst ? fallbackSrc : src;
     return (
-      <Ref innerRef={this.myRef}>
-        <SUIImage
-          className={loadingClass}
-          alt={alt}
-          src={url}
-          {...(!loadFallbackFirst && {
-            onError: ({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              this.setSrc(currentTarget, fallbackSrc, true);
-            },
-            onLoad: () => {
-              // Control the loader via ref to make it immediately invisible
-              if (!loadFallbackFirst) {
-                this.myRef.current.classList.remove("placeholder");
-              }
-            },
-          })}
-          {...UIprops}
-        />
-      </Ref>
+      <SUIImage
+        ref={this.myRef}
+        className={loadingClass}
+        alt={alt}
+        src={url}
+        {...(!loadFallbackFirst && {
+          onError: ({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            this.setSrc(currentTarget, fallbackSrc, true);
+          },
+          onLoad: () => {
+            // Control the loader via ref to make it immediately invisible
+            if (!loadFallbackFirst) {
+              this.myRef.current.classList.remove("placeholder");
+            }
+          },
+        })}
+        {...UIprops}
+      />
     );
   }
 }
@@ -87,11 +94,4 @@ Image.propTypes = {
   className: PropTypes.string,
   alt: PropTypes.string,
   loadFallbackFirst: PropTypes.bool,
-};
-
-Image.defaultProps = {
-  className: "",
-  alt: "No image found",
-  fallbackSrc: "/static/images/square-placeholder.png",
-  loadFallbackFirst: false,
 };

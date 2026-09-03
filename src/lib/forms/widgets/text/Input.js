@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { TextField } from "../../TextField";
@@ -22,7 +22,7 @@ export class InputComponent extends Component {
       placeholder,
       description,
       disabled,
-      type,
+      type = "input",
       helpText: helpTextProp,
       labelIcon: labelIconProp,
     } = this.props;
@@ -56,12 +56,6 @@ InputComponent.propTypes = {
   icon: PropTypes.string,
   type: PropTypes.string,
   ...fieldCommonProps,
-};
-
-InputComponent.defaultProps = {
-  icon: undefined,
-  description: undefined,
-  type: "input",
 };
 
 export const Input = showHideOverridableWithDynamicId(InputComponent);

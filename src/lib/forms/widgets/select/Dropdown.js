@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { SelectField } from "../../SelectField";
@@ -30,13 +30,13 @@ class DropdownComponent extends Component {
       icon,
       labelIcon: labelIconProp,
       options,
-      search,
-      multiple,
-      clearable,
+      search = false,
+      multiple = false,
+      clearable = true,
       required,
       disabled,
-      optimized,
-      allowAdditions,
+      optimized = true,
+      allowAdditions = false,
     } = this.props;
 
     const helpText = helpTextProp ?? description;
@@ -51,10 +51,7 @@ class DropdownComponent extends Component {
         aria-label={label}
         multiple={multiple}
         disabled={disabled}
-        placeholder={{
-          role: "option",
-          content: placeholder,
-        }}
+        placeholder={placeholder}
         clearable={clearable}
         required={required}
         defaultValue={multiple ? [] : ""}
@@ -87,16 +84,6 @@ DropdownComponent.propTypes = {
   optimized: PropTypes.bool,
   allowAdditions: PropTypes.bool,
   ...fieldCommonProps,
-};
-
-DropdownComponent.defaultProps = {
-  icon: undefined,
-  search: false,
-  multiple: false,
-  clearable: true,
-  description: undefined,
-  optimized: true,
-  allowAdditions: false,
 };
 
 export const Dropdown = showHideOverridableWithDynamicId(DropdownComponent);
