@@ -5,7 +5,7 @@
 
 import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Label, Icon } from "semantic-ui-react";
 import { InvenioPopup } from "../elements/accessibility";
 import PropTypes from "prop-types";
@@ -30,7 +30,11 @@ export class FeedbackLabel extends Component {
   };
 
   computeErrors = (errors, initialErrors) => {
-    const { fieldPath, injectedError, hasSubfields } = this.props;
+    const {
+      fieldPath = undefined,
+      injectedError = undefined,
+      hasSubfields = false,
+    } = this.props;
     let error;
 
     if (injectedError) {
@@ -64,7 +68,7 @@ export class FeedbackLabel extends Component {
   };
 
   renderErrors = ({ form: { errors, initialErrors } }) => {
-    const { fieldPath, pointing } = this.props;
+    const { fieldPath = undefined, pointing = "left" } = this.props;
     const { error, errMessage, hasSeverity } = this.computeErrors(
       errors,
       initialErrors
@@ -95,7 +99,7 @@ export class FeedbackLabel extends Component {
   };
 
   render() {
-    const { fieldPath } = this.props;
+    const { fieldPath = undefined } = this.props;
 
     return (
       <Field className="invenio-error-label-field" name={fieldPath}>
@@ -110,11 +114,4 @@ FeedbackLabel.propTypes = {
   pointing: PropTypes.oneOf(["left", "above", "below", "right"]),
   fieldPath: PropTypes.string,
   hasSubfields: PropTypes.bool,
-};
-
-FeedbackLabel.defaultProps = {
-  injectedError: undefined,
-  pointing: "left",
-  fieldPath: undefined,
-  hasSubfields: false,
 };

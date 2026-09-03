@@ -4,7 +4,7 @@
  */
 
 import _isEmpty from "lodash/isEmpty";
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import Overridable from "react-overridable";
 import { Divider } from "semantic-ui-react";
@@ -17,7 +17,6 @@ class DiscoverFieldsSection extends Component {
   constructor(props) {
     super(props);
     const { sections, record } = props; // sections = fields grouping, usually by domain
-    console.warn(props);
     let filled = [];
     if (record && !isEmpty(record.custom_fields)) {
       filled = Object.keys(record.custom_fields).map((key) => `custom_fields.${key}`);
@@ -103,7 +102,11 @@ class DiscoverFieldsSection extends Component {
   };
 
   render() {
-    const { templateLoaders, record, discoverSectionLabel } = this.props;
+    const {
+      templateLoaders,
+      record,
+      discoverSectionLabel = "Domain specific fields",
+    } = this.props;
     const { sections, tempFields, recordFields } = this.state;
     const existingFields = [
       ...Object.entries(tempFields).map(([key, value]) => value.key),
@@ -156,10 +159,6 @@ DiscoverFieldsSection.propTypes = {
   sections: PropTypes.array.isRequired,
   record: PropTypes.object.isRequired,
   discoverSectionLabel: PropTypes.string,
-};
-
-DiscoverFieldsSection.defaultProps = {
-  discoverSectionLabel: "Domain specific fields",
 };
 
 export default Overridable.component(

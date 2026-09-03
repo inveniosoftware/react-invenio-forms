@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 
 import PropTypes from "prop-types";
 import * as Yup from "yup";
@@ -12,8 +12,7 @@ import { Header, Message, Container } from "semantic-ui-react";
 
 import { TextField, BaseForm } from "../lib/forms";
 
-const CurrentRecord = (props) => {
-  const { record } = props;
+const CurrentRecord = ({ record = undefined }) => {
   return (
     <Message>
       <Message.Header>Submitted record</Message.Header>
@@ -26,10 +25,6 @@ CurrentRecord.propTypes = {
   record: PropTypes.object,
 };
 
-CurrentRecord.defaultProps = {
-  record: undefined,
-};
-
 class RecordPreviewer extends Component {
   render() {
     const { record } = this.props;
@@ -39,10 +34,6 @@ class RecordPreviewer extends Component {
 
 RecordPreviewer.propTypes = {
   record: PropTypes.object,
-};
-
-RecordPreviewer.defaultProps = {
-  record: undefined,
 };
 
 class App extends Component {
