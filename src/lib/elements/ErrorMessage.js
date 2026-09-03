@@ -5,7 +5,7 @@
 
 import { Message, Icon } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import _isEmpty from "lodash/isEmpty";
 
 const FieldErrorList = ({ fieldErrors }) => {
@@ -49,10 +49,17 @@ FieldErrorList.propTypes = {
  */
 export class ErrorMessage extends Component {
   render() {
-    const { header, errors, content, icon, ...uiProps } = this.props;
+    const {
+      header,
+      errors,
+      content,
+      icon,
+      uiProps: messageUIProps = undefined,
+      ...uiProps
+    } = this.props;
 
     return (
-      <Message icon={Boolean(icon)} {...uiProps}>
+      <Message icon={Boolean(icon)} uiProps={messageUIProps} {...uiProps}>
         {icon && <Icon name={icon} />}
         <Message.Content role="alert">
           {header && <Message.Header>{header}</Message.Header>}
@@ -84,12 +91,4 @@ ErrorMessage.propTypes = {
    */
   content: PropTypes.string,
   icon: PropTypes.string,
-};
-
-ErrorMessage.defaultProps = {
-  errors: undefined,
-  header: undefined,
-  uiProps: undefined,
-  icon: undefined,
-  content: undefined,
 };

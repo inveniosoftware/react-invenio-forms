@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 CERN.
  * SPDX-License-Identifier: MIT
  */
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Label } from "semantic-ui-react";
 import { humanReadableBytes } from "../utils/humanReadableBytes";
@@ -17,7 +17,7 @@ import { humanReadableBytes } from "../utils/humanReadableBytes";
  */
 export class FilesList extends Component {
   render() {
-    const { files, onFileDelete } = this.props;
+    const { files = undefined, onFileDelete = undefined } = this.props;
 
     return files?.map((file) => (
       <Label
@@ -47,9 +47,4 @@ export class FilesList extends Component {
 FilesList.propTypes = {
   files: PropTypes.array,
   onFileDelete: PropTypes.func,
-};
-
-FilesList.defaultProps = {
-  files: undefined,
-  onFileDelete: undefined,
 };

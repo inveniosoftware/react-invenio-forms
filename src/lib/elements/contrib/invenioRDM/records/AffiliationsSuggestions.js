@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
 import { Image } from "../../../Image";
 import { Header } from "semantic-ui-react";
 import Overridable from "react-overridable";

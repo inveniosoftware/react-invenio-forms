@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { FieldLabel } from "../../FieldLabel";
 import { TextAreaField } from "../../TextAreaField";
@@ -20,7 +20,7 @@ class TextAreaComponent extends Component {
       label,
       icon,
       description,
-      rows,
+      rows = 3,
       disabled,
       helpText: helpTextProp,
       labelIcon: labelIconProp,
@@ -54,13 +54,8 @@ TextAreaComponent.propTypes = {
   /**
    * @deprecated Use `helpText` instead
    */
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   ...fieldCommonProps,
-};
-
-TextAreaComponent.defaultProps = {
-  icon: undefined,
-  rows: 3,
 };
 
 export const TextArea = showHideOverridableWithDynamicId(TextAreaComponent);

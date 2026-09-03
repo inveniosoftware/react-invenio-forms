@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { FastField, Field, getIn } from "formik";
 import { RadioField } from "./RadioField";
@@ -22,8 +22,16 @@ export class ToggleField extends Component {
      * formikProps: current Formik props (ToggleField instance)
      */
 
-    const { onValue, offValue, onLabel, offLabel, fieldPath, onChange, ...uiProps } =
-      this.props;
+    const {
+      onValue,
+      offValue,
+      onLabel,
+      offLabel,
+      fieldPath,
+      onChange,
+      optimized = true,
+      ...uiProps
+    } = this.props;
 
     const isChecked = getIn(formikProps.form.values, fieldPath) === onValue;
     const handleChange = () => {
@@ -43,6 +51,7 @@ export class ToggleField extends Component {
         className="invenio-toggle-field"
         toggle
         fieldPath={fieldPath}
+        optimized={optimized}
         checked={getIn(formikProps.form.values, fieldPath) === onValue}
         label={
           getIn(formikProps.form.values, fieldPath) === onValue ? onLabel : offLabel
@@ -53,7 +62,7 @@ export class ToggleField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath } = this.props;
+    const { optimized = true, fieldPath } = this.props;
     const FormikField = optimized ? FastField : Field;
     return <FormikField name={fieldPath} component={this.renderFormField} />;
   }
@@ -67,9 +76,4 @@ ToggleField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   optimized: PropTypes.bool,
-};
-
-ToggleField.defaultProps = {
-  onChange: undefined,
-  optimized: true,
 };

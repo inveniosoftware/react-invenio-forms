@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, getIn, FastField } from "formik";
 import { Form } from "semantic-ui-react";
 
-export class GroupField extends React.Component {
+export class GroupField extends Component {
   hasGroupErrors = (errors) => {
-    const { fieldPath } = this.props;
+    const { fieldPath = "" } = this.props;
     for (const field in errors) {
       if (field.startsWith(fieldPath)) {
         return true;
@@ -30,7 +30,14 @@ export class GroupField extends React.Component {
   };
 
   renderFormField = (props) => {
-    const { action, basic, border, children, fieldPath, ...uiProps } = props;
+    const {
+      action = undefined,
+      basic = false,
+      border = false,
+      children = undefined,
+      fieldPath = "",
+      ...uiProps
+    } = props;
     const errors = getIn(props, "form.errors");
     const classNames = ["form-group"];
     if (border) {
@@ -53,7 +60,15 @@ export class GroupField extends React.Component {
   };
 
   render() {
-    const { optimized, fieldPath, ...uiProps } = this.props;
+    const {
+      optimized = false,
+      fieldPath = "",
+      border = false,
+      action = undefined,
+      basic = false,
+      children = undefined,
+      ...uiProps
+    } = this.props;
 
     const FormikField = optimized ? FastField : Field;
     return (
@@ -62,8 +77,13 @@ export class GroupField extends React.Component {
         component={this.renderFormField}
         fieldPath={fieldPath}
         className="invenio-group-field"
+        border={border}
+        action={action}
+        basic={basic}
         {...uiProps}
-      />
+      >
+        {children}
+      </FormikField>
     );
   }
 }
@@ -75,13 +95,4 @@ GroupField.propTypes = {
   action: PropTypes.any,
   basic: PropTypes.bool,
   children: PropTypes.any,
-};
-
-GroupField.defaultProps = {
-  border: false,
-  fieldPath: "",
-  optimized: false,
-  action: undefined,
-  basic: false,
-  children: undefined,
 };

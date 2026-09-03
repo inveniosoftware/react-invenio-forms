@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component, cloneElement } from "react";
 import PropTypes from "prop-types";
 import { Popup } from "semantic-ui-react";
 
@@ -11,13 +11,13 @@ export class InvenioPopup extends Component {
   render() {
     const {
       popupId,
-      size,
+      size = "small",
       trigger,
       content,
-      position,
-      inverted,
+      position = "top left",
+      inverted = false,
       ariaLabel,
-      hoverable,
+      hoverable = true,
     } = this.props;
 
     return (
@@ -28,7 +28,7 @@ export class InvenioPopup extends Component {
         inverted={inverted}
         hoverable={hoverable}
         on={["hover", "focus"]}
-        trigger={React.cloneElement(trigger, {
+        trigger={cloneElement(trigger, {
           "role": "button",
           "tabIndex": 0,
           "aria-label": ariaLabel,
@@ -52,11 +52,4 @@ InvenioPopup.propTypes = {
   hoverable: PropTypes.bool,
   position: PropTypes.string,
   size: PropTypes.string,
-};
-
-InvenioPopup.defaultProps = {
-  inverted: false,
-  position: "top left",
-  size: "small",
-  hoverable: true,
 };

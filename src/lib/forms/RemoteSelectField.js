@@ -9,13 +9,17 @@ import _debounce from "lodash/debounce";
 import _isEqual from "lodash/isEqual";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Message } from "semantic-ui-react";
 import { SelectField } from "./SelectField";
 import { withCancel } from "../api";
 import { mergeOptions, createOption } from "../utils";
 
 const DEFAULT_SUGGESTION_SIZE = 20;
+const EMPTY_INITIAL_SUGGESTIONS = [];
+const EMPTY_SUGGESTION_API_QUERY_PARAMS = {};
+const EMPTY_SUGGESTION_API_HEADERS = {};
+const PRE_SEARCH_CHANGE_IDENTITY = (x) => x;
 
 const serializeSuggestions = (suggestions) =>
   suggestions.map((item) => ({
@@ -27,18 +31,27 @@ const serializeSuggestions = (suggestions) =>
 export class RemoteSelectField extends Component {
   constructor(props) {
     super(props);
-    const initialSuggestions = props.initialSuggestions
-      ? props.serializeSuggestions(props.initialSuggestions)
+    const {
+      debounceTime = 500,
+      initialSuggestions = EMPTY_INITIAL_SUGGESTIONS,
+      serializeSuggestions: serialize = serializeSuggestions,
+    } = props;
+    const serializedInitialSuggestions = initialSuggestions
+      ? serialize(initialSuggestions)
       : [];
     this.state = {
       isFetching: false,
-      suggestions: initialSuggestions,
+      suggestions: serializedInitialSuggestions,
       addedSuggestions: [],
-      selectedSuggestions: initialSuggestions,
+      selectedSuggestions: serializedInitialSuggestions,
       error: false,
       searchQuery: null,
       open: false,
     };
+    this.onSearchChange = _debounce(async (e, { searchQuery }) => {
+      this.cancellableAction && this.cancellableAction.cancel();
+      await this.executeSearch(searchQuery);
+    }, debounceTime);
   }
 
   componentWillUnmount() {
@@ -46,7 +59,7 @@ export class RemoteSelectField extends Component {
   }
 
   onSelectValue = async (event, { options, value, ...otherData }, callbackFunc) => {
-    const { multiple } = this.props;
+    const { multiple = false } = this.props;
     const newSelectedSuggestions = options.filter((item) => {
       if (multiple) {
         // "value" is an array so check if it includes the option's value
@@ -92,14 +105,11 @@ export class RemoteSelectField extends Component {
     await this.searchIfNoSuggestions(newSelectedSuggestions); // Reset search query to empty string after addition
   };
 
-  onSearchChange = _debounce(async (e, { searchQuery }) => {
-    this.cancellableAction && this.cancellableAction.cancel();
-    await this.executeSearch(searchQuery);
-    // eslint-disable-next-line react/destructuring-assignment
-  }, this.props.debounceTime); // can't destructure as prop variable is used outside the inner function
-
   executeSearch = async (searchQuery) => {
-    const { preSearchChange, serializeSuggestions } = this.props;
+    const {
+      preSearchChange = PRE_SEARCH_CHANGE_IDENTITY,
+      serializeSuggestions: serialize = serializeSuggestions,
+    } = this.props;
     const query = preSearchChange(searchQuery);
     // If there is no query change, then display prevState suggestions
     const { searchQuery: prevSearchQuery } = this.state;
@@ -110,7 +120,7 @@ export class RemoteSelectField extends Component {
     try {
       const suggestions = await this.fetchSuggestions(query);
 
-      const serializedSuggestions = serializeSuggestions(suggestions);
+      const serializedSuggestions = serialize(suggestions);
       this.setState((prevState) => ({
         suggestions: mergeOptions(
           mergeOptions(prevState.selectedSuggestions, prevState.addedSuggestions),
@@ -140,9 +150,9 @@ export class RemoteSelectField extends Component {
   fetchSuggestions = async (searchQuery) => {
     const {
       suggestionAPIUrl,
-      suggestionAPIQueryParams,
-      suggestionAPIHeaders,
-      searchQueryParamName,
+      suggestionAPIQueryParams = EMPTY_SUGGESTION_API_QUERY_PARAMS,
+      suggestionAPIHeaders = EMPTY_SUGGESTION_API_HEADERS,
+      searchQueryParamName = "suggest",
     } = this.props;
 
     this.cancellableAction = withCancel(
@@ -171,10 +181,10 @@ export class RemoteSelectField extends Component {
 
   getNoResultsMessage = () => {
     const {
-      loadingMessage,
-      suggestionsErrorMessage,
-      noQueryMessage,
-      noResultsMessage,
+      loadingMessage = "Loading...",
+      suggestionsErrorMessage = "Something went wrong...",
+      noQueryMessage = "Search...",
+      noResultsMessage = "No results found.",
     } = this.props;
     const { isFetching, error, searchQuery } = this.state;
     if (isFetching) {
@@ -194,7 +204,7 @@ export class RemoteSelectField extends Component {
   };
 
   onBlur = () => {
-    const { searchOnFocus } = this.props;
+    const { searchOnFocus = false } = this.props;
     this.setState((prevState) => ({
       open: false,
       error: false,
@@ -207,7 +217,7 @@ export class RemoteSelectField extends Component {
 
   onFocus = async () => {
     this.setState({ open: true });
-    const { searchOnFocus } = this.props;
+    const { searchOnFocus = false } = this.props;
     if (searchOnFocus) {
       const { searchQuery } = this.state;
       await this.executeSearch(searchQuery || "");
@@ -218,21 +228,22 @@ export class RemoteSelectField extends Component {
     const {
       fieldPath,
       suggestionAPIUrl,
-      suggestionAPIQueryParams,
-      serializeSuggestions,
+      suggestionAPIQueryParams = EMPTY_SUGGESTION_API_QUERY_PARAMS,
+      serializeSuggestions: serialize = serializeSuggestions,
       serializeAddedValue,
-      suggestionAPIHeaders,
-      debounceTime,
-      searchQueryParamName,
-      noResultsMessage,
-      loadingMessage,
-      suggestionsErrorMessage,
-      noQueryMessage,
-      initialSuggestions,
-      preSearchChange,
+      suggestionAPIHeaders = EMPTY_SUGGESTION_API_HEADERS,
+      debounceTime = 500,
+      searchQueryParamName = "suggest",
+      noResultsMessage = "No results found.",
+      loadingMessage = "Loading...",
+      suggestionsErrorMessage = "Something went wrong...",
+      noQueryMessage = "Search...",
+      initialSuggestions = EMPTY_INITIAL_SUGGESTIONS,
+      preSearchChange = PRE_SEARCH_CHANGE_IDENTITY,
       onValueChange,
-      search,
-      isFocused,
+      search = true,
+      isFocused = false,
+      searchOnFocus,
       ...uiProps
     } = this.props;
     const compProps = {
@@ -240,7 +251,7 @@ export class RemoteSelectField extends Component {
       suggestionAPIUrl,
       suggestionAPIQueryParams,
       suggestionAPIHeaders,
-      serializeSuggestions,
+      serializeSuggestions: serialize,
       serializeAddedValue,
       debounceTime,
       searchQueryParamName,
@@ -330,24 +341,4 @@ RemoteSelectField.propTypes = {
   multiple: PropTypes.bool,
   isFocused: PropTypes.bool,
   searchOnFocus: PropTypes.bool,
-};
-
-RemoteSelectField.defaultProps = {
-  debounceTime: 500,
-  suggestionAPIQueryParams: {},
-  suggestionAPIHeaders: {},
-  serializeSuggestions: serializeSuggestions,
-  searchQueryParamName: "suggest",
-  suggestionsErrorMessage: "Something went wrong...",
-  noQueryMessage: "Search...",
-  noResultsMessage: "No results found.",
-  loadingMessage: "Loading...",
-  preSearchChange: (x) => x,
-  search: true,
-  multiple: false,
-  serializeAddedValue: undefined,
-  initialSuggestions: [],
-  onValueChange: undefined,
-  isFocused: false,
-  searchOnFocus: false,
 };

@@ -6,7 +6,7 @@
 
 import { FastField, Field, getIn } from "formik";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Form } from "semantic-ui-react";
 import { FieldLabel } from "./FieldLabel";
 import _omit from "lodash/omit";
@@ -25,7 +25,15 @@ export class RadioField extends Component {
      * form: current Formik form (holds formik state that drives the UI)
      */
 
-    const { checked, fieldPath, label, labelIcon, onChange, value, ...ui } = this.props;
+    const {
+      checked = false,
+      fieldPath,
+      label = "",
+      labelIcon = "",
+      onChange,
+      value = "",
+      ...ui
+    } = this.props;
 
     const handleChange = (event, data) => {
       if (onChange) {
@@ -51,7 +59,7 @@ export class RadioField extends Component {
   };
 
   render() {
-    const { optimized, fieldPath } = this.props;
+    const { optimized = false, fieldPath } = this.props;
 
     const FormikField = optimized ? FastField : Field;
     return <FormikField name={fieldPath} component={this.renderFormField} />;
@@ -66,13 +74,4 @@ RadioField.propTypes = {
   optimized: PropTypes.bool,
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-};
-
-RadioField.defaultProps = {
-  checked: false,
-  label: "",
-  optimized: false,
-  labelIcon: "",
-  onChange: undefined,
-  value: "",
 };

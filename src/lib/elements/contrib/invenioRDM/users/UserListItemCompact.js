@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Image } from "../../../Image";
 import { Item, Label } from "semantic-ui-react";
@@ -44,8 +44,4 @@ UserListItemCompact.propTypes = {
   user: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   linkToDetailView: PropTypes.string,
-};
-
-UserListItemCompact.defaultProps = {
-  linkToDetailView: undefined,
 };

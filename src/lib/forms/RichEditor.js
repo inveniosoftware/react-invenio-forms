@@ -4,7 +4,7 @@
  * SPDX-FileCopyrightText: 2024-2026 KTH Royal Institute of Technology.
  * SPDX-License-Identifier: MIT
  */
-import React, { Component } from "react";
+import { Component, createRef } from "react";
 import { Editor } from "@hugerte/hugerte-react";
 import "hugerte/hugerte";
 import "hugerte/models/dom/model";
@@ -65,8 +65,8 @@ export class RichEditor extends Component {
       fileErrors: [],
     };
 
-    this.editorRef = React.createRef();
-    this.editorDialogRef = React.createRef();
+    this.editorRef = createRef();
+    this.editorDialogRef = createRef();
   }
 
   addToFileErrors = (filename, error) => {
@@ -309,14 +309,14 @@ export class RichEditor extends Component {
 
     const {
       id,
-      initialValue,
+      initialValue = "",
       disabled,
-      minHeight,
+      minHeight = 250,
       onBlur,
       onChange,
       onFocus,
       editorConfig,
-      inputValue,
+      inputValue = "",
       onEditorChange,
       files,
       onInit,
@@ -349,6 +349,11 @@ export class RichEditor extends Component {
       table_advtab: false,
       table_cell_advtab: false,
       convert_urls: false,
+      link_target_list: [
+        { title: "Current window", value: "" },
+        { title: "New window", value: "_blank" },
+      ],
+      allow_unsafe_link_target: false,
       setup: (editor) => {
         this.registerCustomPreviewButton(editor);
         if (attachFilesEnabled) {
@@ -441,7 +446,7 @@ export class RichEditor extends Component {
 
 RichEditor.propTypes = {
   initialValue: PropTypes.string,
-  inputValue: PropTypes.string,
+  inputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   id: PropTypes.string,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
@@ -455,22 +460,4 @@ RichEditor.propTypes = {
   onFilesChange: PropTypes.func,
   onFileUpload: PropTypes.func,
   onFileDelete: PropTypes.func,
-};
-
-RichEditor.defaultProps = {
-  minHeight: 250,
-  initialValue: "",
-  inputValue: "",
-  id: undefined,
-  disabled: undefined,
-  onChange: undefined,
-  onEditorChange: undefined,
-  onBlur: undefined,
-  onFocus: undefined,
-  onInit: undefined,
-  editorConfig: undefined,
-  files: undefined,
-  onFilesChange: undefined,
-  onFileUpload: undefined,
-  onFileDelete: undefined,
 };

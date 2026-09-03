@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
+import { Component, createRef } from "react";
 import PropTypes from "prop-types";
 import { Grid, Sidebar, Button, Segment } from "semantic-ui-react";
 
-export class GridResponsiveSidebarColumn extends React.Component {
+export class GridResponsiveSidebarColumn extends Component {
   render() {
-    const closeSidebarBtnRef = React.createRef();
+    const closeSidebarBtnRef = createRef();
     const {
       mobile,
       tablet,
@@ -83,14 +83,4 @@ GridResponsiveSidebarColumn.propTypes = {
   largeScreen: PropTypes.number,
   widescreen: PropTypes.number,
   ariaLabel: PropTypes.string,
-};
-
-GridResponsiveSidebarColumn.defaultProps = {
-  width: undefined,
-  mobile: undefined,
-  tablet: undefined,
-  computer: undefined,
-  widescreen: undefined,
-  largeScreen: undefined,
-  ariaLabel: undefined,
 };

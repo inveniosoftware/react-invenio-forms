@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Dropdown } from "semantic-ui-react";
 import { BulkActionsContext } from "./context";
@@ -12,7 +12,7 @@ import _pickBy from "lodash/pickBy";
 export default class SearchResultsBulkActions extends Component {
   constructor(props) {
     super(props);
-    const { allSelected } = this.props;
+    const { allSelected = false } = this.props;
     this.state = { allSelectedChecked: allSelected };
   }
 
@@ -82,8 +82,4 @@ SearchResultsBulkActions.propTypes = {
   bulkDropdownOptions: PropTypes.array.isRequired,
   allSelected: PropTypes.bool,
   optionSelectionCallback: PropTypes.func.isRequired,
-};
-
-SearchResultsBulkActions.defaultProps = {
-  allSelected: false,
 };

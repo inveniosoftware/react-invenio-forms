@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
+import { createElement as createReactElement } from "react";
 
 /** Import function to load widget either from a specific path or local widgets
  *
@@ -39,7 +39,7 @@ export async function importWidget(
     throw Error("Component not found in any loader");
   }
   if (createElement) {
-    return React.createElement(component, {
+    return createReactElement(component, {
       ...props,
       record: record,
       key: fieldPath,

@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from "react";
-
 export function dropdownOptionsGenerator(dropdownOptions) {
   return dropdownOptions.map((options) => {
     return {

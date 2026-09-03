@@ -4,3 +4,5 @@ extends:
 
 rules:
   react/default-props-match-prop-types: off
+  react/react-in-jsx-scope: off
+  react/require-default-props: off

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { RemoveField } from "./RemoveField";
 import { ListAndFilterCustomFields } from "./ListAndFilterCustomFields";
 import { importWidget } from "../loader";
@@ -181,10 +181,4 @@ AddDiscoverableFieldsModal.propTypes = {
   removeFieldCallback: PropTypes.func.isRequired,
   sections: PropTypes.array,
   existingFields: PropTypes.array.isRequired,
-};
-
-AddDiscoverableFieldsModal.defaultProps = {
-  icon: undefined,
-  label: undefined,
-  sections: undefined,
 };
