@@ -43,6 +43,7 @@ export class SubjectAutocompleteDropdown extends Component {
       noQueryMessage = "Search or create subjects...",
       disabled = false,
       limitTo,
+      initialOptions,
       ...uiProps
     } = this.props;
     const labelContent = label ? (
@@ -67,7 +68,7 @@ export class SubjectAutocompleteDropdown extends Component {
             {...uiProps}
             clearable={clearable}
             fieldPath={fieldPath}
-            initialSuggestions={getIn(values, fieldPath, [])}
+            initialSuggestions={initialOptions ?? getIn(values, fieldPath, [])}
             multiple={multiple}
             noQueryMessage={noQueryMessage}
             placeholder={placeholder}
@@ -104,6 +105,7 @@ export class SubjectAutocompleteDropdown extends Component {
 
 SubjectAutocompleteDropdown.propTypes = {
   fieldPath: PropTypes.string.isRequired,
+  initialOptions: PropTypes.array,
   limitTo: PropTypes.string,
   label: PropTypes.node,
   icon: PropTypes.string,
