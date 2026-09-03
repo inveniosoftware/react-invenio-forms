@@ -1,5 +1,11 @@
 # Changes
 
+Version 5.0.0-alpha.1 (release 2026-09-03)
+
+- feat: move away from reactdom.render
+- feat: upgrade to react 18
+- feat: switch from tinymce to hugerte
+
 Version 4.17.6 (release 2026-07-07)
 
 - fix: file preview not showing for S3 instances
