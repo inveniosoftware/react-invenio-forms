@@ -80,7 +80,7 @@ export class FeedbackLabel extends Component {
           <InvenioPopup
             popupId={`invenio-form-feedback-error-${fieldPath}`}
             ariaLabel="Form field feedback error"
-            trigger={<Icon name={icon} />}
+            trigger={<Icon name={error.icon || icon} />}
             // Rule descriptions can contain HTML to link to a page with more details about the rule.
             // This field is sanitized in the backend with SanitizedHTML.
             content={<span dangerouslySetInnerHTML={{ __html: error.description }} />}
