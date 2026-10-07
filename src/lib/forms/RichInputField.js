@@ -23,6 +23,7 @@ export class RichInputField extends Component {
       editorConfig,
       disabled,
       optimized,
+      labels,
     } = this.props;
     const value = getIn(formikBag.form.values, fieldPath, "");
     const initialValue = getIn(formikBag.form.initialValues, fieldPath, "");
@@ -58,6 +59,7 @@ export class RichInputField extends Component {
               formikBag.form.setFieldTouched(fieldPath, true);
             }}
             disabled={disabled}
+            labels={labels}
           />
         )}
         <ErrorLabel fieldPath={fieldPath} />
@@ -88,6 +90,12 @@ RichInputField.propTypes = {
   editorConfig: PropTypes.object,
   disabled: PropTypes.bool,
   helpText: PropTypes.string,
+  labels: PropTypes.shape({
+    attachFiles: PropTypes.string,
+    uploadingFile: PropTypes.string,
+    previewMathEquations: PropTypes.string,
+    imageDescription: PropTypes.func,
+  }),
 };
 
 RichInputField.defaultProps = {
@@ -99,4 +107,5 @@ RichInputField.defaultProps = {
   editorConfig: undefined,
   disabled: false,
   helpText: undefined,
+  labels: undefined,
 };

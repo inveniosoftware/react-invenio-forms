@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: 2022-2026 CERN.
  * SPDX-FileCopyrightText: 2020 Northwestern University.
  * SPDX-FileCopyrightText: 2024-2026 KTH Royal Institute of Technology.
+ * SPDX-FileCopyrightText: 2026 University of Münster.
  * SPDX-License-Identifier: MIT
  */
 import React, { Component } from "react";
@@ -47,6 +48,18 @@ blockquote > blockquote {
 }
 `;
 
+// Default (English) labels for all user-facing strings in this component.
+// `react-invenio-forms` does not have its own i18n workflow, so consuming
+// applications (e.g. invenio-app-rdm, invenio-requests, ...) are expected
+// to override these via the `labels` prop with their own translated strings
+// (e.g. using i18next.t(...)).
+const defaultLabels = {
+  attachFiles: "Attach files",
+  uploadingFile: "Uploading file...",
+  previewMathEquations: "Preview math equations",
+  imageDescription: (filename) => `Description of ${filename}`,
+};
+
 /**
  * Component providing rich text editor support and optional files support.
  *
@@ -55,6 +68,8 @@ blockquote > blockquote {
  * @param {func} props.onFilesChange The function to call when the list of files changed.
  * @param {func} props.onFileUpload The function to call when uploading a file.
  * @param {func} props.onFileDelete The function to call when deleting a file from the list.
+ * @param {object} props.labels Optional overrides for user-facing strings (for i18n support).
+ *   See `defaultLabels` above for the full list of supported keys.
  * @returns {JSX.Element}
  */
 export class RichEditor extends Component {
@@ -68,6 +83,16 @@ export class RichEditor extends Component {
     this.editorRef = React.createRef();
     this.editorDialogRef = React.createRef();
   }
+
+  /**
+   * Merge the user-provided labels with the defaults, so that consumers
+   * only need to override the strings they actually want to translate.
+   */
+  getLabels = () => {
+    const { labels } = this.props;
+
+    return { ...defaultLabels, ...labels };
+  };
 
   addToFileErrors = (filename, error) => {
     this.setState((prevState) => ({
@@ -154,6 +179,7 @@ export class RichEditor extends Component {
    * in the Link and Image popup dialogs.
    */
   filePickerCallback = (callback, value, meta) => {
+    const labels = this.getLabels();
     const input = document.createElement("input");
     input.setAttribute("type", "file");
 
@@ -189,7 +215,7 @@ export class RichEditor extends Component {
       // Progress state visible when uploading via the the Link and Image popup dialogs.
       // Taken from: https://github.com/tinymce/tinymce/issues/5133
       if (this.editorDialogRef.current) {
-        this.editorDialogRef.current.block("Uploading file...");
+        this.editorDialogRef.current.block(labels.uploadingFile);
       }
 
       const reader = new FileReader();
@@ -209,7 +235,7 @@ export class RichEditor extends Component {
             callback(locationRelative, { text: json.data.metadata.original_filename });
           } else if (selectedFileType === "image") {
             callback(locationRelative, {
-              alt: `Description of ${json.data.metadata.original_filename}`,
+              alt: labels.imageDescription(json.data.metadata.original_filename),
             });
           } else {
             // This should not happen, since `file_picker_types` is set to only support `file` and `image`.
@@ -272,7 +298,8 @@ export class RichEditor extends Component {
   };
 
   registerCustomPreviewButton = (editor) => {
-    const customPreviewTitle = "Preview math equations";
+    const labels = this.getLabels();
+    const customPreviewTitle = labels.previewMathEquations;
     editor.ui.registry.addButton("custom_preview", {
       text: "√x",
       tooltip: customPreviewTitle,
@@ -297,9 +324,10 @@ export class RichEditor extends Component {
   };
 
   registerAttachButton = (editor) => {
+    const labels = this.getLabels();
     editor.ui.registry.addButton("attach", {
       icon: "upload",
-      tooltip: "Attach files",
+      tooltip: labels.attachFiles,
       onAction: () => this.onAttachFiles(),
     });
   };
@@ -322,6 +350,7 @@ export class RichEditor extends Component {
       onInit,
     } = this.props;
     const { fileErrors } = this.state;
+    const labels = this.getLabels();
     const attachFilesEnabled = files !== undefined;
     let config = {
       branding: false,
@@ -427,7 +456,7 @@ export class RichEditor extends Component {
                 size="small"
                 compact
                 icon="attach"
-                content="Attach files"
+                content={labels.attachFiles}
                 className="mt-5"
                 onClick={() => this.onAttachFiles()}
               />
@@ -455,6 +484,12 @@ RichEditor.propTypes = {
   onFilesChange: PropTypes.func,
   onFileUpload: PropTypes.func,
   onFileDelete: PropTypes.func,
+  labels: PropTypes.shape({
+    attachFiles: PropTypes.string,
+    uploadingFile: PropTypes.string,
+    previewMathEquations: PropTypes.string,
+    imageDescription: PropTypes.func,
+  }),
 };
 
 RichEditor.defaultProps = {
@@ -473,4 +508,5 @@ RichEditor.defaultProps = {
   onFilesChange: undefined,
   onFileUpload: undefined,
   onFileDelete: undefined,
+  labels: defaultLabels,
 };
