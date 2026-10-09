@@ -47,17 +47,15 @@
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-node-resolve": "^7.1.0",
     "@semantic-ui-react/css-patch": "^1.0.0",
-    "@testing-library/jest-dom": "^4.2.0",
+    "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.0",
     "@tinymce/tinymce-react": "^4.3.0",
     "ajv": "^8.0.0",
     "ajv-keywords": "^5.0.0",
     "axios": "^1.7.7",
-    "coveralls": "^3.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.0",
-    "expect": "^26.0.0",
     "formik": "^2.1.0",
     "json": "^10.0.0",
     "lodash": "^4.17.0",
@@ -71,12 +69,20 @@
     "rollup-plugin-local-resolve": "^1.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-url": "^3.0.0",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^2.1.0",
     "tinymce": "^6.7.2",
     "typescript": "^4.9.5",
     "yup": "^0.32.11"
+  },
+  "overrides": {
+    "postcss-selector-parser": "^7.1.6",
+    "http-proxy-agent@4.0.1": {
+      "@tootallnate/once": "^2.0.1"
+    },
+    "jsonpath": {
+      "underscore": "^1.13.8"
+    }
   },
   "author": {
     "name": "CERN",
@@ -112,6 +118,6 @@
     ]
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=22.0.0"
   }
 }
