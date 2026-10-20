@@ -1,6 +1,7 @@
 /*
  * SPDX-FileCopyrightText: 2020 CERN.
  * SPDX-FileCopyrightText: 2020-2021 Northwestern University.
+ * SPDX-FileCopyrightText: 2026 Ubiquity Press.
  * SPDX-License-Identifier: MIT
  */
 
@@ -103,10 +104,12 @@ export class RemoteSelectField extends Component {
     const query = preSearchChange(searchQuery);
     // If there is no query change, then display prevState suggestions
     const { searchQuery: prevSearchQuery } = this.state;
-    if (prevSearchQuery === query) {
+    if (prevSearchQuery === searchQuery) {
       return;
     }
-    this.setState({ isFetching: true, searchQuery: query });
+    // Keep the raw query in state: it is re-run on focus, and passing it
+    // through preSearchChange again would compound the transformation.
+    this.setState({ isFetching: true, searchQuery });
     try {
       const suggestions = await this.fetchSuggestions(query);
 
