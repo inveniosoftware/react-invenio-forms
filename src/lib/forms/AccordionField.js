@@ -185,10 +185,14 @@ export class AccordionField extends Component {
           onClick={this.handleTitleClick}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
+              // Prevent the page from scrolling when Space is pressed
+              e.preventDefault();
               this.handleTitleClick(e, { index: 0 });
             }
           }}
           tabIndex={0}
+          role="button"
+          aria-expanded={activeIndex === 0}
         >
           {label}
           <AccordionError
