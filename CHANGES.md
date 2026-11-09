@@ -1,5 +1,9 @@
 # Changes
 
+Version 5.0.1 (release 2026-11-09)
+
+- fix(ci): publish worked for alpha
+
 Version 5.0.0 (release 2026-11-09)
 
 - chore: update Node.js version to 24 in npm publish workflow
