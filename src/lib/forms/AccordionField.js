@@ -48,16 +48,22 @@ class AccordionError extends Component {
     }
   }
 
-  findErrorObjects(obj) {
+  findNestedErrors(obj) {
     const results = [];
 
     function traverse(current) {
+      if (typeof current === "string" && current) {
+        results.push(current);
+        return;
+      }
+
       if (typeof current !== "object" || current === null) {
         return;
       }
 
       if ("message" in current && "severity" in current) {
         results.push(current);
+        return;
       }
 
       Object.keys(current).forEach((key) => {
@@ -79,7 +85,7 @@ class AccordionError extends Component {
       const err = _get(errors, fieldPath) || _get(initialErrors, fieldPath);
       if (err) {
         if (typeof err == "object") {
-          const errs = this.findErrorObjects(err);
+          const errs = this.findNestedErrors(err);
           subfieldErrors.push(...errs);
         } else {
           subfieldErrors.push(err);
