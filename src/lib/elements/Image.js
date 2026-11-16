@@ -17,7 +17,7 @@ const FALLBACK_SRC = "/static/images/square-placeholder.png";
 export class Image extends Component {
   async componentDidMount() {
     const { fallbackSrc = FALLBACK_SRC, loadFallbackFirst = false, src } = this.props;
-    if (loadFallbackFirst) {
+    if (loadFallbackFirst && src) {
       try {
         await axios.get(src);
         this.setSrc(this.myRef.current, src);
@@ -60,6 +60,21 @@ export class Image extends Component {
       loadFallbackFirst = false,
       ...UIprops
     } = this.props;
+    if (!src) {
+      // Nothing to load, so render the fallback directly instead of an empty <img>
+      if (!fallbackSrc) {
+        return null;
+      }
+      return (
+        <SUIImage
+          ref={this.myRef}
+          className={`${className} fallback_image`}
+          alt={alt}
+          src={fallbackSrc}
+          {...UIprops}
+        />
+      );
+    }
     const loadingClass = !loadFallbackFirst
       ? `${className} placeholder`
       : `${className} fallback_image`;
@@ -89,7 +104,7 @@ export class Image extends Component {
 }
 
 Image.propTypes = {
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   fallbackSrc: PropTypes.string,
   className: PropTypes.string,
   alt: PropTypes.string,
