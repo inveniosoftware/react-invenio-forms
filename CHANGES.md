@@ -1,5 +1,10 @@
 # Changes
 
+Version 5.0.2 (released 2026-11-17)
+
+- fix: expose expanded state of AccordionField title
+- fix: import hugerte css during bundling instead of fetching
+
 Version 5.0.1 (release 2026-11-09)
 
 - fix(ci): publish worked for alpha
