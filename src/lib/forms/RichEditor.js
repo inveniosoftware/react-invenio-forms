@@ -5,11 +5,34 @@
  * SPDX-License-Identifier: MIT
  */
 import { Component, createRef } from "react";
+import PropTypes from "prop-types";
+import { Button, Message } from "semantic-ui-react";
+import { FilesList } from "./FilesList";
+
 import { Editor } from "@hugerte/hugerte-react";
+
+// The HugeRTE global. This must be before other HugeRTE imports.
 import "hugerte/hugerte";
-import "hugerte/models/dom/model";
-import "hugerte/themes/silver";
+
+// The DOM model
+import "hugerte/models/dom";
+
+// The default icons
 import "hugerte/icons/default";
+
+// The silver theme
+import "hugerte/themes/silver";
+
+// The oxide skin
+import "hugerte/skins/ui/oxide/skin.js";
+
+// The content skin provided by oxide
+import "hugerte/skins/ui/oxide/content.js";
+
+// The default content CSS
+import "hugerte/skins/content/default/content.js";
+
+// The plugins
 import "hugerte/plugins/table";
 import "hugerte/plugins/autoresize";
 import "hugerte/plugins/code";
@@ -19,9 +42,6 @@ import "hugerte/plugins/link";
 import "hugerte/plugins/lists";
 import "hugerte/plugins/wordcount";
 import "hugerte/plugins/preview";
-import PropTypes from "prop-types";
-import { Button, Message } from "semantic-ui-react";
-import { FilesList } from "./FilesList";
 
 // Make content inside the editor look identical to how we will render it across the site.
 // hugerte runs within an iframe, so we cannot style it with page-wide CSS styles as normal.
@@ -327,6 +347,8 @@ export class RichEditor extends Component {
       branding: false,
       menubar: false,
       statusbar: false,
+      skin_url: "default",
+      content_css: "default",
       min_height: minHeight,
       content_style: editorContentStyle(disabled),
       plugins: [
