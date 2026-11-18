@@ -1,5 +1,11 @@
 # Changes
 
+Version 5.1.0 (released 2026-11-18)
+
+- fix(Image): remove placeholder class after load
+- fix(image): render the fallback when there is no src
+- feat(forms): use custom error icon in Feedback Label
+
 Version 5.0.2 (released 2026-11-17)
 
 - fix: expose expanded state of AccordionField title
