@@ -28,6 +28,13 @@ export class Image extends Component {
       }
     }
   }
+  componentDidUpdate(prevProps) {
+    const { src, fallbackSrc } = this.props;
+    if (prevProps.src !== src || prevProps.fallbackSrc !== fallbackSrc) {
+      this.fallbackApplied = false;
+    }
+  }
+
   myRef = createRef();
 
   setSrc = (currentTarget, src, isFallback = false) => {
@@ -86,15 +93,16 @@ export class Image extends Component {
         alt={alt}
         src={url}
         {...(!loadFallbackFirst && {
-          onError: ({ currentTarget }) => {
-            currentTarget.onerror = null; // prevents looping
+          // Capture phase: load/error don't bubble, so this also catches the
+          // <img> when SUIImage wraps it in a div. `currentTarget` is the element
+          // carrying the classes (the wrapper div, or the img itself).
+          onErrorCapture: ({ currentTarget }) => {
+            if (this.fallbackApplied) return; // prevents looping
+            this.fallbackApplied = true;
             this.setSrc(currentTarget, fallbackSrc, true);
           },
-          onLoad: () => {
-            // Control the loader via ref to make it immediately invisible
-            if (!loadFallbackFirst) {
-              this.myRef.current.classList.remove("placeholder");
-            }
+          onLoadCapture: ({ currentTarget }) => {
+            currentTarget.classList.remove("placeholder");
           },
         })}
         {...UIprops}

@@ -48,3 +48,72 @@ it("renders nothing when there is no src and no fallback", () => {
   expect(div.innerHTML).toBe("");
   act(() => root.unmount());
 });
+
+describe("load and error handling", () => {
+  // load/error don't bubble, so they are dispatched on the <img> itself
+  const fire = (el, type) => act(() => el.dispatchEvent(new Event(type)));
+
+  const renderWrapped = (props = {}) =>
+    render(
+      <Image
+        src="/logo.png"
+        fallbackSrc="/fallback.png"
+        className="avatar"
+        wrapped
+        {...props}
+      />
+    );
+
+  it("removes the placeholder class on load", () => {
+    const { div, root } = render(<Image src="/logo.png" />);
+    const img = div.querySelector("img");
+    expect(img.classList).toContain("placeholder");
+    fire(img, "load");
+    expect(img.classList).not.toContain("placeholder");
+    act(() => root.unmount());
+  });
+
+  it("removes the placeholder class from the wrapper on load", () => {
+    const { div, root } = renderWrapped();
+    const wrapper = div.firstChild;
+    expect(wrapper.nodeName).toBe("DIV");
+    expect(wrapper.classList).toContain("placeholder");
+    fire(wrapper.querySelector("img"), "load");
+    expect(wrapper.classList).not.toContain("placeholder");
+    act(() => root.unmount());
+  });
+
+  it("uses the fallback on error when wrapped", () => {
+    const { div, root } = renderWrapped();
+    const wrapper = div.firstChild;
+    const img = wrapper.querySelector("img");
+    fire(img, "error");
+    expect(img.getAttribute("src")).toBe("/fallback.png");
+    expect(wrapper.classList).toContain("fallback_image");
+    act(() => root.unmount());
+  });
+
+  it("does not loop when the fallback fails too", () => {
+    const { div, root } = renderWrapped();
+    const img = div.querySelector("img");
+    fire(img, "error");
+    img.setAttribute("src", "/other.png");
+    fire(img, "error");
+    expect(img.getAttribute("src")).toBe("/other.png");
+    act(() => root.unmount());
+  });
+
+  it("allows the fallback again after src changes", () => {
+    const div = document.createElement("div");
+    const root = createRoot(div);
+    const props = { fallbackSrc: "/fallback.png", className: "avatar", wrapped: true };
+    act(() => root.render(<Image src="/a.png" {...props} />));
+    const img = div.querySelector("img");
+    fire(img, "error");
+    act(() => root.render(<Image src="/b.png" {...props} />));
+    img.setAttribute("src", "/b.png");
+    fire(img, "error");
+    expect(img.getAttribute("src")).toBe("/fallback.png");
+    act(() => root.unmount());
+  });
+});
