@@ -1,6 +1,7 @@
 /*
  * SPDX-FileCopyrightText: 2020 CERN.
  * SPDX-FileCopyrightText: 2020 Northwestern University.
+ * SPDX-FileCopyrightText: 2026 Dhairya Jangir
  * SPDX-License-Identifier: MIT
  */
 
@@ -73,6 +74,7 @@ export class SelectField extends Component {
       defaultValue = "",
       error,
       fieldPath,
+      fieldLabel,
       label = "",
       options,
       onChange,
@@ -115,7 +117,7 @@ export class SelectField extends Component {
         search
         selection
         error={this.renderError(meta, initialValue, initialErrors, value, errors)}
-        label={{ children: label }}
+        label={fieldLabel ?? { children: label }}
         name={fieldPath}
         disabled={disabled}
         required={required}
@@ -196,6 +198,7 @@ SelectField.propTypes = {
   optimized: PropTypes.bool,
   error: PropTypes.any,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  fieldLabel: PropTypes.element,
   onChange: PropTypes.func,
   onAddItem: PropTypes.func,
   allowAdditions: PropTypes.bool,

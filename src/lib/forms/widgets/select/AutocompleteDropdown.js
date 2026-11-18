@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2022-2025 CERN.
+ * SPDX-FileCopyrightText: 2026 Dhairya Jangir
  * SPDX-License-Identifier: MIT
  */
 
@@ -37,46 +38,42 @@ function AutocompleteDropdownComponent(props) {
   const labelIcon = labelIconProp ?? icon;
 
   return (
-    <>
-      <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-      <Field name={fieldPath}>
-        {({ form: { values } }) => {
-          return (
-            <RemoteSelectField
-              clearable={clearable}
-              required={required}
-              fieldPath={fieldPath}
-              multiple={multiple}
-              noQueryMessage={placeholder}
-              placeholder={placeholder}
-              suggestionAPIUrl={autocompleteFrom}
-              suggestionAPIHeaders={{
-                Accept: autocompleteFromAcceptHeader,
-              }}
-              disabled={disabled}
-              helpText={helpText}
-              serializeSuggestions={(suggestions) => {
-                return _isArray(suggestions)
-                  ? suggestions.map((item) => ({
-                      text: item.title_l10n,
-                      value: item.id,
-                      key: item.id,
-                    }))
-                  : [
-                      {
-                        text: suggestions.title_l10n,
-                        value: suggestions.id,
-                        key: suggestions.id,
-                      },
-                    ];
-              }}
-              initialSuggestions={_get(values, `ui.${fieldPath}`, [])}
-              {...dropdownProps}
-            />
-          );
-        }}
-      </Field>
-    </>
+    <Field name={fieldPath}>
+      {({ form: { values } }) => (
+        <RemoteSelectField
+          clearable={clearable}
+          required={required}
+          fieldPath={fieldPath}
+          fieldLabel={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
+          multiple={multiple}
+          noQueryMessage={placeholder}
+          placeholder={placeholder}
+          suggestionAPIUrl={autocompleteFrom}
+          suggestionAPIHeaders={{
+            Accept: autocompleteFromAcceptHeader,
+          }}
+          disabled={disabled}
+          helpText={helpText}
+          serializeSuggestions={(suggestions) => {
+            return _isArray(suggestions)
+              ? suggestions.map((item) => ({
+                  text: item.title_l10n,
+                  value: item.id,
+                  key: item.id,
+                }))
+              : [
+                  {
+                    text: suggestions.title_l10n,
+                    value: suggestions.id,
+                    key: suggestions.id,
+                  },
+                ];
+          }}
+          initialSuggestions={_get(values, `ui.${fieldPath}`, [])}
+          {...dropdownProps}
+        />
+      )}
+    </Field>
   );
 }
 
