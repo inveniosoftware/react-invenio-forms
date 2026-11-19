@@ -116,4 +116,20 @@ describe("load and error handling", () => {
     expect(img.getAttribute("src")).toBe("/fallback.png");
     act(() => root.unmount());
   });
+
+  it("keeps caller-provided children when there is no src", () => {
+    const { div, root } = render(
+      <Image className="avatar" fallbackSrc="/fallback.png">
+        <img src="/avatar.svg" alt="avatar" />
+      </Image>
+    );
+    const wrapper = div.firstChild;
+    expect(wrapper.getAttribute("src")).toBeNull();
+    expect(wrapper.classList).not.toContain("fallback_image");
+    expect(wrapper.querySelector("img").getAttribute("src")).toBe("/avatar.svg");
+
+    fire(wrapper.querySelector("img"), "load");
+    expect(wrapper.classList).not.toContain("placeholder");
+    act(() => root.unmount());
+  });
 });

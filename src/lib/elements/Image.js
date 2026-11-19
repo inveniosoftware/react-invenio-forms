@@ -67,8 +67,10 @@ export class Image extends Component {
       loadFallbackFirst = false,
       ...UIprops
     } = this.props;
-    if (!src) {
-      // Nothing to load, so render the fallback directly instead of an empty <img>
+    const hasChildren = UIprops.children != null || UIprops.content != null;
+    if (!src && !hasChildren) {
+      // Nothing to load, so render the fallback directly instead of an empty <img>.
+      // Skipped when the caller provides its own <img> as children/content.
       if (!fallbackSrc) {
         return null;
       }
